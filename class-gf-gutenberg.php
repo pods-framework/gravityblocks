@@ -105,6 +105,7 @@ class GF_Gutenberg extends GFAddOn {
 	 * @since  1.0-dev-1
 	 * @access public
 	 *
+	 * @uses   GFAddOn::get_base_path()
 	 * @uses   GFAddOn::get_base_url()
 	 * @uses   GF_Gutenberg::get_forms()
 	 */
@@ -113,8 +114,9 @@ class GF_Gutenberg extends GFAddOn {
 		// Enqueue script.
 		wp_enqueue_script(
 			'gform_gutenberg_block',
-			$this->get_base_url() . '/js/block.js',
-			array( 'wp-blocks', 'wp-element' )
+			$this->get_base_url() . '/js/block.min.js',
+			array( 'wp-blocks', 'wp-element' ),
+			filemtime( $this->get_base_path() . '/js/block.min.js' )
 		);
 
 		// Prepare JS variables.

@@ -1,8 +1,8 @@
-var el = wp.element.createElement,
-	__ = wp.i18n.__,
-	registerBlockType = wp.blocks.registerBlockType,
-	ToggleControl = wp.blocks.InspectorControls.ToggleControl;
 
+const { __ } = wp.i18n;
+const { registerBlockType } = wp.blocks;
+const el = wp.element.createElement;
+const { SelectControl, ToggleControl } = wp.blocks.InspectorControls;
 
 registerBlockType( 'gravityforms/block', {
 
@@ -82,7 +82,7 @@ registerBlockType( 'gravityforms/block', {
 				wp.blocks.InspectorControls,
 				{ key: 'inspector' },
 				el(
-					wp.blocks.InspectorControls.SelectControl,
+					SelectControl,
 					{
 						label:    __( 'Select form', 'gravityforms' ),
 						value:    props.attributes.id,

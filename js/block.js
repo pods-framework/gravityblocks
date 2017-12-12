@@ -3,7 +3,7 @@ const { registerBlockType } = wp.blocks;
 const el = wp.element.createElement;
 const { SelectControl, ToggleControl } = wp.blocks.InspectorControls;
 const InspectorControls = wp.blocks.InspectorControls;
-const Placeholder = wp.components.Placeholder;
+const { Placeholder, SandBox } = wp.components;
 const Component = wp.element.Component;
 
 registerBlockType( 'gravityforms/block', {
@@ -39,6 +39,43 @@ registerBlockType( 'gravityforms/block', {
 
 			super( ...arguments );
 
+			this.setFormId = this.setFormId.bind( this );
+			this.updateFormPreview = this.updateFormPreview.bind( this );
+
+			this.updateFormPreview();
+
+		}
+
+		componentWillMount() {
+
+			this.setState( { html: '' } );
+
+		}
+
+		setFormId( formId ) {
+
+			this.props.setAttributes( { formId: formId } );
+			this.updateFormPreview();
+
+		}
+
+		updateFormPreview() {
+
+			let data = {
+				action:     'gform_gutenberg_preview',
+				attributes: this.props.attributes
+			};
+
+			wp.apiRequest.transport( {
+				url:      ajaxurl,
+				method:   'GET',
+				dataType: 'json',
+				data:     data,
+				success:  function ( response ) {
+					this.setState( { html: response.data.html } )
+				}.bind( this )
+			} );
+
 		}
 
 		render() {
@@ -49,8 +86,7 @@ registerBlockType( 'gravityforms/block', {
 			const toggleTitle = () => setAttributes( { title: !title } );
 			const toggleDescription = () => setAttributes( { description: !description } );
 			const toggleAjax = () => setAttributes( { ajax: !ajax } );
-			const changeForm = ( formId ) => setAttributes( { formId: formId } );
-			const changeFormPreview = ( event ) => setAttributes( { formId: event.target.value } );
+			const setFormIdFromPlaceholder = ( e ) => this.setFormId( e.target.value );
 
 			return [
 				!!focus && (
@@ -59,7 +95,7 @@ registerBlockType( 'gravityforms/block', {
 							label={__( 'Select form', 'gravityforms' )}
 							value={formId}
 							options={gform.forms}
-							onChange={changeForm}
+							onChange={this.setFormId}
 						/>
 						<ToggleControl
 							label={__( 'Display form title', 'gravityforms' )}
@@ -82,7 +118,7 @@ registerBlockType( 'gravityforms/block', {
 					<Placeholder key="placeholder" className="wp-block-embed"
 								 label={__( 'Select a Form', 'gravityforms' )}>
 						<form>
-							<select value={formId} onChange={changeFormPreview}>
+							<select value={formId} onChange={setFormIdFromPlaceholder}>
 								{gform.forms.map( form =>
 									<option key={form.value} value={form.value}>{form.label}</option>
 								)}
@@ -91,9 +127,7 @@ registerBlockType( 'gravityforms/block', {
 					</Placeholder>
 				),
 				!focus && formId && (
-					<p>
-						This is where the form preview will be displayed.
-					</p>
+					<SandBox html={this.state.html}/>
 				)
 			]
 

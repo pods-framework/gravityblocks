@@ -99,6 +99,14 @@ class GF_Gutenberg extends GFAddOn {
 
 	}
 
+	public function init_ajax() {
+
+		parent::init_ajax();
+
+		add_action( 'wp_ajax_gform_gutenberg_preview', array( $this, 'get_form_preview' ) );
+
+	}
+
 	/**
 	 * Enqueue assets needed for Gutenberg block.
 	 *
@@ -115,7 +123,7 @@ class GF_Gutenberg extends GFAddOn {
 		wp_enqueue_script(
 			'gform_gutenberg_block',
 			$this->get_base_url() . '/js/block.min.js',
-			array( 'wp-blocks', 'wp-element' ),
+			array( 'wp-blocks', 'wp-element', 'jquery' ),
 			filemtime( $this->get_base_path() . '/js/block.min.js' )
 		);
 
@@ -152,6 +160,12 @@ class GF_Gutenberg extends GFAddOn {
 		}
 
 		return '';
+
+	}
+
+	public function get_form_preview() {
+
+		wp_send_json_success( array( 'html' => $this->render_block( $_GET['attributes']) ) );
 
 	}
 

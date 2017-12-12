@@ -1,6 +1,8 @@
 var el = wp.element.createElement,
+	__ = wp.i18n.__,
 	registerBlockType = wp.blocks.registerBlockType,
-	__ = wp.i18n.__;
+	ToggleControl = wp.blocks.InspectorControls.ToggleControl;
+
 
 registerBlockType( 'gravityforms/block', {
 
@@ -89,7 +91,7 @@ registerBlockType( 'gravityforms/block', {
 					}
 				),
 				el(
-					wp.blocks.InspectorControls.ToggleControl,
+					ToggleControl,
 					{
 						label:    __( 'Display form title', 'gravityforms' ),
 						checked:  props.attributes.title,
@@ -97,7 +99,7 @@ registerBlockType( 'gravityforms/block', {
 					}
 				),
 				el(
-					wp.blocks.InspectorControls.ToggleControl,
+					ToggleControl,
 					{
 						label:    __( 'Display form description', 'gravityforms' ),
 						checked:  props.attributes.description,
@@ -105,7 +107,7 @@ registerBlockType( 'gravityforms/block', {
 					}
 				),
 				el(
-					wp.blocks.InspectorControls.ToggleControl,
+					ToggleControl,
 					{
 						label:    __( 'Enable AJAX', 'gravityforms' ),
 						checked:  props.attributes.ajax,

@@ -141,7 +141,7 @@ class GF_Gutenberg extends GFAddOn {
 	public function render_block( $attributes = array() ) {
 
 		// Prepare variables.
-		$form_id     = rgar( $attributes, 'id' ) ? $attributes['id'] : false;
+		$form_id     = rgar( $attributes, 'formId' ) ? $attributes['formId'] : false;
 		$title       = isset( $attributes['title'] ) ? $attributes['title'] : true;
 		$description = isset( $attributes['description'] ) ? $attributes['description'] : true;
 		$ajax        = isset( $attributes['ajax'] ) ? $attributes['ajax'] : true;
@@ -168,7 +168,12 @@ class GF_Gutenberg extends GFAddOn {
 	private function get_forms() {
 
 		// Initialize options array.
-		$options = array();
+		$options = array(
+			array(
+				'label' => esc_html__( 'Select a Form', 'gravityforms' ),
+				'value' => '',
+			),
+		);
 
 		// Get forms.
 		$forms = GFAPI::get_forms();

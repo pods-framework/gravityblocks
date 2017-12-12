@@ -7,6 +7,10 @@ registerBlockType( 'gravityforms/block', {
 	title:      'Gravity Forms',
 	icon:       'feedback',
 	category:   'embed',
+	supports:   {
+		customClassName: false,
+		className:       false,
+	},
 	attributes: {
 		id:          {
 			type: 'integer',
@@ -84,14 +88,14 @@ registerBlockType( 'gravityforms/block', {
 			el(
 				'p',
 				{},
-				'Form preview.'
+				'Selected form: ' + props.attributes.id
 			)
 		]
 
 	},
 
 	save: function () {
-		return el( 'p', {}, 'Form preview.' );
+		return null;
 	},
 
 } );

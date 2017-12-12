@@ -1,8 +1,9 @@
-
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const el = wp.element.createElement;
 const { SelectControl, ToggleControl } = wp.blocks.InspectorControls;
+const InspectorControls = wp.blocks.InspectorControls;
+const Placeholder = wp.components.Placeholder;
 
 registerBlockType( 'gravityforms/block', {
 
@@ -78,67 +79,44 @@ registerBlockType( 'gravityforms/block', {
 		}
 
 		return [
-			!!props.focus && el(
-				wp.blocks.InspectorControls,
-				{ key: 'inspector' },
-				el(
-					SelectControl,
-					{
-						label:    __( 'Select form', 'gravityforms' ),
-						value:    props.attributes.id,
-						options:  gform.forms,
-						onChange: onChangeForm
-					}
-				),
-				el(
-					ToggleControl,
-					{
-						label:    __( 'Display form title', 'gravityforms' ),
-						checked:  props.attributes.title,
-						onChange: onChangeTitle
-					}
-				),
-				el(
-					ToggleControl,
-					{
-						label:    __( 'Display form description', 'gravityforms' ),
-						checked:  props.attributes.description,
-						onChange: onChangeDescription
-					}
-				),
-				el(
-					ToggleControl,
-					{
-						label:    __( 'Enable AJAX', 'gravityforms' ),
-						checked:  props.attributes.ajax,
-						onChange: onChangeAjax
-					}
-				)
+			!!props.focus && (
+				<InspectorControls key="inspector">
+					<SelectControl
+						label={__( 'Select form', 'gravityforms' )}
+						value={props.attributes.id}
+						options={gform.forms}
+						onChange={onChangeForm}
+					/>
+					<ToggleControl
+						label={__( 'Display form title', 'gravityforms' )}
+						checked={props.attributes.title}
+						onChange={onChangeTitle}
+					/>
+					<ToggleControl
+						label={__( 'Display form description', 'gravityforms' )}
+						checked={props.attributes.description}
+						onChange={onChangeDescription}
+					/>
+					<ToggleControl
+						label={__( 'Enable AJAX', 'gravityforms' )}
+						checked={props.attributes.ajax}
+						onChange={onChangeAjax}
+					/>
+				</InspectorControls>
 			),
-			(!!props.focus || !props.attributes.id) && el(
-				wp.components.Placeholder,
-				{
-					key:       'placeholder',
-					className: 'wp-block-embed',
-					label:     __( 'Select a Form', 'gravityforms' )
-				},
-				el(
-					'form',
-					{},
-					el(
-						'select',
-						{
-							value:    props.attributes.id,
-							onChange: onChangeFormPreview
-						},
-						formOptions
-					)
-				)
+			(!!props.focus || !props.attributes.id) && (
+				<Placeholder key="placeholder" className="wp-block-embed" label={__( 'Select a Form', 'gravityforms' )}>
+					<form>
+						<select value={props.attributes.id} onChange={onChangeFormPreview}>
+							{formOptions}
+						</select>
+					</form>
+				</Placeholder>
 			),
-			!props.focus && props.attributes.id && el(
-				'p',
-				{},
-				'This is where the form preview will be displayed.'
+			!props.focus && props.attributes.id && (
+				<p>
+					This is where the form preview will be displayed.
+				</p>
 			)
 		]
 

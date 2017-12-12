@@ -134,7 +134,7 @@ class GF_Gutenberg extends GFAddOn {
 	 *
 	 * @param array $attributes Block attributes.
 	 *
-	 * @return string|void
+	 * @return string
 	 */
 	public function render_block( $attributes = array() ) {
 
@@ -148,6 +148,8 @@ class GF_Gutenberg extends GFAddOn {
 		if ( $form_id ) {
 			return gravity_form( $form_id, $title, $description, false, null, $ajax, 1, false );
 		}
+
+		return '';
 
 	}
 

@@ -1,6 +1,6 @@
 var el = wp.element.createElement,
-	registerBlockType = wp.blocks.registerBlockType;
-var __ = wp.i18n.__;
+	registerBlockType = wp.blocks.registerBlockType,
+	__ = wp.i18n.__;
 
 registerBlockType( 'gravityforms/block', {
 
@@ -9,23 +9,23 @@ registerBlockType( 'gravityforms/block', {
 	category:   'embed',
 	supports:   {
 		customClassName: false,
-		className:       false,
+		className:       false
 	},
 	attributes: {
 		id:          {
-			type: 'integer',
+			type: 'integer'
 		},
 		title:       {
 			type:    'bool',
-			default: true,
+			default: true
 		},
 		description: {
 			type:    'bool',
-			default: true,
+			default: true
 		},
 		ajax:        {
 			type:    'bool',
-			default: true,
+			default: true
 		}
 	},
 
@@ -39,19 +39,28 @@ registerBlockType( 'gravityforms/block', {
 			props.setAttributes( { id: id } );
 		}
 
-		function onChangeTitle( value ) {
+		function onChangeTitle() {
 			props.setAttributes( { title: !props.attributes.title } );
 		}
 
-		function onChangeDescription( value ) {
+		function onChangeDescription() {
 			props.setAttributes( { description: !props.attributes.description } );
 		}
 
-		function onChangeAjax( event ) {
+		function onChangeAjax() {
 			props.setAttributes( { ajax: !props.attributes.ajax } );
 		}
 
-		var formOptions = [];
+		var formOptions = [
+			el(
+				'option',
+				{
+					key:   'none',
+					value: ''
+				},
+				__( 'Select a Form', 'gravityforms' )
+			)
+		];
 
 		for ( var i = 0; i < gform.forms.length; i++ ) {
 			formOptions.push(
@@ -76,7 +85,7 @@ registerBlockType( 'gravityforms/block', {
 						label:    __( 'Select form', 'gravityforms' ),
 						value:    props.attributes.id,
 						options:  gform.forms,
-						onChange: onChangeForm,
+						onChange: onChangeForm
 					}
 				),
 				el(
@@ -84,7 +93,7 @@ registerBlockType( 'gravityforms/block', {
 					{
 						label:    __( 'Display form title', 'gravityforms' ),
 						checked:  props.attributes.title,
-						onChange: onChangeTitle,
+						onChange: onChangeTitle
 					}
 				),
 				el(
@@ -92,7 +101,7 @@ registerBlockType( 'gravityforms/block', {
 					{
 						label:    __( 'Display form description', 'gravityforms' ),
 						checked:  props.attributes.description,
-						onChange: onChangeDescription,
+						onChange: onChangeDescription
 					}
 				),
 				el(
@@ -100,16 +109,16 @@ registerBlockType( 'gravityforms/block', {
 					{
 						label:    __( 'Enable AJAX', 'gravityforms' ),
 						checked:  props.attributes.ajax,
-						onChange: onChangeAjax,
+						onChange: onChangeAjax
 					}
 				)
 			),
-			el(
+			(!!props.focus || !props.attributes.id) && el(
 				wp.components.Placeholder,
 				{
 					key:       'placeholder',
 					className: 'wp-block-embed',
-					label:     __( 'Select a Form', 'gravityforms' ),
+					label:     __( 'Select a Form', 'gravityforms' )
 				},
 				el(
 					'form',
@@ -123,6 +132,11 @@ registerBlockType( 'gravityforms/block', {
 						formOptions
 					)
 				)
+			),
+			!props.focus && props.attributes.id && el(
+				'p',
+				{},
+				'This is where the form preview will be displayed.'
 			)
 		]
 

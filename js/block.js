@@ -31,6 +31,10 @@ registerBlockType( 'gravityforms/block', {
 
 	edit: function ( props ) {
 
+		function onChangeFormPreview( event ) {
+			props.setAttributes( { id: event.target.value } );
+		}
+
 		function onChangeForm( id ) {
 			props.setAttributes( { id: id } );
 		}
@@ -45,6 +49,21 @@ registerBlockType( 'gravityforms/block', {
 
 		function onChangeAjax( event ) {
 			props.setAttributes( { ajax: !props.attributes.ajax } );
+		}
+
+		var formOptions = [];
+
+		for ( var i = 0; i < gform.forms.length; i++ ) {
+			formOptions.push(
+				el(
+					'option',
+					{
+						key:   gform.forms[ i ].value,
+						value: gform.forms[ i ].value
+					},
+					gform.forms[ i ].label
+				)
+			);
 		}
 
 		return [
@@ -86,9 +105,24 @@ registerBlockType( 'gravityforms/block', {
 				)
 			),
 			el(
-				'p',
-				{},
-				'Selected form: ' + props.attributes.id
+				wp.components.Placeholder,
+				{
+					key:       'placeholder',
+					className: 'wp-block-embed',
+					label:     __( 'Select a Form', 'gravityforms' ),
+				},
+				el(
+					'form',
+					{},
+					el(
+						'select',
+						{
+							value:    props.attributes.id,
+							onChange: onChangeFormPreview
+						},
+						formOptions
+					)
+				)
 			)
 		]
 

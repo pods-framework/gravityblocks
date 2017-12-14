@@ -34,7 +34,7 @@ registerBlockType( 'gravityforms/block', {
 		tabindex:    {
 			type:    'integer',
 		},
-		hidePreview: {
+		formPreview: {
 			type:    'bool',
 			default: false,
 		}
@@ -58,7 +58,7 @@ registerBlockType( 'gravityforms/block', {
 
 		componentWillMount() {
 
-			if ( this.props.attributes.formId && !this.props.attributes.hidePreview ) {
+			if ( this.props.attributes.formId && this.props.attributes.formPreview ) {
 				this.setState( { fetching: true } );
 				this.updateFormPreview( this.props.attributes );
 			}
@@ -130,13 +130,13 @@ registerBlockType( 'gravityforms/block', {
 		render() {
 
 			const { html, fetching } = this.state;
-			const { formId, title, description, ajax, tabindex, hidePreview } = this.props.attributes;
+			const { formId, title, description, ajax, tabindex, formPreview } = this.props.attributes;
 			const { setAttributes, focus } = this.props;
 
 			const toggleTitle = () => setAttributes( { title: !title } );
 			const toggleDescription = () => setAttributes( { description: !description } );
 			const toggleAjax = () => setAttributes( { ajax: !ajax } );
-			const toggleHidePreview = () => setAttributes( { hidePreview: !hidePreview} );
+			const toggleFormPreview = () => setAttributes( { formPreview: !formPreview} );
 			const updateTabindex = ( tabindex ) => setAttributes( { tabindex: tabindex } );
 
 			const setFormIdFromPlaceholder = ( e ) => this.setFormId( e.target.value );
@@ -166,19 +166,19 @@ registerBlockType( 'gravityforms/block', {
 						<PanelBody title={__( 'Advanced Settings', 'gravityforms' )} initialOpen={false}>
 							<ToggleControl
 								label={__( 'Preview', 'gravityforms' )}
-								checked={hidePreview}
-								onChange={toggleHidePreview}
+								checked={formPreview}
+								onChange={toggleFormPreview}
+							/>
+							<ToggleControl
+								label={__( 'AJAX', 'gravityforms' )}
+								checked={ajax}
+								onChange={toggleAjax}
 							/>
 							<TextControl
 								label={__( 'Tabindex', 'gravityforms' ) }
 								value={tabindex}
 								onChange={updateTabindex}
 								placeholder="-1"
-							/>
-							<ToggleControl
-								label={__( 'AJAX', 'gravityforms' )}
-								checked={ajax}
-								onChange={toggleAjax}
 							/>
 						</PanelBody>
 					</InspectorControls>
@@ -195,7 +195,7 @@ registerBlockType( 'gravityforms/block', {
 				];
 			}
 
-			if ( !html || hidePreview ) {
+			if ( !html || ! formPreview ) {
 
 				return [
 					controls,

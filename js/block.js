@@ -87,7 +87,7 @@ registerBlockType( 'gravityforms/block', {
 			}
 
 			const { formId, title, description, ajax } = attributes;
-			const apiURL = wpApiSettings.root + 'gf/v2/block/preview?formId=' + formId + '&title=' + title + '&description=' + description + '&ajax=' + ajax;
+			const apiURL = wpApiSettings.root + 'gf/v2/block/preview?formId=' + formId + '&title=' + ( title ? title : false ) + '&description=' + ( description ? description : false ) + '&ajax=' + ( ajax ? ajax : false );
 
 			this.setState( { fetching: true } );
 

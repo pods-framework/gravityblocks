@@ -9,7 +9,9 @@ const Component = wp.element.Component;
 registerBlockType( 'gravityforms/block', {
 
 	title:      'Gravity Forms',
-	icon:       () => { return <img src={gform.icon} height="20" /> },
+	icon:       () => {
+		return <img src={gform.icon} height="20"/>
+	},
 	category:   'embed',
 	supports:   {
 		customClassName: false,
@@ -67,7 +69,7 @@ registerBlockType( 'gravityforms/block', {
 
 		componentWillReceiveProps( props ) {
 
-			if ( props.attributes === this.props.attributes ) {
+			if ( JSON.stringify( props.attributes ) === JSON.stringify( this.props.attributes ) ) {
 				return;
 			}
 
@@ -94,7 +96,7 @@ registerBlockType( 'gravityforms/block', {
 
 		updateFormPreview( attributes ) {
 
-			if ( this.state.fetching ) {
+			if ( this.state.fetching || !attributes.formPreview ) {
 				return;
 			}
 

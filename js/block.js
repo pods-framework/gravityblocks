@@ -219,7 +219,7 @@ registerBlockType( 'gravityforms/block', {
 			return [
 				controls,
 				<div className="wp-block-embed__wrapper">
-					<SandBox html={html} type="html" onClick={toggleFocus}/>
+					<SandBox html={html} type="html"/>
 				</div>
 			];
 

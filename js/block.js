@@ -1,9 +1,9 @@
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const el = wp.element.createElement;
-const { SelectControl, ToggleControl } = wp.blocks.InspectorControls;
+const { SelectControl, TextControl, ToggleControl } = wp.blocks.InspectorControls;
 const InspectorControls = wp.blocks.InspectorControls;
-const { Placeholder, SandBox, Spinner } = wp.components;
+const { PanelBody, Placeholder, SandBox, Spinner } = wp.components;
 const Component = wp.element.Component;
 
 registerBlockType( 'gravityforms/block', {
@@ -30,6 +30,13 @@ registerBlockType( 'gravityforms/block', {
 		ajax:        {
 			type:    'bool',
 			default: false
+		},
+		tabindex:    {
+			type:    'integer',
+		},
+		hidePreview: {
+			type:    'bool',
+			default: false,
 		}
 	},
 
@@ -51,7 +58,7 @@ registerBlockType( 'gravityforms/block', {
 
 		componentWillMount() {
 
-			if ( this.props.attributes.formId ) {
+			if ( this.props.attributes.formId && !this.props.attributes.hidePreview ) {
 				this.setState( { fetching: true } );
 				this.updateFormPreview( this.props.attributes );
 			}
@@ -64,7 +71,7 @@ registerBlockType( 'gravityforms/block', {
 				return;
 			}
 
-			if ( ! props.attributes.formId ) {
+			if ( !props.attributes.formId ) {
 				this.setState( { html: '' } );
 				return;
 			}
@@ -92,7 +99,7 @@ registerBlockType( 'gravityforms/block', {
 			}
 
 			const { formId, title, description, ajax } = attributes;
-			const apiURL = wpApiSettings.root + 'gf/v2/block/preview?formId=' + formId + '&title=' + ( title ? title : false ) + '&description=' + ( description ? description : false ) + '&ajax=' + ( ajax ? ajax : false );
+			const apiURL = wpApiSettings.root + 'gf/v2/block/preview?formId=' + formId + '&title=' + (title ? title : false) + '&description=' + (description ? description : false) + '&ajax=' + (ajax ? ajax : false);
 
 			this.setState( { fetching: true } );
 
@@ -123,12 +130,14 @@ registerBlockType( 'gravityforms/block', {
 		render() {
 
 			const { html, fetching } = this.state;
-			const { formId, title, description, ajax } = this.props.attributes;
+			const { formId, title, description, ajax, tabindex, hidePreview } = this.props.attributes;
 			const { setAttributes, focus } = this.props;
 
 			const toggleTitle = () => setAttributes( { title: !title } );
 			const toggleDescription = () => setAttributes( { description: !description } );
 			const toggleAjax = () => setAttributes( { ajax: !ajax } );
+			const toggleHidePreview = () => setAttributes( { hidePreview: !hidePreview} );
+			const updateTabindex = ( tabindex ) => setAttributes( { tabindex: tabindex } );
 
 			const setFormIdFromPlaceholder = ( e ) => this.setFormId( e.target.value );
 
@@ -151,11 +160,24 @@ registerBlockType( 'gravityforms/block', {
 							checked={description}
 							onChange={toggleDescription}
 						/>
-						<ToggleControl
-							label={__( 'Enable AJAX', 'gravityforms' )}
-							checked={ajax}
-							onChange={toggleAjax}
-						/>
+						<PanelBody title={__( 'Advanced Settings', 'gravityforms' )} initialOpen={false}>
+							<TextControl
+								label={__( 'Tabindex', 'gravityforms' ) }
+								value={tabindex}
+								onChange={updateTabindex}
+								placeholder="-1"
+							/>
+							<ToggleControl
+								label={__( 'Enable AJAX', 'gravityforms' )}
+								checked={ajax}
+								onChange={toggleAjax}
+							/>
+							<ToggleControl
+								label={__( 'Hide form preview', 'gravityforms' )}
+								checked={hidePreview}
+								onChange={toggleHidePreview}
+							/>
+						</PanelBody>
 					</InspectorControls>
 				)
 			];
@@ -170,7 +192,7 @@ registerBlockType( 'gravityforms/block', {
 				];
 			}
 
-			if ( !html ) {
+			if ( !html || hidePreview ) {
 
 				return [
 					controls,

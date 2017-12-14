@@ -154,13 +154,14 @@ class GF_Gutenberg extends GFAddOn {
 		$title       = isset( $attributes['title'] ) ? $attributes['title'] : true;
 		$description = isset( $attributes['description'] ) ? $attributes['description'] : true;
 		$ajax        = isset( $attributes['ajax'] ) ? $attributes['ajax'] : true;
+		$tabindex    = isset( $attributes['tabindex'] ) ? $attributes['tabindex'] : 1;
 
 		// If form ID was not provided or form does not exist, return.
 		if ( ! $form_id || ( $form_id && ! GFAPI::get_form( $form_id ) ) ) {
 			return '';
 		}
 
-		return gravity_form( $form_id, $title, $description, false, null, $ajax, 1, false );
+		return gravity_form( $form_id, $title, $description, false, null, $ajax, $tabindex, false );
 
 	}
 

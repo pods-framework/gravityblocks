@@ -120,6 +120,14 @@ class GF_Gutenberg extends GFAddOn {
 	 */
 	public function enqueue_block_assets() {
 
+		// Enqueue style.
+		wp_enqueue_style(
+			'gform_gutenberg_block',
+			$this->get_base_url() . '/css/block.css',
+			array( 'wp-edit-blocks' ),
+			filemtime( $this->get_base_path() . '/css/block.css' )
+		);
+
 		// Enqueue script.
 		wp_enqueue_script(
 			'gform_gutenberg_block',
@@ -132,7 +140,10 @@ class GF_Gutenberg extends GFAddOn {
 		wp_localize_script(
 			'gform_gutenberg_block',
 			'gform',
-			array( 'forms' => $this->get_forms() )
+			array(
+				'forms' => $this->get_forms(),
+				'icon'  => $this->get_base_url() . '/images/icon.svg',
+			)
 		);
 
 	}

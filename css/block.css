@@ -1,0 +1,16 @@
+.gform-block-placeholder {
+	padding: 2em;
+}
+
+.gform-block-placeholder select {
+	min-width: 300px;
+}
+
+.gform-block-placeholder-brand {
+	text-align: center;
+}
+
+.gform-block-placeholder-brand p {
+	font-family: inherit;
+	margin: .5em 0;
+}

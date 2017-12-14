@@ -199,8 +199,11 @@ registerBlockType( 'gravityforms/block', {
 
 				return [
 					controls,
-					<Placeholder key="placeholder" className="wp-block-embed"
-								 label={__( 'Select a Form', 'gravityforms' )}>
+					<Placeholder key="placeholder" className="wp-block-embed gform-block-placeholder">
+						<div className="gform-block-placeholder-brand">
+							<img src={gform.icon} width="110" />
+							<p><strong>Gravity Forms</strong></p>
+						</div>
 						<form>
 							<select value={formId} onChange={setFormIdFromPlaceholder}>
 								{gform.forms.map( form =>

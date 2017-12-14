@@ -101,7 +101,7 @@ registerBlockType( 'gravityforms/block', {
 					response.json().then( ( obj ) => {
 
 						if ( obj.success ) {
-							this.setState( { html: obj.data.html } );
+							this.setState( { html: obj.data.scripts + obj.data.html } );
 						} else {
 							this.setState( { html: '<p>' + __( 'Could not load form.', 'gravityforms' ) + '</p>' } );
 						}

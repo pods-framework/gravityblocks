@@ -64,6 +64,11 @@ registerBlockType( 'gravityforms/block', {
 				return;
 			}
 
+			if ( ! props.attributes.formId ) {
+				this.setState( { html: '' } );
+				return;
+			}
+
 			this.updateFormPreview( props.attributes );
 
 		}

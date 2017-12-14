@@ -103,7 +103,8 @@ export default class Sandbox extends Component {
 				sandbox="allow-scripts allow-same-origin allow-presentation"
 				onLoad={ this.trySandbox }
 				width={ Math.ceil( this.state.width ) }
-				height={ Math.ceil( this.state.height ) } />
+				height={ Math.ceil( this.state.height ) }
+				style={{ pointerEvents: 'none' }}/>
 		);
 	}
 }

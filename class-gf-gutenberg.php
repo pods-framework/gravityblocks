@@ -97,15 +97,16 @@ class GF_Gutenberg extends GFAddOn {
 		// Enqueue scripts.
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_assets' ) );
 
-	}
-
-	public function init_ajax() {
-
-		parent::init_ajax();
-
-		add_action( 'wp_ajax_gform_gutenberg_preview', array( $this, 'get_form_preview' ) );
+		// Register preview Gutenberg block route.
+		add_action( 'rest_api_init', array( $this, 'register_preview_route' ) );
 
 	}
+
+
+
+
+
+	// # BLOCK ---------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Enqueue assets needed for Gutenberg block.
@@ -123,7 +124,7 @@ class GF_Gutenberg extends GFAddOn {
 		wp_enqueue_script(
 			'gform_gutenberg_block',
 			$this->get_base_url() . '/js/block.min.js',
-			array( 'wp-blocks', 'wp-element', 'jquery' ),
+			array( 'wp-blocks', 'wp-element' ),
 			filemtime( $this->get_base_path() . '/js/block.min.js' )
 		);
 
@@ -154,20 +155,96 @@ class GF_Gutenberg extends GFAddOn {
 		$description = isset( $attributes['description'] ) ? $attributes['description'] : true;
 		$ajax        = isset( $attributes['ajax'] ) ? $attributes['ajax'] : true;
 
-		// If form ID was provided, return shortcode.
-		if ( $form_id ) {
-			return gravity_form( $form_id, $title, $description, false, null, $ajax, 1, false );
+		// If form ID was not provided or form does not exist, return.
+		if ( ! $form_id || ( $form_id && ! GFAPI::get_form( $form_id ) ) ) {
+			return '';
 		}
 
-		return '';
+		return gravity_form( $form_id, $title, $description, false, null, $ajax, 1, false );
 
 	}
 
-	public function get_form_preview() {
 
-		wp_send_json_success( array( 'html' => $this->render_block( $_GET['attributes']) ) );
+
+
+
+	// # BLOCK PREVIEW -------------------------------------------------------------------------------------------------
+
+	/**
+	 * Register REST API route to preview Gutenberg block.
+	 *
+	 * @since  1.0-dev-2
+	 * @access public
+	 *
+	 * @uses   GF_Gutenberg::preview_block()
+	 */
+	public function register_preview_route() {
+
+		register_rest_route( 'gf/v2', '/block/preview', array(
+			array(
+				'methods'  => WP_REST_Server::READABLE,
+				'callback' => array( $this, 'preview_block' ),
+				'args'     => array(
+					'formId'      => array(
+						'description' => __( 'The ID of the form displayed in the block.' ),
+						'type'        => 'integer',
+						'required'    => true,
+					),
+					'title'       => array(
+						'description' => __( 'Whether to display the form title.' ),
+						'type'        => 'boolean',
+						'default'     => true,
+					),
+					'description' => array(
+						'description' => __( 'Whether to display the form description.' ),
+						'type'        => 'boolean',
+						'default'     => true,
+					),
+					'ajax'        => array(
+						'description' => __( 'Whether to embed the form using AJAX.' ),
+						'type'        => 'boolean',
+						'default'     => true,
+					),
+				),
+			),
+		) );
 
 	}
+
+	/**
+	 * Prepare form HTML for Gutenberg block preview.
+	 *
+	 * @since  1.0-dev-2
+	 * @access public
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 *
+	 * @uses   GF_Gutenberg::render_block()
+	 * @uses   WP_REST_Request::get_params()
+	 */
+	public function preview_block( $request ) {
+
+		global $wp_scripts;
+
+		// Get request arguments.
+		$args = $request->get_params();
+
+		// Get form HTML.
+		$html = $this->render_block( $args );
+
+		if ( $html ) {
+			wp_send_json_success( array( 'html' => trim( $html ), 'scripts' => $wp_scripts ) );
+		} else {
+			wp_send_json_error();
+		}
+
+	}
+
+
+
+
+
+	// # HELPER METHODS ------------------------------------------------------------------------------------------------
 
 	/**
 	 * Get forms for Gutenberg block control.

@@ -1,5 +1,5 @@
 const { __ } = wp.i18n;
-const { registerBlockType } = wp.blocks;
+const { registerBlockType, BlockDescription } = wp.blocks;
 const el = wp.element.createElement;
 const { SelectControl, TextControl, ToggleControl } = wp.blocks.InspectorControls;
 const InspectorControls = wp.blocks.InspectorControls;
@@ -144,6 +144,9 @@ registerBlockType( 'gravityforms/block', {
 			const controls = [
 				focus && (
 					<InspectorControls key="inspector">
+						<BlockDescription>
+							<p>Gravity Forms</p>
+						</BlockDescription>
 						<SelectControl
 							label={__( 'Form', 'gravityforms' )}
 							value={formId}

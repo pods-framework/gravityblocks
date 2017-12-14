@@ -164,6 +164,11 @@ registerBlockType( 'gravityforms/block', {
 							onChange={toggleDescription}
 						/>
 						<PanelBody title={__( 'Advanced Settings', 'gravityforms' )} initialOpen={false}>
+							<ToggleControl
+								label={__( 'Preview', 'gravityforms' )}
+								checked={hidePreview}
+								onChange={toggleHidePreview}
+							/>
 							<TextControl
 								label={__( 'Tabindex', 'gravityforms' ) }
 								value={tabindex}
@@ -174,11 +179,6 @@ registerBlockType( 'gravityforms/block', {
 								label={__( 'AJAX', 'gravityforms' )}
 								checked={ajax}
 								onChange={toggleAjax}
-							/>
-							<ToggleControl
-								label={__( 'Hide form preview', 'gravityforms' )}
-								checked={hidePreview}
-								onChange={toggleHidePreview}
 							/>
 						</PanelBody>
 					</InspectorControls>

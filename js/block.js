@@ -10,16 +10,17 @@ import SandBox from './components/sandbox';
 
 registerBlockType( 'gravityforms/block', {
 
-	title:      'Gravity Forms',
-	icon:       () => {
+	title:       'Gravity Forms',
+	icon:        () => {
 		return <img src={gform.icon} height="20"/>
 	},
-	category:   'embed',
-	supports:   {
+	category:    'embed',
+	supports:    {
 		customClassName: false,
 		className:       false
 	},
-	attributes: {
+	supportHTML: false,
+	attributes:  {
 		formId:      {
 			type: 'integer'
 		},
@@ -223,7 +224,7 @@ registerBlockType( 'gravityforms/block', {
 			return [
 				controls,
 				<div className="wp-block-embed__wrapper">
-					<SandBox html={html} onFocus={ () => setFocus() }/>
+					<SandBox html={html} onFocus={() => setFocus()}/>
 				</div>
 			];
 

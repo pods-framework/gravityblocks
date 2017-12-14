@@ -9,7 +9,7 @@ const Component = wp.element.Component;
 registerBlockType( 'gravityforms/block', {
 
 	title:      'Gravity Forms',
-	icon:       'feedback',
+	icon:       () => { return <img src={gform.icon} height="20" /> },
 	category:   'embed',
 	supports:   {
 		customClassName: false,

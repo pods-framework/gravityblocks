@@ -32,11 +32,11 @@ registerBlockType( 'gravityforms/block', {
 			default: false
 		},
 		tabindex:    {
-			type:    'integer',
+			type: 'integer',
 		},
 		formPreview: {
 			type:    'bool',
-			default: false,
+			default: true,
 		}
 	},
 
@@ -136,7 +136,7 @@ registerBlockType( 'gravityforms/block', {
 			const toggleTitle = () => setAttributes( { title: !title } );
 			const toggleDescription = () => setAttributes( { description: !description } );
 			const toggleAjax = () => setAttributes( { ajax: !ajax } );
-			const toggleFormPreview = () => setAttributes( { formPreview: !formPreview} );
+			const toggleFormPreview = () => setAttributes( { formPreview: !formPreview } );
 			const updateTabindex = ( tabindex ) => setAttributes( { tabindex: tabindex } );
 
 			const setFormIdFromPlaceholder = ( e ) => this.setFormId( e.target.value );
@@ -175,7 +175,7 @@ registerBlockType( 'gravityforms/block', {
 								onChange={toggleAjax}
 							/>
 							<TextControl
-								label={__( 'Tabindex', 'gravityforms' ) }
+								label={__( 'Tabindex', 'gravityforms' )}
 								value={tabindex}
 								onChange={updateTabindex}
 								placeholder="-1"
@@ -195,13 +195,13 @@ registerBlockType( 'gravityforms/block', {
 				];
 			}
 
-			if ( !html || ! formPreview ) {
+			if ( !html || !formPreview ) {
 
 				return [
 					controls,
 					<Placeholder key="placeholder" className="wp-block-embed gform-block-placeholder">
 						<div className="gform-block-placeholder-brand">
-							<img src={gform.icon} width="110" />
+							<img src={gform.icon} width="110"/>
 							<p><strong>Gravity Forms</strong></p>
 						</div>
 						<form>
@@ -219,7 +219,7 @@ registerBlockType( 'gravityforms/block', {
 			return [
 				controls,
 				<div className="wp-block-embed__wrapper">
-					<SandBox html={html} type="html"/>
+					<SandBox html={html} type="html" onClick={toggleFocus}/>
 				</div>
 			];
 

@@ -97,7 +97,7 @@ class GF_Gutenberg extends GFAddOn {
 		// Enqueue scripts.
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_assets' ) );
 
-		// Register preview Gutenberg block route.
+		// Register preview block route.
 		add_action( 'rest_api_init', array( $this, 'register_preview_route' ) );
 
 	}
@@ -109,7 +109,7 @@ class GF_Gutenberg extends GFAddOn {
 	// # BLOCK ---------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Enqueue assets needed for Gutenberg block.
+	 * Enqueue assets needed for block.
 	 *
 	 * @since  1.0-dev-1
 	 * @access public
@@ -122,7 +122,7 @@ class GF_Gutenberg extends GFAddOn {
 
 		// Enqueue style.
 		wp_enqueue_style(
-			'gform_gutenberg_block',
+			'gform_editor_block',
 			$this->get_base_url() . '/css/block.css',
 			array( 'wp-edit-blocks' ),
 			filemtime( $this->get_base_path() . '/css/block.css' )
@@ -130,7 +130,7 @@ class GF_Gutenberg extends GFAddOn {
 
 		// Enqueue script.
 		wp_enqueue_script(
-			'gform_gutenberg_block',
+			'gform_editor_block',
 			$this->get_base_url() . '/js/block.min.js',
 			array( 'wp-blocks', 'wp-element' ),
 			filemtime( $this->get_base_path() . '/js/block.min.js' )
@@ -138,7 +138,7 @@ class GF_Gutenberg extends GFAddOn {
 
 		// Prepare JS variables.
 		wp_localize_script(
-			'gform_gutenberg_block',
+			'gform_editor_block',
 			'gform',
 			array(
 				'forms' => $this->get_forms(),
@@ -183,7 +183,7 @@ class GF_Gutenberg extends GFAddOn {
 	// # BLOCK PREVIEW -------------------------------------------------------------------------------------------------
 
 	/**
-	 * Register REST API route to preview Gutenberg block.
+	 * Register REST API route to preview block.
 	 *
 	 * @since  1.0-dev-2
 	 * @access public
@@ -224,7 +224,7 @@ class GF_Gutenberg extends GFAddOn {
 	}
 
 	/**
-	 * Prepare form HTML for Gutenberg block preview.
+	 * Prepare form HTML for block preview.
 	 *
 	 * @since  1.0-dev-2
 	 * @access public
@@ -262,7 +262,7 @@ class GF_Gutenberg extends GFAddOn {
 	// # HELPER METHODS ------------------------------------------------------------------------------------------------
 
 	/**
-	 * Get forms for Gutenberg block control.
+	 * Get forms for block control.
 	 *
 	 * @since  1.0-dev-1
 	 * @access public

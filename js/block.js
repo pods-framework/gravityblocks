@@ -145,18 +145,18 @@ registerBlockType( 'gravityforms/block', {
 				focus && (
 					<InspectorControls key="inspector">
 						<SelectControl
-							label={__( 'Select form', 'gravityforms' )}
+							label={__( 'Form', 'gravityforms' )}
 							value={formId}
 							options={gform.forms}
 							onChange={this.setFormId}
 						/>
 						<ToggleControl
-							label={__( 'Display form title', 'gravityforms' )}
+							label={__( 'Form Title', 'gravityforms' )}
 							checked={title}
 							onChange={toggleTitle}
 						/>
 						<ToggleControl
-							label={__( 'Display form description', 'gravityforms' )}
+							label={__( 'Form Description', 'gravityforms' )}
 							checked={description}
 							onChange={toggleDescription}
 						/>
@@ -168,7 +168,7 @@ registerBlockType( 'gravityforms/block', {
 								placeholder="-1"
 							/>
 							<ToggleControl
-								label={__( 'Enable AJAX', 'gravityforms' )}
+								label={__( 'AJAX', 'gravityforms' )}
 								checked={ajax}
 								onChange={toggleAjax}
 							/>

@@ -237,21 +237,27 @@ class GF_Gutenberg extends GFAddOn {
 	public function preview_block( $request ) {
 
 		// Get request arguments.
-		$args = $request->get_params();
+		$attributes = $request->get_params();
 
-		// Get form HTML.
-		$html = $this->render_block( $args );
+		// Get form ID.
+		$form_id = rgar( $attributes, 'formId' ) ? $attributes['formId'] : false;
+
+		// If form ID was not provided or form does not exist, return.
+		if ( ! $form_id || ( $form_id && ! GFAPI::get_form( $form_id ) ) ) {
+			wp_send_json_error();
+		}
 
 		ob_start();
-		GFForms::print_form_scripts( GFAPI::get_form( $args['formId'] ), $args['ajax'] );
-		$scripts = ob_get_contents();
+		include_once 'includes/preview.php';
+		$html = ob_get_contents();
 		ob_end_clean();
 
 		if ( $html ) {
-			wp_send_json_success( array( 'html' => trim( $html ), 'scripts' => $scripts ) );
+			wp_send_json_success( array( 'html' => trim( $html ) ) );
 		} else {
 			wp_send_json_error();
 		}
+
 
 	}
 

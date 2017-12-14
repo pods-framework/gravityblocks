@@ -3,8 +3,10 @@ const { registerBlockType, BlockDescription } = wp.blocks;
 const el = wp.element.createElement;
 const { SelectControl, TextControl, ToggleControl } = wp.blocks.InspectorControls;
 const InspectorControls = wp.blocks.InspectorControls;
-const { PanelBody, Placeholder, SandBox, Spinner } = wp.components;
+const { PanelBody, Placeholder, Spinner } = wp.components;
 const Component = wp.element.Component;
+
+import SandBox from './components/sandbox';
 
 registerBlockType( 'gravityforms/block', {
 
@@ -115,7 +117,7 @@ registerBlockType( 'gravityforms/block', {
 					response.json().then( ( obj ) => {
 
 						if ( obj.success ) {
-							this.setState( { html: obj.data.scripts + obj.data.html } );
+							this.setState( { html: obj.data.html } );
 						} else {
 							this.setState( { html: '<p>' + __( 'Could not load form.', 'gravityforms' ) + '</p>' } );
 						}
@@ -133,7 +135,7 @@ registerBlockType( 'gravityforms/block', {
 
 			const { html, fetching } = this.state;
 			const { formId, title, description, ajax, tabindex, formPreview } = this.props.attributes;
-			const { setAttributes, focus } = this.props;
+			const { setAttributes, focus, setFocus } = this.props;
 
 			const toggleTitle = () => setAttributes( { title: !title } );
 			const toggleDescription = () => setAttributes( { description: !description } );
@@ -221,7 +223,7 @@ registerBlockType( 'gravityforms/block', {
 			return [
 				controls,
 				<div className="wp-block-embed__wrapper">
-					<SandBox html={html} type="html"/>
+					<SandBox html={html} onFocus={ () => setFocus() }/>
 				</div>
 			];
 

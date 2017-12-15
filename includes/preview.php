@@ -24,6 +24,7 @@ $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] 
         <meta http-equiv="Imagetoolbar" content="No"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title><?php esc_html_e( 'Form Preview', 'gravityforms' ) ?></title>
+        <link rel="stylesheet" href="<?php echo gf_gutenberg()->get_base_url(); ?>/css/preview.css" />
         <?php
 
             // If form exists, enqueue its scripts.

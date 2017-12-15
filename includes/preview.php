@@ -3,8 +3,12 @@
 // Load form display class.
 require_once( GFCommon::get_base_path() . '/form_display.php' );
 
-// Get form ID.
-$form_id = absint( $attributes['formId'] );
+// Prepare variables.
+$form_id     = rgar( $attributes, 'formId' ) ? $attributes['formId'] : false;
+$title       = isset( $attributes['title'] ) ? $attributes['title'] : true;
+$description = isset( $attributes['description'] ) ? $attributes['description'] : true;
+$ajax        = isset( $attributes['ajax'] ) ? $attributes['ajax'] : true;
+$tabindex    = isset( $attributes['tabindex'] ) ? $attributes['tabindex'] : 1;
 
 // Get form object.
 $form = GFFormsModel::get_form_meta( $form_id );
@@ -38,7 +42,7 @@ $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] 
     <body data-resizable-iframe-connected="data-resizable-iframe-connected">
         <?php
 
-            echo GFForms::get_form( $form_id, true, true, true );
+            echo GFForms::get_form( $form_id, $title, $description, true, null, $ajax, $tabindex );
             wp_print_footer_scripts();
             do_action( 'gform_preview_footer', $form_id );
 

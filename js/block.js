@@ -72,7 +72,10 @@ registerBlockType( 'gravityforms/block', {
 
 		componentWillReceiveProps( props ) {
 
-			if ( JSON.stringify( props.attributes ) === JSON.stringify( this.props.attributes ) ) {
+			let oldAtts = this.props.attributes,
+				newAtts = props.attributes;
+
+			if ( oldAtts.formId === newAtts.formId && oldAtts.title === newAtts.title && oldAtts.description === newAtts.description ) {
 				return;
 			}
 
@@ -103,8 +106,8 @@ registerBlockType( 'gravityforms/block', {
 				return;
 			}
 
-			const { formId, title, description, ajax } = attributes;
-			const apiURL = wpApiSettings.root + 'gf/v2/block/preview?formId=' + formId + '&title=' + (title ? title : false) + '&description=' + (description ? description : false) + '&ajax=' + (ajax ? ajax : false);
+			const { formId, title, description } = attributes;
+			const apiURL = wpApiSettings.root + 'gf/v2/block/preview?formId=' + formId + '&title=' + (title ? title : false) + '&description=' + (description ? description : false);
 
 			this.setState( { fetching: true } );
 

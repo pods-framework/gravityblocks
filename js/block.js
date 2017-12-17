@@ -75,7 +75,7 @@ registerBlockType( 'gravityforms/block', {
 			let oldAtts = this.props.attributes,
 				newAtts = props.attributes;
 
-			if ( oldAtts.formId === newAtts.formId && oldAtts.title === newAtts.title && oldAtts.description === newAtts.description ) {
+			if ( oldAtts.formId === newAtts.formId && oldAtts.title === newAtts.title && oldAtts.description === newAtts.description && oldAtts.formPreview === newAtts.formPreview ) {
 				return;
 			}
 

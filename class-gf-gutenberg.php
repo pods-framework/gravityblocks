@@ -142,6 +142,7 @@ class GF_Gutenberg extends GFAddOn {
 			'gform',
 			array(
 				'forms' => $this->get_forms(),
+				'roles' => $this->get_roles(),
 				'icon'  => $this->get_base_url() . '/images/icon.svg',
 			)
 		);
@@ -302,6 +303,39 @@ class GF_Gutenberg extends GFAddOn {
 		}
 
 		return $options;
+
+	}
+
+	/**
+	 * Get available roles for block control.
+	 *
+	 * @since 1.0-dev-3
+	 * @acess public
+	 *
+	 * @return array
+	 */
+	private function get_roles() {
+
+		// Load needed function file.
+		if ( ! function_exists( 'get_editable_roles' ) ) {
+			require_once( ABSPATH . '/wp-admin/includes/user.php' );
+		}
+
+		// Initialize roles array.
+		$roles = array();
+
+		// Loop through roles.
+		foreach ( get_editable_roles() as $role_name => $role ) {
+
+			// Add role as option.
+			$roles[] = array(
+				'label' => $role['name'],
+				'value' => $role_name,
+			);
+
+		}
+
+		return $roles;
 
 	}
 

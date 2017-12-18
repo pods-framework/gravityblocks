@@ -1,12 +1,15 @@
 const { __ } = wp.i18n;
 const { registerBlockType, BlockDescription } = wp.blocks;
 const el = wp.element.createElement;
-const { SelectControl, TextControl, ToggleControl } = wp.blocks.InspectorControls;
+const { SelectControl, RadioControl, TextControl, ToggleControl } = wp.blocks.InspectorControls;
 const InspectorControls = wp.blocks.InspectorControls;
-const { PanelBody, Placeholder, Spinner } = wp.components;
+const { Button, Dashicon, IconButton, PanelBody, Placeholder, Popover, Spinner } = wp.components;
 const Component = wp.element.Component;
 
-import SandBox from './components/sandbox';
+import SandBox from './components/sandbox/';
+// import ConditionalLogic from './components/conditional-logic/'
+import LogicControl from './components/conditional-logic/'
+
 
 registerBlockType( 'gravityforms/block', {
 
@@ -21,25 +24,36 @@ registerBlockType( 'gravityforms/block', {
 	},
 	supportHTML: false,
 	attributes:  {
-		formId:      {
+		formId:           {
 			type: 'integer'
 		},
-		title:       {
+		title:            {
 			type:    'bool',
 			default: true
 		},
-		description: {
+		description:      {
 			type:    'bool',
 			default: true
 		},
-		ajax:        {
+		ajax:             {
 			type:    'bool',
 			default: false
 		},
-		tabindex:    {
+		conditionalLogic: {
+			type:    'object',
+			default: {
+				enabled:    false,
+				actionType: 'show',
+				logicType:  'all',
+				rules:      [
+					{}, {}
+				],
+			}
+		},
+		tabindex:         {
 			type: 'integer',
 		},
-		formPreview: {
+		formPreview:      {
 			type:    'bool',
 			default: true,
 		}
@@ -138,14 +152,21 @@ registerBlockType( 'gravityforms/block', {
 		render() {
 
 			const { html, fetching } = this.state;
-			const { formId, title, description, ajax, tabindex, formPreview } = this.props.attributes;
+			const { formId, title, description, ajax, tabindex, formPreview, conditionalLogic } = this.props.attributes;
 			const { setAttributes, focus, setFocus } = this.props;
 
 			const toggleTitle = () => setAttributes( { title: !title } );
 			const toggleDescription = () => setAttributes( { description: !description } );
 			const toggleAjax = () => setAttributes( { ajax: !ajax } );
 			const toggleFormPreview = () => setAttributes( { formPreview: !formPreview } );
+			const toggleConditionalLogic = () =>
+				setAttributes( { conditionalLogic: { enabled: !conditionalLogic.enabled } } );
+
 			const updateTabindex = ( tabindex ) => setAttributes( { tabindex: tabindex } );
+			const updateConditionalLogic = ( newLogic ) => {
+				//let newLogic = Object.assign( conditionalLogic, logic );
+				setAttributes( { conditionalLogic: newLogic } );
+			};
 
 			const setFormIdFromPlaceholder = ( e ) => this.setFormId( e.target.value );
 
@@ -171,7 +192,19 @@ registerBlockType( 'gravityforms/block', {
 							checked={description}
 							onChange={toggleDescription}
 						/>
-						<PanelBody title={__( 'Advanced Settings', 'gravityforms' )} initialOpen={false}>
+						<PanelBody title={__( 'Conditional Logic', 'gravityforms' )} className="gform-block-panel">
+							<ToggleControl
+								label={__( 'Conditional Logic', 'gravityforms' )}
+								checked={conditionalLogic.enabled}
+								onChange={toggleConditionalLogic}
+							/>
+							{/*{conditionalLogic.enabled &&*/}
+							{/*<ConditionalLogic value={conditionalLogic} onChange={updateConditionalLogic}/>}*/}
+							{/*<ConditionalLogic value={conditionalLogic} onChange={updateConditionalLogic} />*/}
+							{/*<LogicControl value={conditionalLogic} onChange={updateConditionalLogic}/>*/}
+						</PanelBody>
+						<PanelBody title={__( 'Advanced Settings', 'gravityforms' )} initialOpen={false}
+								   className="gform-block-panel">
 							<ToggleControl
 								label={__( 'Preview', 'gravityforms' )}
 								checked={formPreview}

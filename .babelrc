@@ -21,6 +21,7 @@
   plugins: [
     [
       "transform-react-jsx",
+      "transform-object-rest-spread",
       {
         pragma: "wp.element.createElement"
       }

@@ -45,9 +45,7 @@ registerBlockType( 'gravityforms/block', {
 				enabled:    false,
 				actionType: 'show',
 				logicType:  'all',
-				rules:      [
-					{}, {}
-				],
+				rules:      [],
 			}
 		},
 		tabindex:         {
@@ -151,8 +149,9 @@ registerBlockType( 'gravityforms/block', {
 
 		render() {
 
+			let { formId, title, description, ajax, tabindex, formPreview, conditionalLogic } = this.props.attributes;
+
 			const { html, fetching } = this.state;
-			const { formId, title, description, ajax, tabindex, formPreview, conditionalLogic } = this.props.attributes;
 			const { setAttributes, focus, setFocus } = this.props;
 
 			const toggleTitle = () => setAttributes( { title: !title } );
@@ -163,8 +162,8 @@ registerBlockType( 'gravityforms/block', {
 				setAttributes( { conditionalLogic: { enabled: !conditionalLogic.enabled } } );
 
 			const updateTabindex = ( tabindex ) => setAttributes( { tabindex: tabindex } );
-			const updateConditionalLogic = ( newLogic ) => {
-				//let newLogic = Object.assign( conditionalLogic, logic );
+			const updateConditionalLogic = ( logic ) => {
+				let newLogic = Object.assign( conditionalLogic, logic );
 				setAttributes( { conditionalLogic: newLogic } );
 			};
 
@@ -198,10 +197,7 @@ registerBlockType( 'gravityforms/block', {
 								checked={conditionalLogic.enabled}
 								onChange={toggleConditionalLogic}
 							/>
-							{/*{conditionalLogic.enabled &&*/}
-							{/*<ConditionalLogic value={conditionalLogic} onChange={updateConditionalLogic}/>}*/}
-							{/*<ConditionalLogic value={conditionalLogic} onChange={updateConditionalLogic} />*/}
-							{/*<LogicControl value={conditionalLogic} onChange={updateConditionalLogic}/>*/}
+							{<LogicControl logic={conditionalLogic} onChange={updateConditionalLogic} />}
 						</PanelBody>
 						<PanelBody title={__( 'Advanced Settings', 'gravityforms' )} initialOpen={false}
 								   className="gform-block-panel">

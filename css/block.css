@@ -14,3 +14,50 @@
 	font-family: inherit;
 	margin: .5em 0;
 }
+
+.gform-block__conditional-rule {
+
+	display: flex;
+	padding: 1.5em 0;
+
+}
+
+.gform-block__conditional-rule:not(:last-of-type) {
+
+	border-bottom: 1px solid #e2e4e7;
+
+}
+
+.gform-block__conditional-rule .inputs {
+
+	width: 80%;
+
+}
+
+.gform-block__conditional-rule .inputs select {
+	width: 100%;
+}
+
+.gform-block__conditional-rule .controls {
+
+	padding-left: 5%;
+	width: 5%;
+
+}
+
+.gform-block-panel {
+	border-top: 1px solid #e2e4e7 !important;
+}
+
+.gform-block-conditional-popover .components-popover__content {
+
+	min-width: 85px !important;
+	padding: 1em;
+
+}
+
+.gform-block-conditional-popover .components-popover__content .blocks-radio-control {
+
+	margin: 0;
+
+}

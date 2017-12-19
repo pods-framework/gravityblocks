@@ -28,9 +28,9 @@ export default class Ruleset extends Component {
 	deleteRule( index ) {
 
 		let rules = this.getRules();
-		let newRules = rules.splice( index, 1 );
+		rules.splice( index, 1 );
 
-		this.setRules( newRules );
+		this.setRules( rules );
 
 	}
 
@@ -42,9 +42,9 @@ export default class Ruleset extends Component {
 
 	setRules( rules ) {
 
-		//this.props.rules = rules;
-		this.props.onChange( { rules: rules } );
-		this.props.rules = rules;
+		this.props.onChange( rules );
+
+		this.forceUpdate();
 
 	}
 
@@ -58,77 +58,20 @@ export default class Ruleset extends Component {
 
 	}
 
-	getOptions() {
-
-		return [
-			{
-				key:       {
-					label: 'User',
-					value: 'user'
-				},
-				operators: [ 'is', 'is not' ],
-				value:     [
-					{
-						label: 'Logged In',
-						value: 'logged-in'
-					},
-					{
-						label: 'Logged Out',
-						value: 'logged-out'
-					},
-					{
-						label:   'Roles',
-						choices: [
-							{
-								label: 'Administrator',
-								value: 'administrator'
-							},
-							{
-								label: 'Editor',
-								value: 'editor'
-							},
-							{
-								label: 'Contributor',
-								value: 'contributor'
-							},
-							{
-								label: 'Subscriber',
-								value: 'subscriber'
-							},
-						]
-					}
-				]
-			}
-		]
-
-	}
-
 	render() {
-
-		const addRule = () => this.addRule();
 
 		let rules = this.props.rules;
 
-		//console.log( rules );
-
-		// let rules = this.getRules(),
-		//console.table( rules );
-		//console.log( rules.length );
-		console.log( 'Length from render:' + this.props.rules.length );
-
-		let rulesNodes = [];
-
-		if ( rules.length > 0 ) {
-			rulesNodes = rules.map( ( rule, index ) => <Rule rule={rule} index={index} onChange={this.updateRule}
-															 onDelete={this.deleteRule}/> );
-		}
-
 		return [
-			rulesNodes,
+			rules && (
+				rules.map( ( rule, index ) => <Rule rule={rule} key={index} index={index}
+													updateRule={this.updateRule}
+													deleteRule={this.deleteRule}/> )
+			),
 			<IconButton
 				icon="insert"
 				label={__( 'Add Rule' )}
-				onClick={addRule}
+				onClick={this.addRule}
 				className="editor-inserter__toggle"/>
 		];
 

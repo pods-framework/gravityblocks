@@ -85,39 +85,7 @@ export default class LogicControl extends Component {
 		const changeActionType = ( actionType ) => this.props.onChange( { actionType: actionType } );
 		const changeLogicType = ( logicType ) => this.props.onChange( { logicType: logicType } );
 
-		const changeRules = ( rules ) => { /*this.props.onChange( { rules: rules } ); */ }
-
-		// console.log( this.props.logic );
-		// console.log( rules );
-		// console.log( typeof rules );
-		// console.log( typeof this.props.logic.rules );
-		// console.log( rules.isArray() );
-		// console.log("---------------");
-
-		// let rulesNodes = (<div className="gform-block__conditional-rule">
-		// 	<div className="inputs">
-		// 		<select>
-		// 			<option>User</option>
-		// 		</select>
-		// 		<select>
-		// 			<option>is</option>
-		// 			<option>is not</option>
-		// 		</select>
-		// 		<select>
-		// 			<option>Logged In</option>
-		// 			<option>Logged Out</option>
-		// 			<optgroup label="Roles">
-		// 				<option>Administrator</option>
-		// 				<option>Editor</option>
-		// 				<option>Subscriber</option>
-		// 				<option>Contributor</option>
-		// 			</optgroup>
-		// 		</select>
-		// 	</div>
-		// 	<div className="controls">
-		// 		<Dashicon icon="trash"/>
-		// 	</div>
-		// </div>);
+		const changeRules = ( rules ) => { this.props.onChange( { rules: rules } ); }
 
 		return (<div>
 			<div className="gform-block-conditional-type">

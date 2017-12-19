@@ -197,7 +197,7 @@ registerBlockType( 'gravityforms/block', {
 								checked={conditionalLogic.enabled}
 								onChange={toggleConditionalLogic}
 							/>
-							{<LogicControl logic={conditionalLogic} onChange={updateConditionalLogic} />}
+							{conditionalLogic.enabled && <LogicControl logic={conditionalLogic} onChange={updateConditionalLogic} />}
 						</PanelBody>
 						<PanelBody title={__( 'Advanced Settings', 'gravityforms' )} initialOpen={false}
 								   className="gform-block-panel">

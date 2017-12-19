@@ -141,9 +141,9 @@ class GF_Gutenberg extends GFAddOn {
 			'gform_editor_block',
 			'gform',
 			array(
-				'forms' => $this->get_forms(),
-				'roles' => $this->get_roles(),
-				'icon'  => $this->get_base_url() . '/images/icon.svg',
+				'forms'              => $this->get_forms(),
+				'conditionalOptions' => $this->get_conditional_options(),
+				'icon'               => $this->get_base_url() . '/images/icon.svg',
 			)
 		);
 
@@ -303,6 +303,61 @@ class GF_Gutenberg extends GFAddOn {
 		}
 
 		return $options;
+
+	}
+
+	/**
+	 * Get options for the conditional logic drop downs.
+	 *
+	 * @since  1.0-dev-3
+	 * @access public
+	 *
+	 * @uses   GF_Gutenberg::get_roles()
+	 *
+	 * @return array
+	 */
+	private function get_conditional_options() {
+
+		return array(
+			array(
+				'key'       => array(
+					'label' => esc_html__( 'User', 'gravityforms' ),
+					'value' => 'user',
+				),
+				'operators' => array( 'is', 'is not' ),
+				'value'     => array(
+					array(
+						'label' => esc_html__( 'Logged In', 'gravityforms' ),
+						'value' => 'logged-in',
+					),
+					array(
+						'label' => esc_html__( 'Logged Out', 'gravityforms' ),
+						'value' => 'logged-out',
+					),
+					array(
+						'label'   => esc_html__( 'Roles', 'gravitforms' ),
+						'choices' => $this->get_roles(),
+					),
+				),
+			),
+			array(
+				'key'       => array(
+					'label' => esc_html__( 'Post Type', 'gravityforms' ),
+					'value' => 'post-type',
+				),
+				'operators' => array( 'is', 'is not', 'contains', 'starts with' ),
+				'value'     => array(
+					array(
+						'label' => esc_html__( 'Post', 'gravityforms' ),
+						'value' => 'post',
+					),
+					array(
+						'label' => esc_html__( 'Page', 'gravityforms' ),
+						'value' => 'page',
+					),
+				),
+			)
+		);
 
 	}
 

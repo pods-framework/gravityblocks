@@ -101,7 +101,7 @@ export default class Rule extends Component {
 			onChange={updateOperator}>
 			{
 				this.getOperatorsForKey( key ).map( ( operator ) =>
-					<option key={operator} value={operator}>{operator}</option>
+					<option key={operator.value} value={operator.value}>{operator.label}</option>
 				)
 			}
 		</select>

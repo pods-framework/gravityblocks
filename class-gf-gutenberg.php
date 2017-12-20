@@ -324,7 +324,16 @@ class GF_Gutenberg extends GFAddOn {
 					'label' => esc_html__( 'User', 'gravityforms' ),
 					'value' => 'user',
 				),
-				'operators' => array( 'is', 'is not' ),
+				'operators' => array(
+					array(
+						'label' => 'is',
+						'value' => 'is',
+					),
+					array(
+						'label' => 'is not',
+						'value' => 'isnot',
+					),
+				),
 				'value'     => array(
 					array(
 						'label' => esc_html__( 'Logged In', 'gravityforms' ),
@@ -335,28 +344,11 @@ class GF_Gutenberg extends GFAddOn {
 						'value' => 'logged-out',
 					),
 					array(
-						'label'   => esc_html__( 'Roles', 'gravitforms' ),
+						'label'   => esc_html__( 'Roles', 'gravityforms' ),
 						'choices' => $this->get_roles(),
 					),
 				),
 			),
-			array(
-				'key'       => array(
-					'label' => esc_html__( 'Post Type', 'gravityforms' ),
-					'value' => 'post-type',
-				),
-				'operators' => array( 'is', 'is not', 'contains', 'starts with' ),
-				'value'     => array(
-					array(
-						'label' => esc_html__( 'Post', 'gravityforms' ),
-						'value' => 'post',
-					),
-					array(
-						'label' => esc_html__( 'Page', 'gravityforms' ),
-						'value' => 'page',
-					),
-				),
-			)
 		);
 
 	}

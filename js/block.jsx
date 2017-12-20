@@ -1,15 +1,12 @@
 const { __ } = wp.i18n;
 const { registerBlockType, BlockDescription } = wp.blocks;
-const el = wp.element.createElement;
-const { SelectControl, RadioControl, TextControl, ToggleControl } = wp.blocks.InspectorControls;
+const { SelectControl, TextControl, ToggleControl } = wp.blocks.InspectorControls;
 const InspectorControls = wp.blocks.InspectorControls;
-const { Button, Dashicon, IconButton, PanelBody, Placeholder, Popover, Spinner } = wp.components;
+const { PanelBody, Placeholder, Spinner } = wp.components;
 const Component = wp.element.Component;
 
 import SandBox from './components/sandbox/';
-// import ConditionalLogic from './components/conditional-logic/'
 import LogicControl from './components/conditional-logic/'
-
 
 registerBlockType( 'gravityforms/block', {
 

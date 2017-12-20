@@ -37,12 +37,6 @@ export default class Rule extends Component {
 
 	}
 
-	getOptions() {
-
-		return gform.conditionalOptions;
-
-	}
-
 	getOperatorsForKey( key = false ) {
 
 		let options = gform.conditionalOptions;
@@ -82,8 +76,7 @@ export default class Rule extends Component {
 	render() {
 
 		let { key, operator, value } = this.props.rule;
-
-		const options = this.getOptions();
+		const options = this.props.options;
 
 		const deleteRule = () => this.props.deleteRule( this.props.index );
 
@@ -128,12 +121,12 @@ export default class Rule extends Component {
 
 						return (<optgroup label={value.label}>
 							{choices}
-
 						</optgroup>)
 
 					} else {
 
 						return (<option key={value.value} value={value.value}>{value.label}</option>)
+
 					}
 
 				} )

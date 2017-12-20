@@ -19,7 +19,7 @@ export default class Ruleset extends Component {
 	addRule() {
 
 		let rules = this.getRules(),
-			newRules = [ ...rules, { key: 'user', operator: 'is', value: 'logged-in' } ];
+			newRules = [ ...rules, this.getDefaultOption() ];
 
 		this.setRules( newRules );
 
@@ -44,8 +44,6 @@ export default class Ruleset extends Component {
 
 		this.props.onChange( rules );
 
-		this.forceUpdate();
-
 	}
 
 	updateRule( rule, index ) {
@@ -58,13 +56,33 @@ export default class Ruleset extends Component {
 
 	}
 
+	getOptions() {
+
+		return gform.conditionalOptions;
+
+	}
+
+	getDefaultOption() {
+
+		let options = this.getOptions(),
+			option = options[ 0 ];
+
+		return {
+			key:      option.key.value,
+			operator: option.operators[ 0 ],
+			value:    option.value[ 0 ].choices ? option.value[ 0 ].choices[ 0 ].value : option.value[ 0 ].value
+		};
+
+	}
+
 	render() {
 
 		let rules = this.props.rules;
+		let options = this.getOptions();
 
 		return [
 			rules && (
-				rules.map( ( rule, index ) => <Rule rule={rule} key={index} index={index}
+				rules.map( ( rule, index ) => <Rule options={options} rule={rule} key={index} index={index}
 													updateRule={this.updateRule}
 													deleteRule={this.deleteRule}/> )
 			),

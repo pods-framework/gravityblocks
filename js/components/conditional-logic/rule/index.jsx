@@ -16,8 +16,6 @@ export default class Rule extends Component {
 		rule.key = key;
 		this.props.updateRule( rule, this.props.index );
 
-		this.forceUpdate();
-
 	}
 
 	updateOperator( operator ) {
@@ -28,8 +26,6 @@ export default class Rule extends Component {
 
 		this.props.updateRule( rule, this.props.index );
 
-		this.forceUpdate();
-
 	}
 
 	updateValue( value ) {
@@ -38,8 +34,6 @@ export default class Rule extends Component {
 
 		rule.value = value;
 		this.props.updateRule( rule, this.props.index );
-
-		this.forceUpdate();
 
 	}
 

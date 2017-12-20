@@ -69,6 +69,7 @@ export default class Ruleset extends Component {
 													deleteRule={this.deleteRule}/> )
 			),
 			<IconButton
+				key="icon"
 				icon="insert"
 				label={__( 'Add Rule' )}
 				onClick={this.addRule}

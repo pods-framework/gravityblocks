@@ -159,12 +159,11 @@ registerBlockType( 'gravityforms/block', {
 			const toggleAjax = () => setAttributes( { ajax: !ajax } );
 			const toggleFormPreview = () => setAttributes( { formPreview: !formPreview } );
 			const toggleConditionalLogic = () =>
-				setAttributes( { conditionalLogic: { enabled: !conditionalLogic.enabled } } );
+				setAttributes( { conditionalLogic: { ...conditionalLogic, enabled: !conditionalLogic.enabled } } );
 
 			const updateTabindex = ( tabindex ) => setAttributes( { tabindex: tabindex } );
 			const updateConditionalLogic = ( logic ) => {
-				let newLogic = Object.assign( conditionalLogic, logic );
-				setAttributes( { conditionalLogic: newLogic } );
+				setAttributes( { conditionalLogic:  { ...conditionalLogic, ...logic } } );
 			};
 
 			const setFormIdFromPlaceholder = ( e ) => this.setFormId( e.target.value );

@@ -19,7 +19,7 @@ export default class Ruleset extends Component {
 	addRule() {
 
 		let rules = this.getRules(),
-			newRules = rules.push( { key: '', operator: '', value: '' } );
+			newRules = [ ...rules, { key: 'user', operator: 'is', value: 'logged-in' } ];
 
 		this.setRules( newRules );
 

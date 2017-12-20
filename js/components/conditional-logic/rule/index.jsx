@@ -135,13 +135,13 @@ export default class Rule extends Component {
 
 
 		return (<div className="gform-block__conditional-rule">
-			<div className="inputs">
+			<div className="gform-block__conditional-rule-inputs">
 				{keySelect}
 				{operatorSelect}
 				{valueSelect}
 			</div>
-			<div className="controls">
-				<a onClick={deleteRule}><Dashicon icon="trash"/></a>
+			<div className="gform-block__conditional-rule-controls">
+				<span className="gform-block__conditional-rule-delete" onClick={deleteRule}><Dashicon icon="trash"/></span>
 			</div>
 		</div>);
 

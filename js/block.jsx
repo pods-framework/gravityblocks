@@ -195,7 +195,7 @@ registerBlockType( 'gravityforms/block', {
 							checked={description}
 							onChange={toggleDescription}
 						/>
-						<PanelBody title={__( 'Conditional Logic', 'gravityforms' )} className="gform-block-panel">
+						<PanelBody title={__( 'Conditional Logic', 'gravityforms' )} className="gform-block__panel">
 							<ToggleControl
 								label={__( 'Conditional Logic', 'gravityforms' )}
 								checked={conditionalLogic.enabled}
@@ -205,7 +205,7 @@ registerBlockType( 'gravityforms/block', {
 							<LogicControl logic={conditionalLogic} onChange={updateConditionalLogic}/>}
 						</PanelBody>
 						<PanelBody title={__( 'Advanced Settings', 'gravityforms' )} initialOpen={false}
-								   className="gform-block-panel">
+								   className="gform-block__panel">
 							<ToggleControl
 								label={__( 'Preview', 'gravityforms' )}
 								checked={formPreview}
@@ -241,8 +241,8 @@ registerBlockType( 'gravityforms/block', {
 
 				return [
 					controls,
-					<Placeholder key="placeholder" className="wp-block-embed gform-block-placeholder">
-						<div className="gform-block-placeholder-brand">
+					<Placeholder key="placeholder" className="wp-block-embed gform-block__placeholder">
+						<div className="gform-block__placeholder-brand">
 							<img src={gform.icon} width="110"/>
 							<p><strong>Gravity Forms</strong></p>
 						</div>

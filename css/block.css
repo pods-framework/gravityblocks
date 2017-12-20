@@ -1,63 +1,56 @@
-.gform-block-placeholder {
+.gform-block__placeholder {
 	padding: 2em;
 }
 
-.gform-block-placeholder select {
+.gform-block__placeholder select {
 	min-width: 300px;
 }
 
-.gform-block-placeholder-brand {
+.gform-block__placeholder-brand {
 	text-align: center;
 }
 
-.gform-block-placeholder-brand p {
+.gform-block__placeholder-brand p {
 	font-family: inherit;
 	margin: .5em 0;
 }
 
 .gform-block__conditional-rule {
-
 	display: flex;
 	padding: 1.5em 0;
-
 }
 
 .gform-block__conditional-rule:not(:last-of-type) {
-
 	border-bottom: 1px solid #e2e4e7;
-
 }
 
-.gform-block__conditional-rule .inputs {
-
+.gform-block__conditional-rule-inputs {
 	width: 80%;
-
 }
 
-.gform-block__conditional-rule .inputs select {
+.gform-block__conditional-rule-inputs select {
 	width: 100%;
 }
 
-.gform-block__conditional-rule .controls {
-
+.gform-block__conditional-rule-controls {
 	padding-left: 5%;
 	width: 5%;
-
 }
 
-.gform-block-panel {
+.gform-block__conditional-rule-delete:hover {
+	color: #191e23;
+	cursor: pointer;
+}
+
+.gform-block__panel {
 	border-top: 1px solid #e2e4e7 !important;
 }
 
-.gform-block-conditional-popover .components-popover__content {
-
+.gform-block__conditional-popover .components-popover__content {
 	min-width: 85px !important;
 	padding: 1em;
-
 }
 
-.gform-block-conditional-popover .components-popover__content .blocks-radio-control {
-
+.gform-block__conditional-popover .components-popover__content .blocks-radio-control {
 	margin: 0;
-
 }

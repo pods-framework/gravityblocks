@@ -88,12 +88,12 @@ export default class LogicControl extends Component {
 		const changeRules = ( rules ) => { this.props.onChange( { rules: rules } ); }
 
 		return (<div>
-			<div className="gform-block-conditional-type">
+			<div className="gform-block__conditional-type">
 
 				<Button className="button-link" onClick={toggleActionType}>
 					<div>{this.getActionTypeLabel( actionType )}</div>
 					<Popover isOpen={this.state.visible.actionType} onClose={toggleActionType} position="bottom"
-							 className="gform-block-conditional-popover">
+							 className="gform-block__conditional-popover">
 						<RadioControl options={actionTypes} onChange={changeActionType} value={actionType}/>
 					</Popover>
 				</Button>
@@ -103,7 +103,7 @@ export default class LogicControl extends Component {
 				<Button className="button-link" onClick={toggleLogicType}>
 					<div>{this.getLogicTypeLabel( logicType )}</div>
 					<Popover isOpen={this.state.visible.logicType} onClose={toggleLogicType} position="bottom"
-							 className="gform-block-conditional-popover">
+							 className="gform-block__conditional-popover">
 						<RadioControl options={logicTypes} onChange={changeLogicType} value={logicType}/>
 					</Popover>
 				</Button>

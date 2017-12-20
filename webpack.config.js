@@ -1,7 +1,6 @@
 var PROD = (process.env.NODE_ENV === 'production')
 
 module.exports = {
-	watch: true,
 	entry: './js/block.jsx',
 	output: {
 		path: __dirname + '/js',

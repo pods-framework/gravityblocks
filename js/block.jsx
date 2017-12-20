@@ -5,6 +5,7 @@ const InspectorControls = wp.blocks.InspectorControls;
 const { PanelBody, Placeholder, Spinner } = wp.components;
 const Component = wp.element.Component;
 
+import { addQueryArgs } from '@wordpress/url';
 import SandBox from './components/sandbox/';
 import LogicControl from './components/conditional-logic/'
 
@@ -109,14 +110,19 @@ registerBlockType( 'gravityforms/block', {
 
 		}
 
-		updateFormPreview( attributes ) {
+		updateFormPreview( atts ) {
 
-			if ( this.state.fetching || !attributes.formPreview ) {
+			if ( this.state.fetching || !atts.formPreview ) {
 				return;
 			}
 
-			const { formId, title, description } = attributes;
-			const apiURL = wpApiSettings.root + 'gf/v2/block/preview?formId=' + formId + '&title=' + (title ? title : false) + '&description=' + (description ? description : false);
+			const { formId, title, description } = atts;
+
+			const apiURL = addQueryArgs( wpApiSettings.root + 'gf/v2/block/preview', {
+				formId:      formId,
+				title:       title ? title : false,
+				description: description ? description : false,
+			} );
 
 			this.setState( { fetching: true } );
 
@@ -132,7 +138,7 @@ registerBlockType( 'gravityforms/block', {
 						if ( obj.success ) {
 							this.setState( { html: obj.data.html } );
 						} else {
-							this.setState( { html: '<p>' + __( 'Could not load form.', 'gravityforms' ) + '</p>' } );
+							this.setState( { html: `<p>${__( 'Could not load form.', 'gravityforms' )}</p>` } );
 						}
 
 						this.setState( { fetching: false } );
@@ -155,13 +161,15 @@ registerBlockType( 'gravityforms/block', {
 			const toggleDescription = () => setAttributes( { description: !description } );
 			const toggleAjax = () => setAttributes( { ajax: !ajax } );
 			const toggleFormPreview = () => setAttributes( { formPreview: !formPreview } );
-			const toggleConditionalLogic = () =>
-				setAttributes( { conditionalLogic: { ...conditionalLogic, enabled: !conditionalLogic.enabled } } );
+			const toggleConditionalLogic = () => setAttributes( {
+				conditionalLogic: {
+					...conditionalLogic,
+					enabled: !conditionalLogic.enabled
+				}
+			} );
 
 			const updateTabindex = ( tabindex ) => setAttributes( { tabindex: tabindex } );
-			const updateConditionalLogic = ( logic ) => {
-				setAttributes( { conditionalLogic:  { ...conditionalLogic, ...logic } } );
-			};
+			const updateConditionalLogic = ( logic ) => setAttributes( { conditionalLogic: { ...conditionalLogic, ...logic } } );
 
 			const setFormIdFromPlaceholder = ( e ) => this.setFormId( e.target.value );
 
@@ -193,7 +201,8 @@ registerBlockType( 'gravityforms/block', {
 								checked={conditionalLogic.enabled}
 								onChange={toggleConditionalLogic}
 							/>
-							{conditionalLogic.enabled && <LogicControl logic={conditionalLogic} onChange={updateConditionalLogic} />}
+							{conditionalLogic.enabled &&
+							<LogicControl logic={conditionalLogic} onChange={updateConditionalLogic}/>}
 						</PanelBody>
 						<PanelBody title={__( 'Advanced Settings', 'gravityforms' )} initialOpen={false}
 								   className="gform-block-panel">

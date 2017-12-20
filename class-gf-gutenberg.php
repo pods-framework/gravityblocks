@@ -226,15 +226,9 @@ class GF_Gutenberg extends GFAddOn {
 
 		}
 
-		if ( 'show' === $logic['actionType'] ) {
+		$result = ( 'all' === $logic['logicType'] && $match_count === count( $logic['rules'] ) ) || ( 'any' === $logic['logicType'] && $match_count > 0 );
 
-			return ( 'all' === $logic['logicType'] && $match_count === count( $logic['rules'] ) ) || ( 'any' === $logic['logicType'] && $match_count > 0 );
-
-		} else if ( 'hide' === $logic['actionType'] ) {
-
-			return ! ( ( 'all' === $logic['logicType'] && $match_count === count( $logic['rules'] ) ) || ( 'any' === $logic['logicType'] && $match_count > 0 ) );
-
-		}
+		return 'hide' === $logic['actionType'] ? ! $result : $result;
 
 	}
 

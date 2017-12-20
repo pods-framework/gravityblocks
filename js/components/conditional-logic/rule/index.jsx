@@ -14,6 +14,7 @@ export default class Rule extends Component {
 		let rule = this.props.rule;
 
 		rule.key = key;
+		rule.value = '';
 		this.props.updateRule( rule, this.props.index );
 
 	}
@@ -132,7 +133,6 @@ export default class Rule extends Component {
 				} )
 			}
 		</select>
-
 
 		return (<div className="gform-block__conditional-rule">
 			<div className="gform-block__conditional-rule-inputs">

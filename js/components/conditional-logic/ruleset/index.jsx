@@ -86,12 +86,14 @@ export default class Ruleset extends Component {
 													updateRule={this.updateRule}
 													deleteRule={this.deleteRule}/> )
 			),
-			<IconButton
-				key="icon"
-				icon="insert"
-				label={__( 'Add Rule' )}
-				onClick={this.addRule}
-				className="editor-inserter__toggle"/>
+			<div className="gform-block__conditional-rule-add">
+				<IconButton
+					key="icon"
+					icon="insert"
+					label={__( 'Add Rule' )}
+					onClick={this.addRule}
+					className="editor-inserter__toggle"/>
+			</div>
 		];
 
 	}

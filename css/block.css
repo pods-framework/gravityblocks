@@ -20,7 +20,7 @@
 	padding: 1.5em 0;
 }
 
-.gform-block__conditional-rule:not(:last-of-type) {
+.gform-block__conditional-rule:not(:nth-last-child(2)) {
 	border-bottom: 1px solid #e2e4e7;
 }
 

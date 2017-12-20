@@ -109,10 +109,9 @@ export default class LogicControl extends Component {
 				</Button>
 
 				&nbsp;rules match
-
-				<Ruleset rules={rules} onChange={changeRules} />
-
 			</div>
+
+			<Ruleset rules={rules} onChange={changeRules} />
 		</div>);
 
 	}

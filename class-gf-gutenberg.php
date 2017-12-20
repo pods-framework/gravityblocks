@@ -167,9 +167,10 @@ class GF_Gutenberg extends GFAddOn {
 		$description = isset( $attributes['description'] ) ? $attributes['description'] : true;
 		$ajax        = isset( $attributes['ajax'] ) ? $attributes['ajax'] : true;
 		$tabindex    = isset( $attributes['tabindex'] ) ? $attributes['tabindex'] : 1;
+		$logic       = isset( $attributes['conditionalLogic'] ) ? $attributes['conditionalLogic'] : array();
 
 		// If form ID was not provided or form does not exist, return.
-		if ( ! $form_id || ( $form_id && ! GFAPI::get_form( $form_id ) ) ) {
+		if ( ! $form_id || ( $form_id && ! GFAPI::get_form( $form_id ) ) || ! $this->can_view_block( $logic ) ) {
 			return '';
 		}
 
@@ -177,6 +178,65 @@ class GF_Gutenberg extends GFAddOn {
 
 	}
 
+	/**
+	 * Determine if user can view block.
+	 *
+	 * @since  1.0-dev-3
+	 * @access public
+	 *
+	 * @param array $logic Conditional logic.
+	 *
+	 * @return bool
+	 */
+	public function can_view_block( $logic ) {
+
+		if ( ! rgar( $logic, 'enabled' ) || ( isset( $logic['rules'] ) && empty( $logic['rules'] ) ) ) {
+			return true;
+		}
+
+		// Get current user.
+		$user = wp_get_current_user();
+
+		// Initialize rule match count.
+		$match_count = 0;
+
+		// Loop through rules.
+		foreach ( $logic['rules'] as $rule ) {
+
+			// Handle logged in.
+			if ( 'logged-in' === $rule['value'] ) {
+
+				if ( ( is_user_logged_in() && $rule['operator'] === 'is' ) || ( ! is_user_logged_in() && $rule['operator'] === 'isnot' ) ) {
+					$match_count++;
+				}
+
+			} else if ( 'logged-out' === $rule['value'] ) {
+
+				if ( ( ! is_user_logged_in() && $rule['operator'] === 'is' ) || ( is_user_logged_in() && $rule['operator'] === 'isnot' ) ) {
+					$match_count++;
+				}
+
+			} else {
+
+				if ( ( in_array( $rule['value'], $user->roles ) && $rule['operator'] === 'is' ) || ( ! in_array( $rule['value'], $user->roles ) && $rule['operator'] === 'isnot' ) ) {
+					$match_count++;
+				}
+
+			}
+
+		}
+
+		if ( 'show' === $logic['actionType'] ) {
+
+			return ( 'all' === $logic['logicType'] && $match_count === count( $logic['rules'] ) ) || ( 'any' === $logic['logicType'] && $match_count > 0 );
+
+		} else if ( 'hide' === $logic['actionType'] ) {
+
+			return ! ( ( 'all' === $logic['logicType'] && $match_count === count( $logic['rules'] ) ) || ( 'any' === $logic['logicType'] && $match_count > 0 ) );
+
+		}
+
+	}
 
 
 

@@ -203,24 +203,42 @@ class GF_Gutenberg extends GFAddOn {
 		// Loop through rules.
 		foreach ( $logic['rules'] as $rule ) {
 
-			// Handle logged in.
-			if ( 'logged-in' === $rule['value'] ) {
+			switch ( $rule['key'] ) {
 
-				if ( ( is_user_logged_in() && $rule['operator'] === 'is' ) || ( ! is_user_logged_in() && $rule['operator'] === 'isnot' ) ) {
-					$match_count++;
-				}
+				case 'date':
 
-			} else if ( 'logged-out' === $rule['value'] ) {
+					$matches_operation = GFFormsModel::matches_operation( strtotime( $rule['value'] ), time(), $rule['operator'] );
 
-				if ( ( ! is_user_logged_in() && $rule['operator'] === 'is' ) || ( is_user_logged_in() && $rule['operator'] === 'isnot' ) ) {
-					$match_count++;
-				}
+					if ( $matches_operation ) {
+						$match_count++;
+					}
 
-			} else {
+					break;
 
-				if ( ( in_array( $rule['value'], $user->roles ) && $rule['operator'] === 'is' ) || ( ! in_array( $rule['value'], $user->roles ) && $rule['operator'] === 'isnot' ) ) {
-					$match_count++;
-				}
+				case 'user':
+
+					// Handle logged in.
+					if ( 'logged-in' === $rule['value'] ) {
+
+						if ( ( is_user_logged_in() && $rule['operator'] === 'is' ) || ( ! is_user_logged_in() && $rule['operator'] === 'isnot' ) ) {
+							$match_count++;
+						}
+
+					} else if ( 'logged-out' === $rule['value'] ) {
+
+						if ( ( ! is_user_logged_in() && $rule['operator'] === 'is' ) || ( is_user_logged_in() && $rule['operator'] === 'isnot' ) ) {
+							$match_count++;
+						}
+
+					} else {
+
+						if ( ( in_array( $rule['value'], $user->roles ) && $rule['operator'] === 'is' ) || ( ! in_array( $rule['value'], $user->roles ) && $rule['operator'] === 'isnot' ) ) {
+							$match_count++;
+						}
+
+					}
+
+					break;
 
 			}
 
@@ -389,18 +407,48 @@ class GF_Gutenberg extends GFAddOn {
 					),
 				),
 				'value'     => array(
+					'type'    => 'select',
+					'choices' => array(
+						array(
+							'label' => esc_html__( 'Logged In', 'gravityforms' ),
+							'value' => 'logged-in',
+						),
+						array(
+							'label' => esc_html__( 'Logged Out', 'gravityforms' ),
+							'value' => 'logged-out',
+						),
+						array(
+							'label'   => esc_html__( 'Roles', 'gravityforms' ),
+							'choices' => $this->get_roles(),
+						),
+					),
+				),
+			),
+			array(
+				'key'       => array(
+					'label' => esc_html__( 'Date', 'gravityforms' ),
+					'value' => 'user',
+				),
+				'operators' => array(
 					array(
-						'label' => esc_html__( 'Logged In', 'gravityforms' ),
-						'value' => 'logged-in',
+						'label' => 'is',
+						'value' => 'is',
 					),
 					array(
-						'label' => esc_html__( 'Logged Out', 'gravityforms' ),
-						'value' => 'logged-out',
+						'label' => 'is not',
+						'value' => 'isnot',
 					),
 					array(
-						'label'   => esc_html__( 'Roles', 'gravityforms' ),
-						'choices' => $this->get_roles(),
+						'label' => 'before',
+						'value' => 'greater_than',
 					),
+					array(
+						'label' => 'after',
+						'value' => 'less_than',
+					),
+				),
+				'value'     => array(
+					'type' => 'date',
 				),
 			),
 		);

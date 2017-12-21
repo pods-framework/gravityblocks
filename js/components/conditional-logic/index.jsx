@@ -1,7 +1,7 @@
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { Button, Dashicon, IconButton, Popover } = wp.components;
-const { BaseControl, RadioControl } = wp.blocks.InspectorControls;
+const { Button, Popover } = wp.components;
+const { RadioControl } = wp.blocks.InspectorControls;
 
 import Ruleset from './ruleset/';
 
@@ -94,7 +94,7 @@ export default class LogicControl extends Component {
 					<div>{this.getActionTypeLabel( actionType )}</div>
 					<Popover isOpen={this.state.visible.actionType} onClose={toggleActionType} position="bottom"
 							 className="gform-block__conditional-popover">
-						<RadioControl options={actionTypes} onChange={changeActionType} value={actionType}/>
+						<RadioControl options={actionTypes} onChange={changeActionType} selected={actionType}/>
 					</Popover>
 				</Button>
 
@@ -104,7 +104,7 @@ export default class LogicControl extends Component {
 					<div>{this.getLogicTypeLabel( logicType )}</div>
 					<Popover isOpen={this.state.visible.logicType} onClose={toggleLogicType} position="bottom"
 							 className="gform-block__conditional-popover">
-						<RadioControl options={logicTypes} onChange={changeLogicType} value={logicType}/>
+						<RadioControl options={logicTypes} onChange={changeLogicType} selected={logicType}/>
 					</Popover>
 				</Button>
 

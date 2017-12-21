@@ -141,7 +141,8 @@ export default class Rule extends Component {
 				{valueSelect}
 			</div>
 			<div className="gform-block__conditional-rule-controls">
-				<span className="gform-block__conditional-rule-delete" onClick={deleteRule}><Dashicon icon="trash"/></span>
+				<span className="gform-block__conditional-rule-delete" onClick={deleteRule}><Dashicon
+					icon="trash"/></span>
 			</div>
 		</div>);
 

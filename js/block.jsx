@@ -11,17 +11,17 @@ import LogicControl from './components/conditional-logic/'
 
 registerBlockType( 'gravityforms/block', {
 
-	title:       'Gravity Forms',
-	icon:        () => {
+	title:      'Gravity Forms',
+	icon:       () => {
 		return <img src={gform.icon} height="20"/>
 	},
-	category:    'embed',
-	supports:    {
+	category:   'embed',
+	supports:   {
 		customClassName: false,
-		className:       false
+		className:       false,
+		html:            false,
 	},
-	supportHTML: false,
-	attributes:  {
+	attributes: {
 		formId:           {
 			type: 'integer'
 		},

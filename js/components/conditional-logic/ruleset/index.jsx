@@ -70,7 +70,7 @@ export default class Ruleset extends Component {
 		return {
 			key:      option.key.value,
 			operator: option.operators[ 0 ].value,
-			value:    option.value[ 0 ].choices ? option.value[ 0 ].choices[ 0 ].value : option.value[ 0 ].value
+			value:    option.value.choices ? ( option.value.choices[ 0 ].choices ? option.value.choices[ 0 ].choices[ 0 ].value : option.value.choices[ 0 ].value ) : ''
 		};
 
 	}

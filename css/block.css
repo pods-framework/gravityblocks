@@ -42,6 +42,12 @@
 	cursor: pointer;
 }
 
+div.gform-block__conditional-rule-value {
+	line-height: 28px;
+	text-align: center;
+	width: 100%;
+}
+
 .gform-block__panel {
 	border-top: 1px solid #e2e4e7 !important;
 }

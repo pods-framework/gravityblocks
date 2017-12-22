@@ -207,9 +207,7 @@ class GF_Gutenberg extends GFAddOn {
 
 				case 'date':
 
-					$matches_operation = GFFormsModel::matches_operation( strtotime( $rule['value'] ), time(), $rule['operator'] );
-
-					if ( $matches_operation ) {
+					if ( GFFormsModel::matches_operation( strtotime( $rule['value'] ), time(), $rule['operator'] ) ) {
 						$match_count++;
 					}
 
@@ -427,7 +425,7 @@ class GF_Gutenberg extends GFAddOn {
 			array(
 				'key'       => array(
 					'label' => esc_html__( 'Date', 'gravityforms' ),
-					'value' => 'user',
+					'value' => 'date',
 				),
 				'operators' => array(
 					array(

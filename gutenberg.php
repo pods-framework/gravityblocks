@@ -40,14 +40,14 @@ add_action( 'gform_loaded', array( 'GF_Gutenberg_Bootstrap', 'load' ), 5 );
 class GF_Gutenberg_Bootstrap {
 
 	/**
-	 * If the Add-On Framework exists, Gutenberg Add-On is loaded.
+	 * If the Add-On Framework and Gutenberg exist, Gutenberg Add-On is loaded.
 	 *
 	 * @access public
 	 * @static
 	 */
 	public static function load() {
 
-		if ( ! method_exists( 'GFForms', 'include_addon_framework' ) ) {
+		if ( ! method_exists( 'GFForms', 'include_addon_framework' ) || ! function_exists( 'register_block_type' ) ) {
 			return;
 		}
 

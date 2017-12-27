@@ -111,7 +111,7 @@ export default class LogicControl extends Component {
 				&nbsp;rules match
 			</div>
 
-			<Ruleset rules={rules} onChange={changeRules} />
+			<Ruleset key="gform-block__conditional-ruleset" rules={rules} onChange={changeRules} />
 		</div>);
 
 	}

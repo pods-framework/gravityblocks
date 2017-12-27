@@ -82,13 +82,19 @@ export default class Ruleset extends Component {
 
 		return [
 			rules && (
-				rules.map( ( rule, index ) => <Rule options={options} rule={rule} key={index} index={index}
-													updateRule={this.updateRule}
-													deleteRule={this.deleteRule}/> )
+				rules.map( ( rule, index ) =>
+					<Rule
+						options={options}
+						rule={rule}
+						key={`gform-block__conditional-rule-${index}`}
+						index={index}
+						updateRule={this.updateRule}
+						deleteRule={this.deleteRule}
+					/> )
 			),
 			<div className="gform-block__conditional-rule-add">
 				<IconButton
-					key="icon"
+					key="gform-block__conditional-rule-add"
 					icon="insert"
 					label={__( 'Add Rule' )}
 					onClick={this.addRule}

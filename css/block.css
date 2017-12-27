@@ -44,8 +44,11 @@
 
 div.gform-block__conditional-rule-value {
 	line-height: 28px;
-	text-align: center;
 	width: 100%;
+}
+
+.gform-block__conditional-rule-value-popover .components-popover__content {
+	padding: 10px;
 }
 
 .gform-block__panel {

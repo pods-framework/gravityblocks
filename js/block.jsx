@@ -11,31 +11,29 @@ import LogicControl from './components/conditional-logic/'
 
 registerBlockType( 'gravityforms/block', {
 
-	title:      'Gravity Forms',
-	icon:       () => {
-		return <img src={gform.icon} height="20"/>
-	},
-	category:   'embed',
-	supports:   {
+	title:       'Gravity Forms',
+	description: __( 'Select a form below to add it to your page.', 'gravityforms' ),
+	category:    'embed',
+	supports:    {
 		customClassName: false,
 		className:       false,
 		html:            false,
 	},
-	attributes: {
+	attributes:  {
 		formId:           {
-			type: 'integer'
+			type: 'integer',
 		},
 		title:            {
 			type:    'bool',
-			default: true
+			default: true,
 		},
 		description:      {
 			type:    'bool',
-			default: true
+			default: true,
 		},
 		ajax:             {
 			type:    'bool',
-			default: false
+			default: false,
 		},
 		conditionalLogic: {
 			type:    'object',
@@ -44,7 +42,7 @@ registerBlockType( 'gravityforms/block', {
 				actionType: 'show',
 				logicType:  'all',
 				rules:      [],
-			}
+			},
 		},
 		tabindex:         {
 			type: 'integer',
@@ -52,7 +50,18 @@ registerBlockType( 'gravityforms/block', {
 		formPreview:      {
 			type:    'bool',
 			default: true,
-		}
+		},
+	},
+	icon:        () => {
+		return <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 508.3 559.5' width='20px' height='20px'
+					focusable='false' aria-hidden='true'
+					className='dashicon dashicon-gravityforms'>
+			<g>
+				<path className='st0'
+					  d='M468,109.8L294.4,9.6c-22.1-12.8-58.4-12.8-80.5,0L40.3,109.8C18.2,122.6,0,154,0,179.5V380	c0,25.6,18.1,56.9,40.3,69.7l173.6,100.2c22.1,12.8,58.4,12.8,80.5,0L468,449.8c22.2-12.8,40.3-44.2,40.3-69.7V179.6	C508.3,154,490.2,122.6,468,109.8z M399.3,244.4l-195.1,0c-11,0-19.2,3.2-25.6,10c-14.2,15.1-18.2,44.4-19.3,60.7H348v-26.4h49.9	v76.3H111.3l-1.8-23c-0.3-3.3-5.9-80.7,32.8-121.9c16.1-17.1,37.1-25.8,62.4-25.8h194.7V244.4z'
+				/>
+			</g>
+		</svg>
 	},
 
 	edit: class extends Component {
@@ -119,9 +128,9 @@ registerBlockType( 'gravityforms/block', {
 			const { formId, title, description } = atts;
 
 			const apiURL = addQueryArgs( wpApiSettings.root + 'gf/v2/block/preview', {
-				formId:      formId,
-				title:       title ? title : false,
-				description: description ? description : false,
+				 formId:      formId,
+				 title:       title ? title : false,
+				 description: description ? description : false
 			} );
 
 			this.setState( { fetching: true } );
@@ -145,7 +154,7 @@ registerBlockType( 'gravityforms/block', {
 
 					} );
 
-				}
+				},
 			);
 
 		}
@@ -164,8 +173,8 @@ registerBlockType( 'gravityforms/block', {
 			const toggleConditionalLogic = () => setAttributes( {
 				conditionalLogic: {
 					...conditionalLogic,
-					enabled: !conditionalLogic.enabled
-				}
+					enabled: !conditionalLogic.enabled,
+				},
 			} );
 
 			const updateTabindex = ( tabindex ) => setAttributes( { tabindex: tabindex } );
@@ -224,7 +233,7 @@ registerBlockType( 'gravityforms/block', {
 							/>
 						</PanelBody>
 					</InspectorControls>
-				)
+				),
 			];
 
 			if ( fetching ) {
@@ -233,7 +242,7 @@ registerBlockType( 'gravityforms/block', {
 					<div key="loading" className="wp-block-embed is-loading">
 						<Spinner/>
 						<p>{__( 'Loading form preview...', 'gravityforms' )}</p>
-					</div>
+					</div>,
 				];
 			}
 
@@ -249,11 +258,11 @@ registerBlockType( 'gravityforms/block', {
 						<form>
 							<select value={formId} onChange={setFormIdFromPlaceholder}>
 								{gform.forms.map( form =>
-									<option key={form.value} value={form.value}>{form.label}</option>
+													  <option key={form.value} value={form.value}>{form.label}</option>,
 								)}
 							</select>
 						</form>
-					</Placeholder>
+					</Placeholder>,
 				];
 
 			}
@@ -262,7 +271,7 @@ registerBlockType( 'gravityforms/block', {
 				controls,
 				<div key="sandbox" className="wp-block-embed__wrapper">
 					<SandBox html={html} onFocus={() => setFocus()}/>
-				</div>
+				</div>,
 			];
 
 		}

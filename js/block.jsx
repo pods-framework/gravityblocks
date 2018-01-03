@@ -64,6 +64,47 @@ registerBlockType( 'gravityforms/block', {
 		</svg>
 	},
 
+	transforms: {
+		from: [
+			{
+				type:       'shortcode',
+				tag:        'gravityform',
+				attributes: {
+					formId:      {
+						type:      'string',
+						shortcode: ( { named: { id } } ) => {
+							return parseInt( id );
+						},
+					},
+					title:       {
+						type:      'bool',
+						shortcode: ( { named: { title } } ) => {
+							return 'true' === title;
+						},
+					},
+					description: {
+						type:      'bool',
+						shortcode: ( { named: { description } } ) => {
+							return 'true' === description;
+						},
+					},
+					ajax:        {
+						type:      'bool',
+						shortcode: ( { named: { ajax } } ) => {
+							return 'true' === ajax;
+						},
+					},
+					tabindex:    {
+						type:      'integer',
+						shortcode: ( { named: { tabindex } } ) => {
+							return parseInt( tabindex );
+						},
+					}
+				},
+			}
+		]
+	},
+
 	edit: class extends Component {
 
 		constructor() {
@@ -128,9 +169,9 @@ registerBlockType( 'gravityforms/block', {
 			const { formId, title, description } = atts;
 
 			const apiURL = addQueryArgs( wpApiSettings.root + 'gf/v2/block/preview', {
-				 formId:      formId,
-				 title:       title ? title : false,
-				 description: description ? description : false
+				formId:      formId,
+				title:       title ? title : false,
+				description: description ? description : false
 			} );
 
 			this.setState( { fetching: true } );
@@ -258,7 +299,7 @@ registerBlockType( 'gravityforms/block', {
 						<form>
 							<select value={formId} onChange={setFormIdFromPlaceholder}>
 								{gform.forms.map( form =>
-													  <option key={form.value} value={form.value}>{form.label}</option>,
+									<option key={form.value} value={form.value}>{form.label}</option>,
 								)}
 							</select>
 						</form>

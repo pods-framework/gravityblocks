@@ -68,7 +68,7 @@ registerBlockType( 'gravityforms/block', {
 		from: [
 			{
 				type:       'shortcode',
-				tag:        'gravityform',
+				tag:        [ 'gravityform', 'gravityforms' ],
 				attributes: {
 					formId:      {
 						type:      'string',
@@ -169,9 +169,9 @@ registerBlockType( 'gravityforms/block', {
 			const { formId, title, description } = atts;
 
 			const apiURL = addQueryArgs( wpApiSettings.root + 'gf/v2/block/preview', {
-				formId:      formId,
-				title:       title ? title : false,
-				description: description ? description : false
+				 formId:      formId,
+				 title:       title ? title : false,
+				 description: description ? description : false
 			} );
 
 			this.setState( { fetching: true } );
@@ -299,7 +299,7 @@ registerBlockType( 'gravityforms/block', {
 						<form>
 							<select value={formId} onChange={setFormIdFromPlaceholder}>
 								{gform.forms.map( form =>
-									<option key={form.value} value={form.value}>{form.label}</option>,
+													  <option key={form.value} value={form.value}>{form.label}</option>,
 								)}
 							</select>
 						</form>

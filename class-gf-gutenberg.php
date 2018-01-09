@@ -143,6 +143,7 @@ class GF_Gutenberg extends GFAddOn {
 			array(
 				'forms'              => $this->get_forms(),
 				'conditionalOptions' => $this->get_conditional_options(),
+				'icon'               => $this->get_base_url() . '/images/icon.svg',
 			)
 		);
 

@@ -46,13 +46,13 @@ export default class Rule extends Component {
 		let { key } = this.props.rule,
 			options = gform.conditionalOptions;
 
-		for (let i = 0; i < options.length; i++) {
+		for ( let i = 0; i < options.length; i++ ) {
 
-			if (options[i].key.value !== key && key) {
+			if ( options[ i ].key.value !== key && key ) {
 				continue;
 			}
 
-			return options[i].operators;
+			return options[ i ].operators;
 
 		}
 
@@ -65,13 +65,13 @@ export default class Rule extends Component {
 		let { key } = this.props.rule,
 			options = gform.conditionalOptions;
 
-		for (let i = 0; i < options.length; i++) {
+		for ( let i = 0; i < options.length; i++ ) {
 
-			if (options[i].key.value !== key && key) {
+			if ( options[ i ].key.value !== key && key ) {
 				continue;
 			}
 
-			return options[i].value;
+			return options[ i ].value;
 
 		}
 
@@ -87,11 +87,11 @@ export default class Rule extends Component {
 		const valueProps = this.getValue();
 		const updateValue = ( e ) => this.updateValue( e.target.value );
 
-		switch (valueProps.type) {
+		switch ( valueProps.type ) {
 
 			case 'date':
 
-				const updateDateValue = ( newDate ) => this.updateValue( newDate.format( 'YYYY-MM-DDTHH:mm:ss' ) );
+				const updateDateValue = ( newDate ) => this.updateValue( newDate );
 				const is12HourTime = /a(?!\\)/i.test(
 					settings.formats.time
 						.toLowerCase() // Test only the lower case a
@@ -129,7 +129,7 @@ export default class Rule extends Component {
 				);
 
 			case 'select':
-				return ( <select
+				return (<select
 					key={`gform-block__conditional-rule-value-${index}`}
 					className="gform-block__conditional-rule-value"
 					value={value}
@@ -137,25 +137,25 @@ export default class Rule extends Component {
 					{
 						this.getValue().choices.map( function ( value ) {
 
-							if (value.choices) {
+							if ( value.choices ) {
 
 								let choices = value.choices.map( ( subvalue ) =>
 									<option key={subvalue.value} value={subvalue.value}>{subvalue.label}</option>
 								)
 
-								return ( <optgroup label={value.label}>
+								return (<optgroup label={value.label}>
 									{choices}
-								</optgroup> )
+								</optgroup>)
 
 							} else {
 
-								return ( <option key={value.value} value={value.value}>{value.label}</option> )
+								return (<option key={value.value} value={value.value}>{value.label}</option>)
 
 							}
 
 						} )
 					}
-				</select> );
+				</select>);
 
 			default:
 
@@ -207,7 +207,7 @@ export default class Rule extends Component {
 			}
 		</select>
 
-		return ( <div className="gform-block__conditional-rule">
+		return (<div className="gform-block__conditional-rule">
 			<div className="gform-block__conditional-rule-inputs">
 				{keySelect}
 				{operatorSelect}
@@ -221,7 +221,7 @@ export default class Rule extends Component {
 					/>
 				</span>
 			</div>
-		</div> );
+		</div>);
 
 	}
 

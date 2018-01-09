@@ -242,17 +242,28 @@ registerBlockType( 'gravityforms/block', {
 							checked={description}
 							onChange={toggleDescription}
 						/>
-						<PanelBody title={__( 'Conditional Logic', 'gravityforms' )} className="gform-block__panel">
+						<PanelBody
+							title={__( 'Conditional Logic', 'gravityforms' )}
+							className="gform-block__panel"
+						>
 							<ToggleControl
 								label={__( 'Conditional Logic', 'gravityforms' )}
 								checked={conditionalLogic.enabled}
 								onChange={toggleConditionalLogic}
 							/>
-							{conditionalLogic.enabled &&
-							<LogicControl logic={conditionalLogic} onChange={updateConditionalLogic}/>}
+							{
+								conditionalLogic.enabled &&
+								<LogicControl
+									logic={conditionalLogic}
+									onChange={updateConditionalLogic}
+								/>
+							}
 						</PanelBody>
-						<PanelBody title={__( 'Advanced Settings', 'gravityforms' )} initialOpen={false}
-								   className="gform-block__panel">
+						<PanelBody
+							title={__( 'Advanced Settings', 'gravityforms' )}
+							initialOpen={false}
+							className="gform-block__panel"
+						>
 							<ToggleControl
 								label={__( 'Preview', 'gravityforms' )}
 								checked={formPreview}
@@ -296,7 +307,7 @@ registerBlockType( 'gravityforms/block', {
 						<form>
 							<select value={formId} onChange={setFormIdFromPlaceholder}>
 								{gform.forms.map( form =>
-													  <option key={form.value} value={form.value}>{form.label}</option>,
+									<option key={form.value} value={form.value}>{form.label}</option>,
 								)}
 							</select>
 						</form>

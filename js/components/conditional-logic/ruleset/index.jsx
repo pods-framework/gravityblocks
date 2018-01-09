@@ -70,7 +70,7 @@ export default class Ruleset extends Component {
 		return {
 			key:      option.key.value,
 			operator: option.operators[ 0 ].value,
-			value:    option.value.choices ? ( option.value.choices[ 0 ].choices ? option.value.choices[ 0 ].choices[ 0 ].value : option.value.choices[ 0 ].value ) : ''
+			value:    option.value.choices ? (option.value.choices[ 0 ].choices ? option.value.choices[ 0 ].choices[ 0 ].value : option.value.choices[ 0 ].value) : ''
 		};
 
 	}
@@ -92,13 +92,17 @@ export default class Ruleset extends Component {
 						deleteRule={this.deleteRule}
 					/> )
 			),
-			<div className="gform-block__conditional-rule-add">
+			<div className={"gform-block__conditional-rule-add " + (!rules || rules.length == 0 ? "no-rules" : "")}>
 				<IconButton
 					key="gform-block__conditional-rule-add"
 					icon="insert"
 					label={__( 'Add Rule' )}
 					onClick={this.addRule}
-					className="editor-inserter__toggle"/>
+					className="editor-inserter__toggle"
+				>
+					{!rules || rules.length == 0 && <span>Add Rule</span>}
+				</IconButton>
+
 			</div>
 		];
 

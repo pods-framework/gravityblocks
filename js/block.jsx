@@ -331,7 +331,7 @@ registerBlockType( 'gravityforms/block', {
 
 		let { formId, title, description, ajax, tabindex } = props.attributes;
 
-		return `[gravityform id="${formId}" title="${ title ? 'true' : 'false' }" description="${ description ? 'true' : 'false' }" ajax="${ ajax ? 'true' : 'false' }" tabindex="${ tabindex ? tabindex : 0 }"]`;
+		return formId ? `[gravityform id="${formId}" title="${ title ? 'true' : 'false' }" description="${ description ? 'true' : 'false' }" ajax="${ ajax ? 'true' : 'false' }" tabindex="${ tabindex ? tabindex : 0 }"]` : null;
 
 	},
 

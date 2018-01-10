@@ -166,7 +166,7 @@ class GF_Gutenberg extends GFAddOn {
 		$title       = isset( $attributes['title'] ) ? $attributes['title'] : true;
 		$description = isset( $attributes['description'] ) ? $attributes['description'] : true;
 		$ajax        = isset( $attributes['ajax'] ) ? $attributes['ajax'] : true;
-		$tabindex    = isset( $attributes['tabindex'] ) ? $attributes['tabindex'] : 1;
+		$tabindex    = isset( $attributes['tabindex'] ) ? $attributes['tabindex'] : 0;
 		$logic       = isset( $attributes['conditionalLogic'] ) ? $attributes['conditionalLogic'] : array();
 
 		// If form ID was not provided or form does not exist, return.

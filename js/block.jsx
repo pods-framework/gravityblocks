@@ -123,6 +123,24 @@ registerBlockType( 'gravityforms/block', {
 
 		componentWillMount() {
 
+			let { formId, formPreview } = this.props.attributes;
+			let formFound = false;
+
+			if ( ! formId ) {
+				return;
+			}
+
+			for ( let i = 0; i < gform.forms.length; i++ ) {
+				if ( gform.forms[ i ].value == formId ) {
+					formFound = true;
+				}
+			}
+
+			if ( ! formFound ) {
+				this.props.setAttributes( { formId: '' } );
+				return;
+			}
+
 			if ( this.props.attributes.formId && this.props.attributes.formPreview ) {
 				this.setState( { fetching: true } );
 				this.updateFormPreview( this.props.attributes );

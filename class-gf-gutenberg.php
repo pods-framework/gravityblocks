@@ -231,6 +231,9 @@ class GF_Gutenberg extends GFAddOn {
 	 *
 	 * @param array $logic Conditional logic.
 	 *
+	 * @uses   GFCommon::get_local_timestamp()
+	 * @uses   GFFormsModel::matches_operation()
+	 *
 	 * @return bool
 	 */
 	public function can_view_block( $logic ) {
@@ -347,7 +350,7 @@ class GF_Gutenberg extends GFAddOn {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 *
-	 * @uses   GF_Gutenberg::render_block()
+	 * @uses   GFAPI::get_form()
 	 * @uses   WP_REST_Request::get_params()
 	 */
 	public function preview_block( $request ) {
@@ -493,8 +496,8 @@ class GF_Gutenberg extends GFAddOn {
 	/**
 	 * Get available roles for block control.
 	 *
-	 * @since 1.0-dev-3
-	 * @acess public
+	 * @since  1.0-dev-3
+	 * @access public
 	 *
 	 * @return array
 	 */

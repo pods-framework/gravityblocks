@@ -207,7 +207,7 @@ class GF_Gutenberg extends GFAddOn {
 
 				case 'date':
 
-					if ( ! rgblank( $rule['value'] ) && GFFormsModel::matches_operation( strtotime( $rule['value'] ), time(), $rule['operator'] ) ) {
+					if ( ! rgblank( $rule['value'] ) && GFFormsModel::matches_operation( GFCommon::get_local_timestamp( strtotime( $rule['value'] ) ), GFCommon::get_local_timestamp(), $rule['operator'] ) ) {
 						$match_count++;
 					}
 

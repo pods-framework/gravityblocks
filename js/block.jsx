@@ -169,9 +169,9 @@ registerBlockType( 'gravityforms/block', {
 			const { formId, title, description } = atts;
 
 			const apiURL = addQueryArgs( wpApiSettings.root + 'gf/v2/block/preview', {
-				 formId:      formId,
-				 title:       title ? title : false,
-				 description: description ? description : false
+				formId:      formId,
+				title:       title ? title : false,
+				description: description ? description : false
 			} );
 
 			this.setState( { fetching: true } );
@@ -327,8 +327,12 @@ registerBlockType( 'gravityforms/block', {
 
 	},
 
-	save: function () {
-		return null;
+	save: function ( props ) {
+
+		let { formId, title, description, ajax, tabindex } = props.attributes;
+
+		return `[gravityform id="${formId}" title="${ title ? 'true' : 'false' }" description="${ description ? 'true' : 'false' }" ajax="${ ajax ? 'true' : 'false' }" tabindex="${ tabindex ? tabindex : 0 }"]`;
+
 	},
 
 } );

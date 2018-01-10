@@ -165,7 +165,7 @@ class GF_Gutenberg extends GFAddOn {
 		$form_id     = rgar( $attributes, 'formId' ) ? $attributes['formId'] : false;
 		$title       = isset( $attributes['title'] ) ? $attributes['title'] : true;
 		$description = isset( $attributes['description'] ) ? $attributes['description'] : true;
-		$ajax        = isset( $attributes['ajax'] ) ? $attributes['ajax'] : true;
+		$ajax        = isset( $attributes['ajax'] ) ? $attributes['ajax'] : false;
 		$tabindex    = isset( $attributes['tabindex'] ) ? $attributes['tabindex'] : 0;
 		$logic       = isset( $attributes['conditionalLogic'] ) ? $attributes['conditionalLogic'] : array();
 

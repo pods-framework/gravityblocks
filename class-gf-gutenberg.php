@@ -429,14 +429,6 @@ class GF_Gutenberg extends GFAddOn {
 				),
 				'operators' => array(
 					array(
-						'label' => 'is',
-						'value' => 'is',
-					),
-					array(
-						'label' => 'is not',
-						'value' => 'isnot',
-					),
-					array(
 						'label' => 'before',
 						'value' => 'greater_than',
 					),

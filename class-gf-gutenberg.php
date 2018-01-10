@@ -34,6 +34,15 @@ class GF_Gutenberg extends GFAddOn {
 	protected $_version = GF_GUTENBERG_VERSION;
 
 	/**
+	 * Defines the minimum Gravity Forms version required.
+	 *
+	 * @since  1.0
+	 * @access protected
+	 * @var    string $_min_gravityforms_version The minimum version required.
+	 */
+	protected $_min_gravityforms_version = '2.2';
+
+	/**
 	 * Defines the plugin slug.
 	 *
 	 * @since  1.0
@@ -59,6 +68,42 @@ class GF_Gutenberg extends GFAddOn {
 	 * @var    string $_full_path The full path.
 	 */
 	protected $_full_path = __FILE__;
+
+	/**
+	 * Defines the URL where this Add-On can be found.
+	 *
+	 * @since  1.0
+	 * @access protected
+	 * @var    string The URL of the Add-On.
+	 */
+	protected $_url = 'http://www.gravityforms.com';
+
+	/**
+	 * Defines the title of this Add-On.
+	 *
+	 * @since  1.0
+	 * @access protected
+	 * @var    string $_title The title of the Add-On.
+	 */
+	protected $_title = 'Gravity Forms Gutenberg Add-On';
+
+	/**
+	 * Defines the short title of the Add-On.
+	 *
+	 * @since  1.0
+	 * @access protected
+	 * @var    string $_short_title The short title.
+	 */
+	protected $_short_title = 'Gutenberg';
+
+	/**
+	 * Defines if Add-On should use Gravity Forms servers for update data.
+	 *
+	 * @since  1.0
+	 * @access protected
+	 * @var    bool
+	 */
+	protected $_enable_rg_autoupgrade = true;
 
 	/**
 	 * Get instance of this class.

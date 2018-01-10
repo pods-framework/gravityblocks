@@ -10,3 +10,8 @@ body {
 	line-height: 1.8;
 	margin: 0;
 }
+
+.gform_wrapper {
+	padding-left: 1px;
+	padding-right: 1px;
+}

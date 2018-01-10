@@ -278,7 +278,7 @@ registerBlockType( 'gravityforms/block', {
 							}
 						</PanelBody>
 						<PanelBody
-							title={__( 'Advanced Settings', 'gravityforms' )}
+							title={__( 'Advanced', 'gravityforms' )}
 							initialOpen={false}
 							className="gform-block__panel"
 						>

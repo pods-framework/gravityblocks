@@ -272,6 +272,7 @@ registerBlockType( 'gravityforms/block', {
 							{
 								conditionalLogic.enabled &&
 								<LogicControl
+									key="gform-block__conditional"
 									logic={conditionalLogic}
 									onChange={updateConditionalLogic}
 								/>

@@ -92,9 +92,8 @@ export default class Ruleset extends Component {
 						deleteRule={this.deleteRule}
 					/> )
 			),
-			<div className={"gform-block__conditional-rule-add " + (!rules || rules.length == 0 ? "no-rules" : "")}>
+			<div className={"gform-block__conditional-rule-add" + (!rules || rules.length == 0 ? " no-rules" : "")} key="gform-block__conditional-rule-add">
 				<IconButton
-					key="gform-block__conditional-rule-add"
 					icon="insert"
 					label={__( 'Add Rule' )}
 					onClick={this.addRule}

@@ -101,7 +101,7 @@ export default class Rule extends Component {
 
 				return (
 					<Dropdown
-						key={`gform-block__conditional-rule-value-${index}`}
+						key={`gform-block__conditional-rule-${index}-value`}
 						position="bottom left"
 						contentClassName="gform-block__conditional-rule-value-popover"
 						className="gform-block__conditional-rule-value"
@@ -130,7 +130,7 @@ export default class Rule extends Component {
 
 			case 'select':
 				return (<select
-					key={`gform-block__conditional-rule-value-${index}`}
+					key={`gform-block__conditional-rule-${index}-value`}
 					className="gform-block__conditional-rule-value"
 					value={value}
 					onChange={updateValue}>
@@ -143,7 +143,7 @@ export default class Rule extends Component {
 									<option key={subvalue.value} value={subvalue.value}>{subvalue.label}</option>
 								)
 
-								return (<optgroup label={value.label}>
+								return (<optgroup label={value.label} key={value.label}>
 									{choices}
 								</optgroup>)
 
@@ -161,7 +161,7 @@ export default class Rule extends Component {
 
 				return (
 					<input
-						key={`gform-block__conditional-rule-value-${index}`}
+						key={`gform-block__conditional-rule-${index}-value`}
 						className="gform-block__conditional-rule-value"
 						value={value}
 						onChange={updateValue}
@@ -184,7 +184,7 @@ export default class Rule extends Component {
 		const updateOperator = ( e ) => this.updateOperator( e.target.value );
 
 		const keySelect = <select
-			key={`gform-block__conditional-rule-key-${index}`}
+			key={`gform-block__conditional-rule-${index}-key`}
 			className="gform-block__conditional-rule-key"
 			value={key}
 			onChange={updateKey}>
@@ -196,7 +196,7 @@ export default class Rule extends Component {
 		</select>
 
 		const operatorSelect = <select
-			key={`gform-block__conditional-rule-operator-${index}`}
+			key={`gform-block__conditional-rule-${index}-operator`}
 			className="gform-block__conditional-rule-operator"
 			value={operator}
 			onChange={updateOperator}>

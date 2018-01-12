@@ -16,6 +16,7 @@ export default class Rule extends Component {
 		let rule = this.props.rule;
 
 		rule.key = key;
+		rule.operator = this.getDefaultOperator();
 		rule.value = '';
 
 		this.props.updateRule( rule, this.props.index );
@@ -38,6 +39,15 @@ export default class Rule extends Component {
 
 		rule.value = value;
 		this.props.updateRule( rule, this.props.index );
+
+	}
+
+	getDefaultOperator() {
+
+		let operators = this.getOperators(),
+			operatorValues = operators.map( operator => operator.value );
+
+		return operatorValues.includes( this.props.rule.operator ) ? this.props.rule.operator : operatorValues[ 0 ];
 
 	}
 

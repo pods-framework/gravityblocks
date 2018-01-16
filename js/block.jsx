@@ -2,7 +2,7 @@ const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { SelectControl, TextControl, ToggleControl } = wp.blocks.InspectorControls;
 const InspectorControls = wp.blocks.InspectorControls;
-const { PanelBody, Placeholder, Spinner } = wp.components;
+const { Dashicon, PanelBody, Placeholder, Spinner } = wp.components;
 const Component = wp.element.Component;
 
 import { addQueryArgs } from '@wordpress/url';
@@ -115,8 +115,9 @@ registerBlockType( 'gravityforms/block', {
 			this.updateFormPreview = this.updateFormPreview.bind( this );
 
 			this.state = {
-				html:     '',
-				fetching: false,
+				html:         '',
+				fetching:     false,
+				previewError: false,
 			}
 
 		}
@@ -201,15 +202,22 @@ registerBlockType( 'gravityforms/block', {
 						return;
 					}
 
-					response.json().then( ( obj ) => {
+					response.json().catch( ( error ) => {
+						return { success: false };
+					} ).then( ( obj ) => {
 
 						if ( obj.success ) {
-							this.setState( { html: obj.data.html } );
+							this.setState( {
+								fetching:     false,
+								html:         obj.data.html,
+								previewError: false
+							} );
 						} else {
-							this.setState( { html: `<p>${__( 'Could not load form.', 'gravityforms' )}</p>` } );
+							this.setState( {
+								fetching:     false,
+								previewError: true
+							} );
 						}
-
-						this.setState( { fetching: false } );
 
 					} );
 
@@ -222,7 +230,7 @@ registerBlockType( 'gravityforms/block', {
 
 			let { formId, title, description, ajax, tabindex, formPreview, conditionalLogic } = this.props.attributes;
 
-			const { html, fetching } = this.state;
+			const { html, fetching, previewError } = this.state;
 			const { setAttributes, focus, setFocus } = this.props;
 
 			const toggleTitle = () => setAttributes( { title: !title } );
@@ -310,6 +318,16 @@ registerBlockType( 'gravityforms/block', {
 					<div key="loading" className="wp-block-embed is-loading">
 						<Spinner/>
 						<p>{__( 'Loading form preview...', 'gravityforms' )}</p>
+					</div>,
+				];
+			}
+
+			if ( previewError ) {
+				return [
+					controls,
+					<div key="loading" className="wp-block-embed is-loading">
+						<Dashicon icon="dismiss"/>
+						<p>{__( 'Could not load form preview.', 'gravityforms' )}</p>
 					</div>,
 				];
 			}

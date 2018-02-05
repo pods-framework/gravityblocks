@@ -1,11 +1,12 @@
 <?php
 /**
  * Plugin Name: Gravity Forms Gutenberg Add-On
- * Plugin URI: http://www.gravityforms.com
+ * Plugin URI: https://www.gravityforms.com
  * Description: Adds a Gravity Forms block to the Gutenberg post editor.
- * Version: 1.0-beta-1
+ * Version: 1.0-beta-2
  * Author: rocketgenius
- * Author URI: http://www.rocketgenius.com
+ * Author URI: https://www.rocketgenius.com
+ * License: GPL-2.0+
  * Text Domain: gravityformsgutenberg
  * Domain Path: /languages
  *
@@ -27,7 +28,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  **/
 
-define( 'GF_GUTENBERG_VERSION', '1.0-beta-1' );
+define( 'GF_GUTENBERG_VERSION', '1.0-beta-2' );
 
 // If Gravity Forms is loaded, bootstrap the Gutenberg Add-On.
 add_action( 'gform_loaded', array( 'GF_Gutenberg_Bootstrap', 'load' ), 5 );

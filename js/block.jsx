@@ -1,9 +1,8 @@
 const { __ } = wp.i18n;
-const { registerBlockType } = wp.blocks;
-const { SelectControl, TextControl, ToggleControl } = wp.blocks.InspectorControls;
-const InspectorControls = wp.blocks.InspectorControls;
+const { InspectorControls, registerBlockType } = wp.blocks;
+const { SelectControl, TextControl, ToggleControl } = InspectorControls;
 const { Dashicon, PanelBody, Placeholder, Spinner } = wp.components;
-const Component = wp.element.Component;
+const { Component } = wp.element;
 
 import { addQueryArgs } from '@wordpress/url';
 import SandBox from './components/sandbox/';
@@ -231,7 +230,7 @@ registerBlockType( 'gravityforms/block', {
 			let { formId, title, description, ajax, tabindex, formPreview, conditionalLogic } = this.props.attributes;
 
 			const { html, fetching, previewError } = this.state;
-			const { setAttributes, focus, setFocus } = this.props;
+			const { setAttributes, isSelected } = this.props;
 
 			const toggleTitle = () => setAttributes( { title: !title } );
 			const toggleDescription = () => setAttributes( { description: !description } );
@@ -250,7 +249,7 @@ registerBlockType( 'gravityforms/block', {
 			const setFormIdFromPlaceholder = ( e ) => this.setFormId( e.target.value );
 
 			const controls = [
-				focus && (
+				isSelected && (
 					<InspectorControls key="inspector">
 						<SelectControl
 							label={__( 'Form', 'gravityforms' )}
@@ -356,7 +355,7 @@ registerBlockType( 'gravityforms/block', {
 			return [
 				controls,
 				<div key="sandbox" className="wp-block-embed__wrapper">
-					<SandBox html={html} onFocus={() => setFocus()}/>
+					<SandBox html={html} />
 				</div>,
 			];
 

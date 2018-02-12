@@ -150,12 +150,12 @@ export default class Rule extends Component {
 							if ( value.choices ) {
 
 								let choices = value.choices.map( ( subvalue ) =>
-									<option key={subvalue.value} value={subvalue.value}>{subvalue.label}</option>
+									<option key={ subvalue.value } value={ subvalue.value }>{ subvalue.label }</option>
 								)
 
-								return (<optgroup label={value.label} key={value.label}>
-									{choices}
-								</optgroup>)
+								return ( <optgroup label={ value.label } key={ value.label }>
+									{ choices }
+								</optgroup> )
 
 							} else {
 

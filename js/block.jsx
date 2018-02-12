@@ -2,7 +2,7 @@ const { __ } = wp.i18n;
 const { InspectorControls, registerBlockType } = wp.blocks;
 const { SelectControl, TextControl, ToggleControl } = InspectorControls;
 const { Dashicon, PanelBody, Placeholder, Spinner } = wp.components;
-const { Component } = wp.element;
+const { Component, RawHTML } = wp.element;
 
 import { addQueryArgs } from '@wordpress/url';
 import SandBox from './components/sandbox/';
@@ -366,8 +366,9 @@ registerBlockType( 'gravityforms/block', {
 	save: function ( props ) {
 
 		let { formId, title, description, ajax, tabindex } = props.attributes;
+		let shortcode = `[gravityform id="${formId}" title="${ title ? 'true' : 'false' }" description="${ description ? 'true' : 'false' }" ajax="${ ajax ? 'true' : 'false' }" tabindex="${ tabindex ? tabindex : 0 }"]`;
 
-		return formId ? `[gravityform id="${formId}" title="${ title ? 'true' : 'false' }" description="${ description ? 'true' : 'false' }" ajax="${ ajax ? 'true' : 'false' }" tabindex="${ tabindex ? tabindex : 0 }"]` : null;
+		return formId ? <RawHTML>{ shortcode }</RawHTML> : null;
 
 	},
 

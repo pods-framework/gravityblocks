@@ -1,7 +1,6 @@
 const { __ } = wp.i18n;
 const { InspectorControls, registerBlockType } = wp.blocks;
-const { SelectControl, TextControl, ToggleControl } = InspectorControls;
-const { Dashicon, PanelBody, Placeholder, Spinner } = wp.components;
+const { Dashicon, PanelBody, Placeholder, SelectControl, Spinner, TextControl, ToggleControl } = wp.components;
 const { Component, RawHTML } = wp.element;
 
 import { addQueryArgs } from '@wordpress/url';

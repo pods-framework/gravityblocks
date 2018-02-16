@@ -1,0 +1,6 @@
+# 1.0-beta-2 | 2018-02-16
+   - Update block to work with Gutenberg 2.2.0.
+
+
+# 1.0-beta-1 | 2018-02-07
+   - Initial release.

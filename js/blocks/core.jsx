@@ -4,8 +4,8 @@ const { Dashicon, PanelBody, Placeholder, SelectControl, Spinner, TextControl, T
 const { Component, RawHTML } = wp.element;
 
 import { addQueryArgs } from '@wordpress/url';
-import SandBox from './components/sandbox/';
-import LogicControl from './components/conditional-logic/'
+import SandBox from '../components/sandbox/';
+import LogicControl from '../components/conditional-logic/'
 
 registerBlockType( 'gravityforms/block', {
 
@@ -129,7 +129,7 @@ registerBlockType( 'gravityforms/block', {
 				return;
 			}
 
-			for ( let i = 0; i < gform.forms.length; i++ ) {
+			for ( let i = 0; i < gform.forms.length; i ++ ) {
 				if ( gform.forms[ i ].value == formId ) {
 					formFound = true;
 				}
@@ -156,7 +156,7 @@ registerBlockType( 'gravityforms/block', {
 				return;
 			}
 
-			if ( !props.attributes.formId ) {
+			if ( ! props.attributes.formId ) {
 				this.setState( { html: '' } );
 				return;
 			}
@@ -179,7 +179,7 @@ registerBlockType( 'gravityforms/block', {
 
 		updateFormPreview( atts ) {
 
-			if ( this.state.fetching || !atts.formPreview ) {
+			if ( this.state.fetching || ! atts.formPreview ) {
 				return;
 			}
 
@@ -188,7 +188,8 @@ registerBlockType( 'gravityforms/block', {
 			const apiURL = addQueryArgs( wpApiSettings.root + 'gf/v2/block/preview', {
 				formId:      formId,
 				title:       title ? title : false,
-				description: description ? description : false
+				description: description ? description : false,
+				type:        'gravityforms/block'
 			} );
 
 			this.setState( { fetching: true } );
@@ -231,14 +232,14 @@ registerBlockType( 'gravityforms/block', {
 			const { html, fetching, previewError } = this.state;
 			const { setAttributes, isSelected } = this.props;
 
-			const toggleTitle = () => setAttributes( { title: !title } );
-			const toggleDescription = () => setAttributes( { description: !description } );
-			const toggleAjax = () => setAttributes( { ajax: !ajax } );
-			const toggleFormPreview = () => setAttributes( { formPreview: !formPreview } );
+			const toggleTitle = () => setAttributes( { title: ! title } );
+			const toggleDescription = () => setAttributes( { description: ! description } );
+			const toggleAjax = () => setAttributes( { ajax: ! ajax } );
+			const toggleFormPreview = () => setAttributes( { formPreview: ! formPreview } );
 			const toggleConditionalLogic = () => setAttributes( {
 				conditionalLogic: {
 					...conditionalLogic,
-					enabled: !conditionalLogic.enabled,
+					enabled: ! conditionalLogic.enabled,
 				},
 			} );
 
@@ -251,58 +252,58 @@ registerBlockType( 'gravityforms/block', {
 				isSelected && (
 					<InspectorControls key="inspector">
 						<SelectControl
-							label={__( 'Form', 'gravityforms' )}
-							value={formId}
-							options={gform.forms}
-							onChange={this.setFormId}
+							label={ __( 'Form', 'gravityforms' ) }
+							value={ formId }
+							options={ gform.forms }
+							onChange={ this.setFormId }
 						/>
 						<ToggleControl
-							label={__( 'Form Title', 'gravityforms' )}
-							checked={title}
-							onChange={toggleTitle}
+							label={ __( 'Form Title', 'gravityforms' ) }
+							checked={ title }
+							onChange={ toggleTitle }
 						/>
 						<ToggleControl
-							label={__( 'Form Description', 'gravityforms' )}
-							checked={description}
-							onChange={toggleDescription}
+							label={ __( 'Form Description', 'gravityforms' ) }
+							checked={ description }
+							onChange={ toggleDescription }
 						/>
 						<PanelBody
-							title={__( 'Conditional Logic', 'gravityforms' )}
+							title={ __( 'Conditional Logic', 'gravityforms' ) }
 							className="gform-block__panel"
 						>
 							<ToggleControl
-								label={__( 'Conditional Logic', 'gravityforms' )}
-								checked={conditionalLogic.enabled}
-								onChange={toggleConditionalLogic}
+								label={ __( 'Conditional Logic', 'gravityforms' ) }
+								checked={ conditionalLogic.enabled }
+								onChange={ toggleConditionalLogic }
 							/>
 							{
 								conditionalLogic.enabled &&
 								<LogicControl
 									key="gform-block__conditional"
-									logic={conditionalLogic}
-									onChange={updateConditionalLogic}
+									logic={ conditionalLogic }
+									onChange={ updateConditionalLogic }
 								/>
 							}
 						</PanelBody>
 						<PanelBody
-							title={__( 'Advanced', 'gravityforms' )}
-							initialOpen={false}
+							title={ __( 'Advanced', 'gravityforms' ) }
+							initialOpen={ false }
 							className="gform-block__panel"
 						>
 							<ToggleControl
-								label={__( 'Preview', 'gravityforms' )}
-								checked={formPreview}
-								onChange={toggleFormPreview}
+								label={ __( 'Preview', 'gravityforms' ) }
+								checked={ formPreview }
+								onChange={ toggleFormPreview }
 							/>
 							<ToggleControl
-								label={__( 'AJAX', 'gravityforms' )}
-								checked={ajax}
-								onChange={toggleAjax}
+								label={ __( 'AJAX', 'gravityforms' ) }
+								checked={ ajax }
+								onChange={ toggleAjax }
 							/>
 							<TextControl
-								label={__( 'Tabindex', 'gravityforms' )}
-								value={tabindex}
-								onChange={updateTabindex}
+								label={ __( 'Tabindex', 'gravityforms' ) }
+								value={ tabindex }
+								onChange={ updateTabindex }
 								placeholder="-1"
 							/>
 						</PanelBody>
@@ -315,7 +316,7 @@ registerBlockType( 'gravityforms/block', {
 					controls,
 					<div key="loading" className="wp-block-embed is-loading">
 						<Spinner/>
-						<p>{__( 'Loading form preview...', 'gravityforms' )}</p>
+						<p>{ __( 'Loading form preview...', 'gravityforms' ) }</p>
 					</div>,
 				];
 			}
@@ -325,25 +326,25 @@ registerBlockType( 'gravityforms/block', {
 					controls,
 					<div key="loading" className="wp-block-embed is-loading">
 						<Dashicon icon="dismiss"/>
-						<p>{__( 'Could not load form preview.', 'gravityforms' )}</p>
+						<p>{ __( 'Could not load form preview.', 'gravityforms' ) }</p>
 					</div>,
 				];
 			}
 
-			if ( !html || !formPreview ) {
+			if ( ! html || ! formPreview ) {
 
 				return [
 					controls,
 					<Placeholder key="placeholder" className="wp-block-embed gform-block__placeholder">
 						<div className="gform-block__placeholder-brand">
-							<img src={gform.icon} width="110"/>
+							<img src={ gform.icon } width="110"/>
 							<p><strong>Gravity Forms</strong></p>
 						</div>
 						<form>
-							<select value={formId} onChange={setFormIdFromPlaceholder}>
-								{gform.forms.map( form =>
-									<option key={form.value} value={form.value}>{form.label}</option>,
-								)}
+							<select value={ formId } onChange={ setFormIdFromPlaceholder }>
+								{ gform.forms.map( form =>
+									<option key={ form.value } value={ form.value }>{ form.label }</option>,
+								) }
 							</select>
 						</form>
 					</Placeholder>,
@@ -354,7 +355,7 @@ registerBlockType( 'gravityforms/block', {
 			return [
 				controls,
 				<div key="sandbox" className="wp-block-embed__wrapper">
-					<SandBox html={html} />
+					<SandBox html={ html }/>
 				</div>,
 			];
 

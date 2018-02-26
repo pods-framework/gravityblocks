@@ -33,12 +33,30 @@ define( 'GF_GUTENBERG_VERSION', '1.0-beta-2' );
 // If Gravity Forms is loaded, bootstrap the Gutenberg Add-On.
 add_action( 'gform_loaded', array( 'GF_Gutenberg_Bootstrap', 'load' ), 5 );
 
+add_action( 'init', array( 'GF_Gutenberg_Bootstrap', 'load_blocks' ), 5 );
+
 /**
  * Class GF_Gutenberg_Bootstrap
  *
  * Handles the loading of the Gutenberg Add-On and registers it with the Add-On Framework.
  */
 class GF_Gutenberg_Bootstrap {
+
+	/**
+	 * Load GF_Blocks class.
+	 *
+	 * @access public
+	 * @static
+	 */
+	public static function load_blocks() {
+
+		if ( ! method_exists( 'GFForms', 'include_addon_framework' ) || ! function_exists( 'register_block_type' ) ) {
+			return;
+		}
+
+		require_once 'includes/class-gf-blocks.php';
+
+	}
 
 	/**
 	 * If the Add-On Framework and Gutenberg exist, Gutenberg Add-On is loaded.

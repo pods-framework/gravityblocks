@@ -1,0 +1,162 @@
+.gform-block__mailchimp-api-response .fa-times {
+
+	color: #9E0B0F
+
+}
+
+.gform-block__mailchimp-placeholder form {
+
+	min-width: 320px;
+
+	input[type="text"] {
+
+		height: 28px;
+		margin-right: 2px;
+		width: 216px;
+
+	}
+
+}
+
+.gform-block__mailchimp-placeholder-auth p {
+
+	font-family: inherit;
+	font-size: 14px;
+	line-height: 1.4;
+	margin-top: 5px;
+
+}
+
+.gform_heading textarea.gform_title {
+
+	font-size: 1.25em;
+	font-weight: 700;
+	height: auto !important;
+	margin: 0 0 -2px 0;
+
+}
+
+.gform_heading textarea.gform_description {
+
+	margin: 0 0 -8px 0;
+
+}
+
+.gform_wrapper {
+
+	.gf_simple_horizontal {
+
+		width: 100%;
+
+		div {
+
+			&.gform_body,
+			&.gform_footer.top_label {
+
+				display: table-cell;
+				vertical-align: middle;
+				margin: 0;
+				padding: 0;
+				position: relative;
+
+			}
+
+			&.gform_body {
+
+				width: auto;
+				max-width: 75%;
+
+			}
+
+			&.ginput_container {
+
+				margin-top: 0 !important;
+
+			}
+
+			&.gform_body ul.top_label {
+
+				&.form_sublabel_below li.gfield,
+				&.form_sublabel_above li.gfield {
+
+					vertical-align: middle;
+
+				}
+
+				li.gfield input {
+
+					&.small, &.medium, &.large {
+
+						width: 100%;
+
+					}
+
+				}
+			}
+		}
+
+		&.gform_footer.top_label input {
+
+			&[type="submit"],
+			&[type="button"],
+			&[type="image"] {
+
+				height: auto;
+
+			}
+
+		}
+
+		ul li.gfield {
+
+			margin-top: 0 !important;
+
+		}
+
+		div.gform_footer.top_label {
+
+			width: auto;
+			max-width: 25%;
+			padding: 0;
+			margin: 0;
+
+		}
+
+		div.gform_body ul.top_label {
+
+			display: table;
+			width: 100%;
+
+			li.gfield {
+
+				display: table-cell;
+				padding-right: 1em;
+				height: auto;
+
+			}
+
+		}
+
+		label.gfield_label,
+		.ginput_complex label {
+
+			display: block;
+			height: 1px;
+			width: 1px;
+			overflow: hidden;
+			position: absolute;
+			top: 0;
+			left: -9000px;
+
+		}
+
+	}
+
+}
+
+.gform_body,
+.gform_footer {
+
+	pointer-events: none;
+
+}

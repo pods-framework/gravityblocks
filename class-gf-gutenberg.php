@@ -124,263 +124,6 @@ class GF_Gutenberg extends GFAddOn {
 
 	}
 
-	/**
-	 * Register needed hooks.
-	 *
-	 * @since  1.0-dev-1
-	 * @access public
-	 */
-	public function init() {
-
-		parent::init();
-
-		// Register block.
-		register_block_type( 'gravityforms/block', array(
-			'render_callback' => array( $this, 'render_block' ),
-		) );
-
-		// Enqueue scripts.
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_assets' ) );
-
-		// Register preview block route.
-		add_action( 'rest_api_init', array( $this, 'register_preview_route' ) );
-
-	}
-
-
-
-
-
-	// # BLOCK ---------------------------------------------------------------------------------------------------------
-
-	/**
-	 * Enqueue assets needed for block.
-	 *
-	 * @since  1.0-dev-1
-	 * @access public
-	 *
-	 * @uses   GFAddOn::get_base_path()
-	 * @uses   GFAddOn::get_base_url()
-	 * @uses   GF_Gutenberg::get_forms()
-	 */
-	public function enqueue_block_assets() {
-
-		// Enqueue style.
-		wp_enqueue_style(
-			'gform_editor_block',
-			$this->get_base_url() . '/css/block.css',
-			array( 'wp-edit-blocks' ),
-			filemtime( $this->get_base_path() . '/css/block.css' )
-		);
-
-		// Enqueue script.
-		wp_enqueue_script(
-			'gform_editor_block',
-			$this->get_base_url() . '/js/block.min.js',
-			array( 'wp-blocks', 'wp-element' ),
-			filemtime( $this->get_base_path() . '/js/block.min.js' )
-		);
-
-		// Prepare JS variables.
-		wp_localize_script(
-			'gform_editor_block',
-			'gform',
-			array(
-				'forms'              => $this->get_forms(),
-				'conditionalOptions' => $this->get_conditional_options(),
-				'icon'               => $this->get_base_url() . '/images/icon.svg',
-			)
-		);
-
-	}
-
-	/**
-	 * Display block contents on frontend.
-	 *
-	 * @since  1.0-dev-1
-	 * @access public
-	 *
-	 * @param array $attributes Block attributes.
-	 *
-	 * @return string
-	 */
-	public function render_block( $attributes = array() ) {
-
-		// Prepare variables.
-		$form_id     = rgar( $attributes, 'formId' ) ? $attributes['formId'] : false;
-		$title       = isset( $attributes['title'] ) ? $attributes['title'] : true;
-		$description = isset( $attributes['description'] ) ? $attributes['description'] : true;
-		$ajax        = isset( $attributes['ajax'] ) ? $attributes['ajax'] : false;
-		$tabindex    = isset( $attributes['tabindex'] ) ? $attributes['tabindex'] : 0;
-		$logic       = isset( $attributes['conditionalLogic'] ) ? $attributes['conditionalLogic'] : array();
-
-		// If form ID was not provided or form does not exist, return.
-		if ( ! $form_id || ( $form_id && ! GFAPI::get_form( $form_id ) ) || ! $this->can_view_block( $logic ) ) {
-			return '';
-		}
-
-		return gravity_form( $form_id, $title, $description, false, null, $ajax, $tabindex, false );
-
-	}
-
-	/**
-	 * Determine if user can view block.
-	 *
-	 * @since  1.0-dev-3
-	 * @access public
-	 *
-	 * @param array $logic Conditional logic.
-	 *
-	 * @uses   GFCommon::get_local_timestamp()
-	 * @uses   GFFormsModel::matches_operation()
-	 *
-	 * @return bool
-	 */
-	public function can_view_block( $logic ) {
-
-		if ( ! rgar( $logic, 'enabled' ) || ( isset( $logic['rules'] ) && empty( $logic['rules'] ) ) ) {
-			return true;
-		}
-
-		// Get current user.
-		$user = wp_get_current_user();
-
-		// Initialize rule match count.
-		$match_count = 0;
-
-		// Loop through rules.
-		foreach ( $logic['rules'] as $rule ) {
-
-			switch ( $rule['key'] ) {
-
-				case 'date':
-
-					if ( ! rgblank( $rule['value'] ) && GFFormsModel::matches_operation( strtotime( $rule['value'] ), GFCommon::get_local_timestamp(), $rule['operator'] ) ) {
-						$match_count++;
-					}
-
-					break;
-
-				case 'user':
-
-					// Handle logged in.
-					if ( 'logged-in' === $rule['value'] ) {
-
-						if ( ( is_user_logged_in() && $rule['operator'] === 'is' ) || ( ! is_user_logged_in() && $rule['operator'] === 'isnot' ) ) {
-							$match_count++;
-						}
-
-					} else if ( 'logged-out' === $rule['value'] ) {
-
-						if ( ( ! is_user_logged_in() && $rule['operator'] === 'is' ) || ( is_user_logged_in() && $rule['operator'] === 'isnot' ) ) {
-							$match_count++;
-						}
-
-					} else {
-
-						if ( ( in_array( $rule['value'], $user->roles ) && $rule['operator'] === 'is' ) || ( ! in_array( $rule['value'], $user->roles ) && $rule['operator'] === 'isnot' ) ) {
-							$match_count++;
-						}
-
-					}
-
-					break;
-
-			}
-
-		}
-
-		$result = ( 'all' === $logic['logicType'] && $match_count === count( $logic['rules'] ) ) || ( 'any' === $logic['logicType'] && $match_count > 0 );
-
-		return 'hide' === $logic['actionType'] ? ! $result : $result;
-
-	}
-
-
-
-
-	// # BLOCK PREVIEW -------------------------------------------------------------------------------------------------
-
-	/**
-	 * Register REST API route to preview block.
-	 *
-	 * @since  1.0-dev-2
-	 * @access public
-	 *
-	 * @uses   GF_Gutenberg::preview_block()
-	 */
-	public function register_preview_route() {
-
-		register_rest_route( 'gf/v2', '/block/preview', array(
-			array(
-				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'preview_block' ),
-				'args'     => array(
-					'formId'      => array(
-						'description' => __( 'The ID of the form displayed in the block.' ),
-						'type'        => 'integer',
-						'required'    => true,
-					),
-					'title'       => array(
-						'description' => __( 'Whether to display the form title.' ),
-						'type'        => 'boolean',
-						'default'     => true,
-					),
-					'description' => array(
-						'description' => __( 'Whether to display the form description.' ),
-						'type'        => 'boolean',
-						'default'     => true,
-					),
-					'ajax'        => array(
-						'description' => __( 'Whether to embed the form using AJAX.' ),
-						'type'        => 'boolean',
-						'default'     => true,
-					),
-				),
-			),
-		) );
-
-	}
-
-	/**
-	 * Prepare form HTML for block preview.
-	 *
-	 * @since  1.0-dev-2
-	 * @access public
-	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 *
-	 * @uses   GFAPI::get_form()
-	 * @uses   WP_REST_Request::get_params()
-	 */
-	public function preview_block( $request ) {
-
-		// Get request arguments.
-		$attributes = $request->get_params();
-
-		// Get form ID.
-		$form_id = rgar( $attributes, 'formId' ) ? $attributes['formId'] : false;
-
-		// If form ID was not provided or form does not exist, return.
-		if ( ! $form_id || ( $form_id && ! GFAPI::get_form( $form_id ) ) ) {
-			wp_send_json_error();
-		}
-
-		ob_start();
-		include_once 'includes/preview.php';
-		$html = ob_get_contents();
-		ob_end_clean();
-
-		if ( $html ) {
-			wp_send_json_success( array( 'html' => trim( $html ) ) );
-		} else {
-			wp_send_json_error();
-		}
-
-
-	}
-
-
 
 
 
@@ -396,7 +139,7 @@ class GF_Gutenberg extends GFAddOn {
 	 *
 	 * @return array
 	 */
-	private function get_forms() {
+	public function get_forms() {
 
 		// Initialize options array.
 		$options = array(
@@ -434,7 +177,7 @@ class GF_Gutenberg extends GFAddOn {
 	 *
 	 * @return array
 	 */
-	private function get_conditional_options() {
+	public function get_conditional_options() {
 
 		return array(
 			array(
@@ -501,7 +244,7 @@ class GF_Gutenberg extends GFAddOn {
 	 *
 	 * @return array
 	 */
-	private function get_roles() {
+	public function get_roles() {
 
 		// Load needed function file.
 		if ( ! function_exists( 'get_editable_roles' ) ) {

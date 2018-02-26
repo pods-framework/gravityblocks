@@ -9,14 +9,5 @@ This repository contains the development version of the Gravity Forms Gutenberg 
 You can use the following command to package up the repository into an installable plugin:
 
 ```
-zip -r gravityblocks.zip gravityblocks
-    -x *.git*
-       *.jsx*
-       *.babelrc*
-       *.DS_Store*
-       gravityformsgutenberg/js/components/\*
-       */\node_modules/\*
-       *package-lock.json
-       *README.md
-       *webpack.config.js
+zip -r gravityformsgutenberg_1.0-beta-3.zip gravityformsgutenberg -x *.git* *.jsx*  *.babelrc* *.DS_Store* gravityformsgutenberg/js/components/\* gravityformsgutenberg/sass/\* */\node_modules/\* *package-lock.json *README.md  *webpack.config.js
 ```

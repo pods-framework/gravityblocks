@@ -1,10 +1,5 @@
 <?php
 
-// If Pods cannot be found, exit.
-if ( ! defined( 'PODS_VERSION' ) ) {
-	die();
-}
-
 /**
  * Class Pods_Gutenberg_Bootstrap
  *
@@ -24,8 +19,8 @@ class Pods_Gutenberg_Bootstrap {
 			return;
 		}
 
-		require_once 'includes/class-pods-gutenberg.php';
-		require_once 'includes/class-pods-blocks.php';
+		require_once 'class-pods-gutenberg.php';
+		require_once 'class-pods-blocks.php';
 
 	}
 

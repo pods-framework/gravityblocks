@@ -1,10 +1,5 @@
 <?php
 
-// If Pods cannot be found, exit.
-if ( ! defined( 'PODS_VERSION' ) ) {
-	die();
-}
-
 /**
  * Gutenberg integration.
  */

@@ -115,6 +115,40 @@ class Pods_Gutenberg {
 	 *
 	 * @return array
 	 */
+	public function get_pods() {
+
+		// Initialize options array.
+		$options = array(
+			array(
+				'label' => esc_html__( '- Select a Pod -', 'pods-gutenberg-blocks' ),
+				'value' => '',
+			),
+		);
+
+		// Get Pods.
+        $all_pods = pods_api()->load_pods( array( 'names' => true ) );
+
+		// Loop through Pods.
+		foreach ( $all_pods as $pod_name => $pod_label ) {
+			// Add Pod as option.
+			$options[] = array(
+				'label' => $pod_label,
+				'value' => $pod_name,
+			);
+		}
+
+		return $options;
+
+	}
+
+	/**
+	 * Get forms for block control.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return array
+	 */
 	public function get_forms() {
 
 		// Initialize options array.

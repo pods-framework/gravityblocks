@@ -12,7 +12,7 @@ class Pods_Blocks {
 	/**
 	 * Initialize REST API route.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 */
 	public function __construct() {
@@ -24,7 +24,7 @@ class Pods_Blocks {
 	/**
 	 * Register a block type.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param Pods_Block $block Block class.
@@ -43,11 +43,11 @@ class Pods_Blocks {
 		$block_type = $block->get_type();
 
 		if ( empty( $block_type ) ) {
-			throw new Exception( 'The type must be set' );
+			throw new Exception( 'The Pods block type must be set' );
 		}
 
 		if ( isset( self::$_blocks[ $block_type ] ) ) {
-			throw new Exception( 'Block type already registered: ' . $block_type );
+			throw new Exception( 'Pods Block type already registered: ' . $block_type );
 		}
 
 		// Register block.
@@ -61,7 +61,7 @@ class Pods_Blocks {
 	/**
 	 * Get instance of block.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param string $block_type Block type.
@@ -79,41 +79,131 @@ class Pods_Blocks {
 	/**
 	 * Register REST API route to preview block.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @uses   Pods_Blocks::get_block_preview()
 	 */
 	public function register_preview_route() {
 
-		register_rest_route( 'pods/v2', '/block/preview', array(
-			array(
-				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'get_block_preview' ),
-				'args'     => array(
-					'formId'      => array(
-						'description' => __( 'The ID of the form displayed in the block.' ),
-						'type'        => 'integer',
-						'required'    => true,
-					),
-					'title'       => array(
-						'description' => __( 'Whether to display the form title.' ),
-						'type'        => 'boolean',
-						'default'     => true,
-					),
-					'description' => array(
-						'description' => __( 'Whether to display the form description.' ),
-						'type'        => 'boolean',
-						'default'     => true,
-					),
-					'ajax'        => array(
-						'description' => __( 'Whether to embed the form using AJAX.' ),
-						'type'        => 'boolean',
-						'default'     => true,
-					),
+		$namespace        = 'pods/v2';
+		$preview_endpoint = '/block/%s/preview';
+
+		$preview_types = array(
+			'single'        => array(
+				'pod'      => array(
+					'description' => __( 'The pod name.', 'pods-gutenberg-blocks' ),
+					'required'    => true,
+				),
+				'slug'     => array(
+					'description' => __( 'The item slug or ID.', 'pods-gutenberg-blocks' ),
+					'required'    => true,
+				),
+				'template' => array(
+					'description' => __( 'The template name.', 'pods-gutenberg-blocks' ),
+				),
+				'content'  => array(
+					'description' => __( 'The template name.', 'pods-gutenberg-blocks' ),
 				),
 			),
-		) );
+			'list'          => array(
+				'pod'      => array(
+					'description' => __( 'The pod name.', 'pods-gutenberg-blocks' ),
+					'required'    => true,
+				),
+				'template' => array(
+					'description' => __( 'The template name.', 'pods-gutenberg-blocks' ),
+				),
+				'content'  => array(
+					'description' => __( 'The template name.', 'pods-gutenberg-blocks' ),
+				),
+				'where'    => array(
+					'description' => __( 'The WHERE clause.', 'pods-gutenberg-blocks' ),
+				),
+				'groupby'  => array(
+					'description' => __( 'The GROUP BY clause.', 'pods-gutenberg-blocks' ),
+				),
+				'having'   => array(
+					'description' => __( 'The HAVING clause.', 'pods-gutenberg-blocks' ),
+				),
+				'orderby'  => array(
+					'description' => __( 'The ORDER BY clause.', 'pods-gutenberg-blocks' ),
+				),
+				'limit'    => array(
+					'description' => __( 'The number of items to limit to.', 'pods-gutenberg-blocks' ),
+					'type'        => 'integer',
+				),
+			),
+			'field'         => array(
+				'pod'   => array(
+					'description' => __( 'The pod name.', 'pods-gutenberg-blocks' ),
+					'required'    => true,
+				),
+				'slug'  => array(
+					'description' => __( 'The item slug or ID.', 'pods-gutenberg-blocks' ),
+					'required'    => true,
+				),
+				'field' => array(
+					'description' => __( 'The pod field name.', 'pods-gutenberg-blocks' ),
+					'required'    => true,
+				),
+			),
+			'field-current' => array(
+				'field' => array(
+					'description' => __( 'The pod field name.', 'pods-gutenberg-blocks' ),
+					'required'    => true,
+				),
+			),
+			'form'          => array(
+				'pod'       => array(
+					'description' => __( 'The pod name.', 'pods-gutenberg-blocks' ),
+					'required'    => true,
+				),
+				'slug'      => array(
+					'description' => __( 'The item slug or ID.', 'pods-gutenberg-blocks' ),
+				),
+				'fields'    => array(
+					'description' => __( 'The pod fields.', 'pods-gutenberg-blocks' ),
+				),
+				'label'     => array(
+					'description' => __( 'The form label.', 'pods-gutenberg-blocks' ),
+				),
+				'thank_you' => array(
+					'description' => __( 'The form thank you URL.', 'pods-gutenberg-blocks' ),
+				),
+			),
+			'view'          => array(
+				'view'       => array(
+					'description' => __( 'The view path.', 'pods-gutenberg-blocks' ),
+					'required'    => true,
+				),
+				'cache_mode' => array(
+					'description' => __( 'The cache mode.', 'pods-gutenberg-blocks' ),
+					'default'     => 'none',
+				),
+				'expires'    => array(
+					'description' => __( 'The cache expiration length.', 'pods-gutenberg-blocks' ),
+					'type'        => 'integer',
+					'default'     => 0,
+				),
+			),
+			'page'          => array(
+				'pods_page' => array(
+					'description' => __( 'The pods page.', 'pods-gutenberg-blocks' ),
+					'required'    => true,
+				),
+			),
+		);
+
+		foreach ( $preview_types as $preview_type => $preview_args ) {
+			register_rest_route( $namespace, sprintf( $preview_endpoint, $preview_type ), array(
+				array(
+					'methods'  => WP_REST_Server::READABLE,
+					'callback' => array( $this, 'get_block_preview' ),
+					'args'     => $preview_args,
+				),
+			) );
+		}
 
 	}
 
@@ -132,13 +222,11 @@ class Pods_Blocks {
 		// Get request arguments.
 		$attributes = $request->get_params();
 
-		// Get form ID.
-		$form_id = rgar( $attributes, 'formId' ) ? $attributes['formId'] : false;
-
 		// Get preview markup.
-		$html = self::get( $attributes['type'] ) ? self::get( $attributes['type'] )->preview_block( $attributes ) : false;
+		$html = self::get( $attributes['type'] ) ? self::get( $attributes['type'] )
+		                                               ->preview_block( $attributes ) : false;
 
-		if ( $html ) {
+		if ( false !== $html ) {
 			wp_send_json_success( array( 'html' => trim( $html ) ) );
 		} else {
 			wp_send_json_error();

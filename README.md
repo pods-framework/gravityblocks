@@ -9,5 +9,5 @@ This repository contains the development version of the Pods Gutenberg Add-On, w
 You can use the following command to package up the repository into an installable plugin:
 
 ```
-zip -r pods-gutenberg-blocks_1.0-beta-3.zip pods-gutenberg-blocks -x *.git* *.jsx*  *.babelrc* *.DS_Store* pods-gutenberg-blocks/js/components/\* pods-gutenberg-blocks/sass/\* */\node_modules/\* *package-lock.json *README.md  *webpack.config.js
+zip -r pods-gutenberg-blocks_1.0.zip pods-gutenberg-blocks -x *.git* *.jsx*  *.babelrc* *.DS_Store* pods-gutenberg-blocks/js/components/\* pods-gutenberg-blocks/sass/\* */\node_modules/\* *package-lock.json *README.md  *webpack.config.js
 ```

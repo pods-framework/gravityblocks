@@ -5,11 +5,11 @@ class Pods_Block {
 	/**
 	 * Contains an instance of this block, if available.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access private
 	 * @var    Pods_Block $_instance If available, contains an instance of this block.
 	 */
-	private static $_instance = null;
+	protected static $_instance = null;
 
 	/**
 	 * Block type.
@@ -19,10 +19,31 @@ class Pods_Block {
 	public $type = '';
 
 	/**
+	 * Get instance of this class.
+	 *
+	 * @since  1.0
+	 * @access public
+	 * @static
+	 *
+	 * @return Pods_Block
+	 */
+	public static function get_instance() {
+
+		if ( null === static::$_instance ) {
+			$class = static::class;
+
+			static::$_instance = new $class;
+		}
+
+		return static::$_instance;
+
+	}
+
+	/**
 	 * Register block type.
 	 * Enqueue editor assets.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @uses   Pods_Block::register_block_type()
@@ -41,7 +62,7 @@ class Pods_Block {
 	/**
 	 * Get block type.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @return string
@@ -55,7 +76,7 @@ class Pods_Block {
 	/**
 	 * Register block with WordPress.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 */
 	public function register_block_type() {
@@ -71,7 +92,7 @@ class Pods_Block {
 	/**
 	 * Enqueue block scripts.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @uses   Pods_Block::scripts()
@@ -134,14 +155,40 @@ class Pods_Block {
 	 * </code>
 	 * </pre>
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @return array
 	 */
 	public function scripts() {
 
-		return array();
+		return array(
+			array(
+				'handle'   => 'pods_editor_block_core',
+				'src'      => PODS_GUTENBERG_URL . 'js/blocks/core.min.js',
+				'deps'     => array( 'wp-blocks', 'wp-element' ),
+				'version'  => filemtime( PODS_GUTENBERG_DIR . 'js/blocks/core.min.js' ),
+				'callback' => array( $this, 'localize_script' ),
+			),
+		);
+
+	}
+
+	/**
+	 * Localize core block script.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param array $script Script arguments.
+	 */
+	public function localize_script( $script = array() ) {
+
+		wp_localize_script( $script['handle'], 'pods_gutenberg', array(
+			'pods'               => pods_gutenberg()->get_pods(),
+			'conditionalOptions' => pods_gutenberg()->get_conditional_options(),
+			'icon'               => PODS_GUTENBERG_URL . 'images/blocks/core/icon.svg',
+		) );
 
 	}
 
@@ -150,7 +197,7 @@ class Pods_Block {
 	/**
 	 * Enqueue block styles.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @uses   Pods_Block::styles()
@@ -182,17 +229,23 @@ class Pods_Block {
 	}
 
 	/**
-	 * Override this function to provide a list of styles to be enqueued.
-	 * See scripts() for an example of the format expected to be returned.
+	 * Register styles for block.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @return array
 	 */
 	public function styles() {
 
-		return array();
+		return array(
+			array(
+				'handle'  => 'pods_editor_block_core',
+				'src'     => PODS_GUTENBERG_URL . 'css/block.css',
+				'deps'    => array( 'wp-edit-blocks' ),
+				'version' => filemtime( PODS_GUTENBERG_DIR . 'css/block.css' ),
+			),
+		);
 
 	}
 
@@ -201,7 +254,7 @@ class Pods_Block {
 	/**
 	 * Display block contents on frontend.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param array $attributes Block attributes.
@@ -210,7 +263,13 @@ class Pods_Block {
 	 */
 	public function render_block( $attributes = array() ) {
 
-		return '';
+		$content = null;
+
+		if ( ! empty( $attributes['content'] ) ) {
+			$content = $attributes['content'];
+		}
+
+		return pods_shortcode( $attributes, $content );
 
 	}
 
@@ -219,7 +278,7 @@ class Pods_Block {
 	/**
 	 * Display block contents in block editor.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param array $attributes Block attributes.
@@ -228,7 +287,14 @@ class Pods_Block {
 	 */
 	public function preview_block( $attributes = array() ) {
 
-		return '';
+		$block = $this;
+
+		ob_start();
+		require_once PODS_GUTENBERG_DIR . 'includes/preview.php';
+		$html = ob_get_contents();
+		ob_end_clean();
+
+		return $html;
 
 	}
 
@@ -237,7 +303,7 @@ class Pods_Block {
 	/**
 	 * Determine if user can view block.
 	 *
-	 * @since  1.0-beta-3
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @param array $logic Conditional logic.
@@ -249,7 +315,7 @@ class Pods_Block {
 		// @todo Add get_local_timestamp()
 		// @todo Add matches_operation()
 
-		if ( ! rgar( $logic, 'enabled' ) || ( isset( $logic['rules'] ) && empty( $logic['rules'] ) ) ) {
+		if ( ! isset( $logic['enabled'] ) || ( isset( $logic['rules'] ) && empty( $logic['rules'] ) ) ) {
 			return true;
 		}
 

@@ -112,7 +112,7 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 		return array(
 			array(
 				'handle' => 'pods_formsmain_css',
-				'src'    => PodsCommon::get_base_url() . '/css/formsmain' . $min . '.css',
+				'src'    => PODS_GUTENBERG_URL . 'css/formsmain' . $min . '.css',
 			),
 			array(
 				'handle'  => 'pods_editor_block_mailchimp',
@@ -135,11 +135,6 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 	 * @param array $attributes Block attributes.
 	 *
 	 * @uses   Pods_Block_MailChimp::get_form_object()
-	 * @uses   PodsCommon::get_browser_class()
-	 * @uses   PodsFormDisplay::enqueue_form_scripts()
-	 * @uses   PodsFormDisplay::get_field()
-	 * @uses   PodsFormDisplay::pods_footer()
-	 * @uses   PodsFormsModel::get_field_value()
 	 *
 	 * @return string|null
 	 */
@@ -238,10 +233,7 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 *
-	 * @uses   PodsAddOn::get_plugin_settings()
-	 * @uses   PodsAddOn::update_plugin_settings()
 	 * @uses   Pods_Block_MailChimp::get_lists()
-	 * @uses   PodsMailChimp::initialize_api()
 	 * @uses   WP_REST_Request::get_param()
 	 */
 	public function authentication_response( $request ) {
@@ -249,26 +241,7 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 		// Get API key.
 		$api_key = $request->get_param( 'apiKey' );
 
-		// Get MailChimp plugin settings.
-		$settings = pods_mailchimp()->get_plugin_settings();
-
-		// Update API key and save.
-		$settings['apiKey'] = $api_key;
-
-		pods_mailchimp()->update_plugin_settings( $settings );
-
-		// Check if MailChimp was authenticated.
-		$authenticated = pods_mailchimp()->initialize_api();
-
-		// If MailChimp could not be authenticated, return.
-		if ( ! $authenticated ) {
-			wp_send_json_error();
-		}
-
-		// Get lists.
-		$lists = $this->get_lists();
-
-		wp_send_json_success( array( 'lists' => $lists ) );
+		wp_send_json_error();
 
 	}
 

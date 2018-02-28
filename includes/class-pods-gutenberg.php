@@ -113,8 +113,6 @@ class Pods_Gutenberg {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @uses   PodsAPI::get_forms()
-	 *
 	 * @return array
 	 */
 	public function get_forms() {
@@ -128,7 +126,7 @@ class Pods_Gutenberg {
 		);
 
 		// Get forms.
-		$forms = PodsAPI::get_forms();
+		$forms = array();
 
 		// Loop through forms.
 		foreach ( $forms as $form ) {

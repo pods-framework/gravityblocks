@@ -6,7 +6,7 @@ $title       = isset( $attributes['title'] ) ? $attributes['title'] : true;
 $description = isset( $attributes['description'] ) ? $attributes['description'] : true;
 
 // Get form object.
-$form = PodsFormsModel::get_form_meta( $form_id );
+$form = array();
 
 // Determine if we're loading minified scripts.
 $min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) || isset( $_GET['pods_debug'] ) ? '' : '.min';
@@ -18,15 +18,9 @@ $min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) || isset( $_GET['pods_debug
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 	<meta http-equiv="Imagetoolbar" content="No" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title><?php esc_html_e( 'Form Preview', 'pods-gutenberg-blocks' ) ?></title>
+	<title><?php esc_html_e( 'Pods Preview', 'pods-gutenberg-blocks' ) ?></title>
 	<link rel="stylesheet" href="<?php echo esc_url( PODS_GUTENBERG_URL . 'css/preview.css' ); ?>" />
 	<?php
-
-	// If form exists, enqueue its scripts.
-	if ( ! empty( $form ) ) {
-		PodsFormDisplay::enqueue_form_scripts( $form );
-	}
-
 	wp_print_head_scripts();
 
 	$styles = apply_filters( 'pods_preview_styles', array(), $form );
@@ -38,13 +32,15 @@ $min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) || isset( $_GET['pods_debug
 <body data-resizable-iframe-connected="data-resizable-iframe-connected">
 <?php
 
-echo PodsForms::get_form( $form_id, $title, $description, true );
+// @todo RENDER whatever we need here
+// echo PodsForms::get_form( $form_id, $title, $description, true );
+
 wp_print_footer_scripts();
 do_action( 'pods_preview_footer', $form_id );
 
 if ( is_rtl() ) {
 	?>
-	<link rel='stylesheet' href='<?php echo PodsCommon::get_base_url() ?>/css/rtl<?php echo $min; ?>.css' type='text/css' />
+	<link rel='stylesheet' href='<?php echo esc_url( PODS_GUTENBERG_URL . 'css/rtl' . $min . '.css' ); ?>' type='text/css' />
 <?php } ?>
 
 <script type="text/javascript">

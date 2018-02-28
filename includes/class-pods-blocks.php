@@ -125,7 +125,6 @@ class Pods_Blocks {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 *
-	 * @uses   PodsAPI::get_form()
 	 * @uses   WP_REST_Request::get_params()
 	 */
 	public function get_block_preview( $request ) {
@@ -135,11 +134,6 @@ class Pods_Blocks {
 
 		// Get form ID.
 		$form_id = rgar( $attributes, 'formId' ) ? $attributes['formId'] : false;
-
-		// If form ID was not provided or form does not exist, return.
-		if ( ! $form_id || ( $form_id && ! PodsAPI::get_form( $form_id ) ) ) {
-			wp_send_json_error();
-		}
 
 		// Get preview markup.
 		$html = self::get( $attributes['type'] ) ? self::get( $attributes['type'] )->preview_block( $attributes ) : false;

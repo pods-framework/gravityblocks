@@ -242,12 +242,12 @@ class Pods_Block {
 	 *
 	 * @param array $logic Conditional logic.
 	 *
-	 * @uses   PodsCommon::get_local_timestamp()
-	 * @uses   PodsFormsModel::matches_operation()
-	 *
 	 * @return bool
 	 */
 	public function can_view_block( $logic ) {
+
+		// @todo Add get_local_timestamp()
+		// @todo Add matches_operation()
 
 		if ( ! rgar( $logic, 'enabled' ) || ( isset( $logic['rules'] ) && empty( $logic['rules'] ) ) ) {
 			return true;
@@ -263,7 +263,7 @@ class Pods_Block {
 		foreach ( $logic['rules'] as $rule ) {
 			switch ( $rule['key'] ) {
 				case 'date':
-					if ( ! rgblank( $rule['value'] ) && PodsFormsModel::matches_operation( strtotime( $rule['value'] ), PodsCommon::get_local_timestamp(), $rule['operator'] ) ) {
+					if ( ! rgblank( $rule['value'] ) && pods_gutenberg()->matches_operation( strtotime( $rule['value'] ), pods_gutenberg()->get_local_timestamp(), $rule['operator'] ) ) {
 						$match_count ++;
 					}
 

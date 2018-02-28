@@ -126,12 +126,8 @@ class Pods_Block_Core extends Pods_Block {
 		$tabindex    = isset( $attributes['tabindex'] ) ? $attributes['tabindex'] : 0;
 		$logic       = isset( $attributes['conditionalLogic'] ) ? $attributes['conditionalLogic'] : array();
 
-		// If form ID was not provided or form does not exist, return.
-		if ( ! $form_id || ( $form_id && ! PodsAPI::get_form( $form_id ) ) || ! $this->can_view_block( $logic ) ) {
-			return '';
-		}
-
-		return pods_form( $form_id, $title, $description, false, null, $ajax, $tabindex, false );
+		// @todo Render string
+		return '';
 
 	}
 

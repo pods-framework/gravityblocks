@@ -41,11 +41,6 @@ class Pods_Block_MailingList extends Pods_Block {
 	 *
 	 * @uses   Pods_Block::can_view_block()
 	 * @uses   Pods_Block_MailingList::get_form_object()
-	 * @uses   PodsCommon::get_browser_class()
-	 * @uses   PodsFormDisplay::enqueue_form_scripts()
-	 * @uses   PodsFormDisplay::get_field()
-	 * @uses   PodsFormDisplay::pods_footer()
-	 * @uses   PodsFormsModel::get_field_value()
 	 *
 	 * @return string|null
 	 */
@@ -64,80 +59,8 @@ class Pods_Block_MailingList extends Pods_Block {
 			return null;
 		}
 
-		// Get form object.
-		$form = $this->get_form_object( $attributes );
-
-		// Handle form submission.
-		if ( $form['id'] === rgpost( 'pods_submit' ) ) {
-			// Get field values.
-			$field_values = PodsForms::post( 'pods_field_values' );
-
-			// Validate.
-			$is_valid = PodsFormDisplay::validate( $form, $field_values );
-
-			// If form is valid, process feed.
-			if ( $is_valid && ! $this->was_form_processed( $form ) ) {
-				// Get entry object.
-				$entry = PodsFormsModel::create_lead( $form );
-
-				// Prepare feed object.
-				$feed = $this->get_feed_object( $attributes, $form );
-
-				// Process feed.
-				$this->process_feed( $feed, $entry, $form );
-
-				// Mark form as processed.
-				$this->form_processed( $form );
-
-				// Get confirmation.
-				$confirmation = array_values( $form['confirmations'] );
-				$confirmation = $confirmation[0];
-
-				// Display confirmation message.
-				return PodsFormDisplay::get_confirmation_message( $confirmation, $form, $entry );
-			}
-		}
-
-		// Enqueue form scripts.
-		PodsFormDisplay::enqueue_form_scripts( $form );
-
-		// Open form wrapper.
-		$html = sprintf( "<div class='%s pods_wrapper %s' id='pods_wrapper_%s'>", PodsCommon::get_browser_class(), ( $form['cssClass'] ? $form['cssClass'] . '_wrapper' : '' ), $form['id'] );
-		$html .= sprintf( "<form method='post' id='pods_%s' class='%s'>", $form['id'], $form['cssClass'] );
-
-		// Display form heading.
-		if ( rgar( $attributes, 'formTitle' ) || rgar( $attributes, 'formDescription' ) ) {
-			$html .= "<div class='pods_heading'>";
-			$html .= rgar( $attributes, 'formTitle' ) ? sprintf( "<h3 class='pods_title'>%s</h3>", $form['title'] ) : '';
-			$html .= rgar( $attributes, 'formDescription' ) ? sprintf( "<span class='pods_description'>%s</span>", $form['description'] ) : '';
-			$html .= '</div>';
-		}
-
-		// Begin form body.
-		$html .= "<div class='pods_body'>";
-		$html .= "<ul class='pods_fields top_label form_sublabel_below'>";
-
-		// Display fields.
-		foreach ( $form['fields'] as $field ) {
-
-			// Get field value.
-			$field_value = PodsFormsModel::get_field_value( $field );
-
-			$html .= PodsFormDisplay::get_field( $field, $field_value );
-
-		}
-
-		// Display form footer.
-		$html .= '</ul></div>';
-		$html .= PodsFormDisplay::pods_footer( $form, 'pods_footer top_label', false, array(), '', false, false, 0 );
-		$html .= sprintf( "<input type='hidden' class='pods_hidden' name='pods_submit' value='%s' />", esc_attr( $form['id'] ) );
-		$html .= sprintf( "<input type='hidden' class='pods_hidden' name='is_submit_%s' value='1' />", esc_attr( $form['id'] ) );
-		$html .= sprintf( "<input type='hidden' class='pods_hidden' name='block_index' value='%d' />", esc_attr( $block_index ) );
-
-		// Close form wrapper.
-		$html .= '</form></div>';
-
-		return $html;
+		// @todo Render html
+		return '';
 
 	}
 
@@ -148,8 +71,6 @@ class Pods_Block_MailingList extends Pods_Block {
 	 * @access public
 	 *
 	 * @param array $attributes Block attributes.
-	 *
-	 * @uses   PodsFormsModel::convert_field_objects()
 	 *
 	 * @return array
 	 */
@@ -306,7 +227,7 @@ class Pods_Block_MailingList extends Pods_Block {
 		);
 
 		// Convert field objects.
-		$form = PodsFormsModel::convert_field_objects( $form );
+		// $form = PodsFormsModel::convert_field_objects( $form );
 
 		// Save form object to class.
 		$this->form_objects[ $attributes['blockID'] ] = $form;

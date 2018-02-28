@@ -19,8 +19,8 @@ class Pods_Gutenberg_Bootstrap {
 			return;
 		}
 
-		require_once 'class-pods-gutenberg.php';
-		require_once 'class-pods-blocks.php';
+		require_once PODS_GUTENBERG_DIR . 'includes/class-pods-gutenberg.php';
+		require_once PODS_GUTENBERG_DIR . 'includes/class-pods-blocks.php';
 
 	}
 

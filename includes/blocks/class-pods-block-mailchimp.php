@@ -1,6 +1,6 @@
 <?php
 
-require_once 'class-pods-block-mailinglist.php';
+require_once PODS_GUTENBERG_DIR . 'includes/blocks/class-pods-block-mailinglist.php';
 
 class Pods_Block_MailChimp extends Pods_Block_MailingList {
 
@@ -53,9 +53,6 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 
 	}
 
-
-
-
 	// # SCRIPT / STYLES -----------------------------------------------------------------------------------------------
 
 	/**
@@ -64,9 +61,6 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 	 * @since  1.0-beta-3
 	 * @access public
 	 *
-	 * @uses   PodsAddOn::get_base_path()
-	 * @uses   PodsAddOn::get_base_url()
-	 *
 	 * @return array
 	 */
 	public function scripts() {
@@ -74,9 +68,9 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 		return array(
 			array(
 				'handle'   => 'pods_editor_block_mailchimp',
-				'src'      => pods_gutenberg()->get_base_url() . '/js/blocks/mailchimp.min.js',
+				'src'      => PODS_GUTENBERG_URL . 'js/blocks/mailchimp.min.js',
 				'deps'     => array( 'wp-blocks', 'wp-element' ),
-				'version'  => filemtime( pods_gutenberg()->get_base_path() . '/js/blocks/mailchimp.min.js' ),
+				'version'  => filemtime( PODS_GUTENBERG_DIR . 'js/blocks/mailchimp.min.js' ),
 				'callback' => array( $this, 'localize_script' ),
 			),
 		);
@@ -93,17 +87,13 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 	 */
 	public function localize_script( $script = array() ) {
 
-		wp_localize_script(
-			$script['handle'],
-			'pods_mailchimp',
-			array(
-				'authenticated'   => pods_mailchimp()->initialize_api(),
-				'plugin_settings' => admin_url( 'admin.php?page=pods_settings&subview=' . pods_mailchimp()->get_slug() ),
-				'lists'           => $this->get_lists(),
-				'icon'            => pods_gutenberg()->get_base_url() . '/images/blocks/mailchimp/icon.svg',
-				'placeholder'     => pods_gutenberg()->get_base_url() . '/images/blocks/mailchimp/placeholder.svg',
-			)
-		);
+		wp_localize_script( $script['handle'], 'pods_mailchimp', array(
+			'authenticated'   => pods_mailchimp()->initialize_api(),
+			'plugin_settings' => admin_url( 'admin.php?page=pods_settings&subview=' . pods_mailchimp()->get_slug() ),
+			'lists'           => $this->get_lists(),
+			'icon'            => PODS_GUTENBERG_URL . 'images/blocks/mailchimp/icon.svg',
+			'placeholder'     => PODS_GUTENBERG_URL . 'images/blocks/mailchimp/placeholder.svg',
+		) );
 
 	}
 
@@ -112,10 +102,6 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 	 *
 	 * @since  1.0-beta-3
 	 * @access public
-	 *
-	 * @uses   PodsAddOn::get_base_path()
-	 * @uses   PodsAddOn::get_base_url()
-	 * @uses   PodsCommon::get_base_url()
 	 *
 	 * @return array
 	 */
@@ -130,17 +116,13 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 			),
 			array(
 				'handle'  => 'pods_editor_block_mailchimp',
-				'src'     => pods_gutenberg()->get_base_url() . '/css/blocks/mailchimp.min.css',
+				'src'     => PODS_GUTENBERG_URL . 'css/blocks/mailchimp.min.css',
 				'deps'    => array( 'pods_formsmain_css' ),
-				'version' => filemtime( pods_gutenberg()->get_base_path() . '/css/blocks/mailchimp.min.css' ),
+				'version' => filemtime( PODS_GUTENBERG_DIR . 'css/blocks/mailchimp.min.css' ),
 			),
 		);
 
 	}
-
-
-
-
 
 	// # BLOCK RENDER --------------------------------------------------------------------------------------------------
 
@@ -153,7 +135,6 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 	 * @param array $attributes Block attributes.
 	 *
 	 * @uses   Pods_Block_MailChimp::get_form_object()
-	 * @uses   PodsCommon::get_base_path()
 	 * @uses   PodsCommon::get_browser_class()
 	 * @uses   PodsFormDisplay::enqueue_form_scripts()
 	 * @uses   PodsFormDisplay::get_field()
@@ -221,10 +202,6 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 
 	}
 
-
-
-
-
 	// # AUTHENTICATION ------------------------------------------------------------------------------------------------
 
 	/**
@@ -277,6 +254,7 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 
 		// Update API key and save.
 		$settings['apiKey'] = $api_key;
+
 		pods_mailchimp()->update_plugin_settings( $settings );
 
 		// Check if MailChimp was authenticated.
@@ -293,10 +271,6 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 		wp_send_json_success( array( 'lists' => $lists ) );
 
 	}
-
-
-
-
 
 	// # HELPER METHODS ------------------------------------------------------------------------------------------------
 
@@ -321,17 +295,13 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 		}
 
 		try {
-
 			// Get MailChimp lists.
 			$mc_lists = pods_mailchimp()->api->get_lists( array( 'start' => 0, 'limit' => 100 ) );
-
 		} catch ( Exception $e ) {
-
 			// Log that we could not get MailChimp lists.
-			pods_gutenberg()->log_error( __METHOD__ . '(): Unable to get MailChimp lists; ' . $e->getMessage() );
+			pods_error( __METHOD__ . '(): Unable to get MailChimp lists; ' . $e->getMessage() );
 
 			return array();
-
 		}
 
 		// Initialize lists array.
@@ -339,13 +309,11 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 
 		// Loop through MailChimp lists.
 		foreach ( $mc_lists['lists'] as $mc_list ) {
-
 			// Add list to return array.
 			$lists[] = array(
 				'label' => esc_html( $mc_list['name'] ),
 				'value' => esc_attr( $mc_list['id'] ),
 			);
-
 		}
 
 		return $lists;
@@ -355,15 +323,11 @@ class Pods_Block_MailChimp extends Pods_Block_MailingList {
 }
 
 try {
-
 	// Register block.
 	if ( function_exists( 'pods_mailchimp' ) && version_compare( pods_mailchimp()->get_version(), '4.2.6', '>=' ) ) {
 		Pods_Blocks::register( Pods_Block_MailChimp::get_instance() );
 	}
-
 } catch ( Exception $e ) {
-
 	// Log that block could not be registered.
-	PodsCommon::log_debug( 'Unable to register block; ' . $e->getMessage() );
-
+	pods_error( 'Unable to register block; ' . $e->getMessage() );
 }

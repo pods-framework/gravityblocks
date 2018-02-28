@@ -36,10 +36,6 @@ class Pods_Block {
 
 	}
 
-
-
-
-
 	// # BLOCK REGISTRATION --------------------------------------------------------------------------------------------
 
 	/**
@@ -70,10 +66,6 @@ class Pods_Block {
 
 	}
 
-
-
-
-
 	// # SCRIPT ENQUEUEING ---------------------------------------------------------------------------------------------
 
 	/**
@@ -96,7 +88,6 @@ class Pods_Block {
 
 		// Loop through scripts.
 		foreach ( $scripts as $script ) {
-
 			// Prepare parameters.
 			$src       = isset( $script['src'] ) ? $script['src'] : false;
 			$deps      = isset( $script['deps'] ) ? $script['deps'] : array();
@@ -107,15 +98,14 @@ class Pods_Block {
 			wp_enqueue_script( $script['handle'], $src, $deps, $version, $in_footer );
 
 			// Localize script.
-			if ( rgar( $script, 'strings' ) ) {
+			if ( ! empty( $script['strings'] ) ) {
 				wp_localize_script( $script['handle'], $script['handle'] . '_strings', $script['strings'] );
 			}
 
 			// Run script callback.
-			if ( rgar( $script, 'callback' ) && is_callable( $script['callback'] ) ) {
+			if ( ! empty( $script['callback'] ) && is_callable( $script['callback'] ) ) {
 				call_user_func( $script['callback'], $script );
 			}
-
 		}
 
 	}
@@ -154,10 +144,6 @@ class Pods_Block {
 		return array();
 
 	}
-
-
-
-
 
 	// # STYLE ENQUEUEING ----------------------------------------------------------------------------------------------
 
@@ -210,10 +196,6 @@ class Pods_Block {
 
 	}
 
-
-
-
-
 	// # BLOCK RENDER -------------------------------------------------------------------------------------------------
 
 	/**
@@ -232,9 +214,6 @@ class Pods_Block {
 
 	}
 
-
-
-
 	// # BLOCK PREVIEW -------------------------------------------------------------------------------------------------
 
 	/**
@@ -252,10 +231,6 @@ class Pods_Block {
 		return '';
 
 	}
-
-
-
-
 
 	// # CONDITIONAL LOGIC ---------------------------------------------------------------------------------------------
 
@@ -286,47 +261,34 @@ class Pods_Block {
 
 		// Loop through rules.
 		foreach ( $logic['rules'] as $rule ) {
-
 			switch ( $rule['key'] ) {
-
 				case 'date':
-
 					if ( ! rgblank( $rule['value'] ) && PodsFormsModel::matches_operation( strtotime( $rule['value'] ), PodsCommon::get_local_timestamp(), $rule['operator'] ) ) {
-						$match_count++;
+						$match_count ++;
 					}
 
 					break;
-
 				case 'user':
-
 					// Handle logged in.
 					if ( 'logged-in' === $rule['value'] ) {
-
-						if ( ( is_user_logged_in() && $rule['operator'] === 'is' ) || ( ! is_user_logged_in() && $rule['operator'] === 'isnot' ) ) {
-							$match_count++;
+						if ( ( is_user_logged_in() && 'is' === $rule['operator'] ) || ( ! is_user_logged_in() && 'isnot' === $rule['operator'] ) ) {
+							$match_count ++;
 						}
-
-					} else if ( 'logged-out' === $rule['value'] ) {
-
-						if ( ( ! is_user_logged_in() && $rule['operator'] === 'is' ) || ( is_user_logged_in() && $rule['operator'] === 'isnot' ) ) {
-							$match_count++;
+					} elseif ( 'logged-out' === $rule['value'] ) {
+						if ( ( ! is_user_logged_in() && 'is' === $rule['operator'] ) || ( is_user_logged_in() && 'isnot' === $rule['operator'] ) ) {
+							$match_count ++;
 						}
-
 					} else {
-
-						if ( ( in_array( $rule['value'], $user->roles ) && $rule['operator'] === 'is' ) || ( ! in_array( $rule['value'], $user->roles ) && $rule['operator'] === 'isnot' ) ) {
-							$match_count++;
+						if ( ( in_array( $rule['value'], $user->roles, true ) && 'is' === $rule['operator'] ) || ( ! in_array( $rule['value'], $user->roles, true ) && 'isnot' === $rule['operator'] ) ) {
+							$match_count ++;
 						}
-
 					}
 
 					break;
-
 			}
-
 		}
 
-		$result = ( 'all' === $logic['logicType'] && $match_count === count( $logic['rules'] ) ) || ( 'any' === $logic['logicType'] && $match_count > 0 );
+		$result = ( 'all' === $logic['logicType'] && count( $logic['rules'] ) === $match_count ) || ( 'any' === $logic['logicType'] && 0 < $match_count );
 
 		return 'hide' === $logic['actionType'] ? ! $result : $result;
 

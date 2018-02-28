@@ -30,7 +30,11 @@
 
 define( 'PODS_GUTENBERG_VERSION', '1.0-beta-1' );
 
-require_once 'includes/class-pods-gutenberg-bootstrap.php';
+define( 'PODS_GUTENBERG_SLUG', plugin_basename( __FILE__ ) );
+define( 'PODS_GUTENBERG_URL', plugin_dir_url( __FILE__ ) );
+define( 'PODS_GUTENBERG_DIR', plugin_dir_path( __FILE__ ) );
+
+require_once PODS_GUTENBERG_DIR . 'includes/class-pods-gutenberg-bootstrap.php';
 
 add_action( 'init', array( 'Pods_Gutenberg_Bootstrap', 'load_blocks' ) );
 

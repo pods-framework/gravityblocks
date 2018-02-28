@@ -1,6 +1,6 @@
 <?php
 
-require_once( plugin_dir_path( __FILE__ ) . 'blocks/class-pods-block.php' );
+require_once PODS_GUTENBERG_DIR . 'includes/blocks/class-pods-block.php';
 
 class Pods_Blocks {
 
@@ -73,10 +73,6 @@ class Pods_Blocks {
 		return isset( self::$_blocks[ $block_type ] ) ? self::$_blocks[ $block_type ] : false;
 
 	}
-
-
-
-
 
 	// # BLOCK PREVIEW -------------------------------------------------------------------------------------------------
 
@@ -156,12 +152,11 @@ class Pods_Blocks {
 
 	}
 
-
 }
 
 new Pods_Blocks();
 
 // Load all the block files automatically.
 foreach ( glob( plugin_dir_path( __FILE__ ) . 'blocks/class-pods-block-*.php' ) as $filename ) {
-	require_once( $filename );
+	require_once $filename;
 }

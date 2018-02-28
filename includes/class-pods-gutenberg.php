@@ -226,7 +226,7 @@ class Pods_Gutenberg {
 
 		// Load needed function file.
 		if ( ! function_exists( 'get_editable_roles' ) ) {
-			require_once( ABSPATH . '/wp-admin/includes/user.php' );
+			require_once ABSPATH . '/wp-admin/includes/user.php';
 		}
 
 		// Initialize roles array.

@@ -29,10 +29,6 @@ class Pods_Block_MailingList extends Pods_Block {
 	 */
 	public $processed_forms = array();
 
-
-
-
-
 	// # BLOCK RENDER --------------------------------------------------------------------------------------------------
 
 	/**
@@ -45,7 +41,6 @@ class Pods_Block_MailingList extends Pods_Block {
 	 *
 	 * @uses   Pods_Block::can_view_block()
 	 * @uses   Pods_Block_MailingList::get_form_object()
-	 * @uses   PodsCommon::get_base_path()
 	 * @uses   PodsCommon::get_browser_class()
 	 * @uses   PodsFormDisplay::enqueue_form_scripts()
 	 * @uses   PodsFormDisplay::get_field()
@@ -69,17 +64,11 @@ class Pods_Block_MailingList extends Pods_Block {
 			return null;
 		}
 
-		// Require form display class.
-		if ( ! class_exists( 'PodsFormDisplay' ) ) {
-			require_once PodsCommon::get_base_path() . '/form_display.php';
-		}
-
 		// Get form object.
 		$form = $this->get_form_object( $attributes );
 
 		// Handle form submission.
 		if ( $form['id'] === rgpost( 'pods_submit' ) ) {
-
 			// Get field values.
 			$field_values = PodsForms::post( 'pods_field_values' );
 
@@ -88,7 +77,6 @@ class Pods_Block_MailingList extends Pods_Block {
 
 			// If form is valid, process feed.
 			if ( $is_valid && ! $this->was_form_processed( $form ) ) {
-
 				// Get entry object.
 				$entry = PodsFormsModel::create_lead( $form );
 
@@ -107,9 +95,7 @@ class Pods_Block_MailingList extends Pods_Block {
 
 				// Display confirmation message.
 				return PodsFormDisplay::get_confirmation_message( $confirmation, $form, $entry );
-
 			}
-
 		}
 
 		// Enqueue form scripts.
@@ -121,12 +107,10 @@ class Pods_Block_MailingList extends Pods_Block {
 
 		// Display form heading.
 		if ( rgar( $attributes, 'formTitle' ) || rgar( $attributes, 'formDescription' ) ) {
-
 			$html .= "<div class='pods_heading'>";
 			$html .= rgar( $attributes, 'formTitle' ) ? sprintf( "<h3 class='pods_title'>%s</h3>", $form['title'] ) : '';
 			$html .= rgar( $attributes, 'formDescription' ) ? sprintf( "<span class='pods_description'>%s</span>", $form['description'] ) : '';
 			$html .= '</div>';
-
 		}
 
 		// Begin form body.
@@ -173,10 +157,12 @@ class Pods_Block_MailingList extends Pods_Block {
 
 		// Get block index.
 		if ( isset( $this->block_index[ $attributes['blockID'] ] ) ) {
-			$block_index                                 = $this->block_index[ $attributes['blockID'] ] + 1;
+			$block_index = $this->block_index[ $attributes['blockID'] ] + 1;
+
 			$this->block_index[ $attributes['blockID'] ] = $block_index;
 		} else {
-			$block_index                                 = 0;
+			$block_index = 0;
+
 			$this->block_index[ $attributes['blockID'] ] = $block_index;
 		}
 
@@ -364,10 +350,6 @@ class Pods_Block_MailingList extends Pods_Block {
 
 	}
 
-
-
-
-
 	// # HELPER METHODS ------------------------------------------------------------------------------------------------
 
 	/**
@@ -398,9 +380,8 @@ class Pods_Block_MailingList extends Pods_Block {
 	 */
 	public function was_form_processed( $form = array() ) {
 
-		return in_array( $form['id'], $this->processed_forms );
+		return in_array( $form['id'], $this->processed_forms, true );
 
 	}
 
 }
-

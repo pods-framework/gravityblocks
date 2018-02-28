@@ -49,9 +49,6 @@ class Pods_Block_Core extends Pods_Block {
 	 * @since  1.0-beta-3
 	 * @access public
 	 *
-	 * @uses   PodsAddOn::get_base_path()
-	 * @uses   PodsAddOn::get_base_url()
-	 *
 	 * @return array
 	 */
 	public function scripts() {
@@ -59,9 +56,9 @@ class Pods_Block_Core extends Pods_Block {
 		return array(
 			array(
 				'handle'   => 'pods_editor_block_core',
-				'src'      => pods_gutenberg()->get_base_url() . '/js/blocks/core.min.js',
+				'src'      => PODS_GUTENBERG_URL . 'js/blocks/core.min.js',
 				'deps'     => array( 'wp-blocks', 'wp-element' ),
-				'version'  => filemtime( pods_gutenberg()->get_base_path() . '/js/blocks/core.min.js' ),
+				'version'  => filemtime( PODS_GUTENBERG_DIR . 'js/blocks/core.min.js' ),
 				'callback' => array( $this, 'localize_script' ),
 			),
 		);
@@ -78,15 +75,11 @@ class Pods_Block_Core extends Pods_Block {
 	 */
 	public function localize_script( $script = array() ) {
 
-		wp_localize_script(
-			$script['handle'],
-			'pods',
-			array(
-				'forms'              => pods_gutenberg()->get_forms(),
-				'conditionalOptions' => pods_gutenberg()->get_conditional_options(),
-				'icon'               => pods_gutenberg()->get_base_url() . '/images/blocks/core/icon.svg',
-			)
-		);
+		wp_localize_script( $script['handle'], 'pods', array(
+			'forms'              => pods_gutenberg()->get_forms(),
+			'conditionalOptions' => pods_gutenberg()->get_conditional_options(),
+			'icon'               => PODS_GUTENBERG_URL . 'images/blocks/core/icon.svg',
+		) );
 
 	}
 
@@ -96,9 +89,6 @@ class Pods_Block_Core extends Pods_Block {
 	 * @since  1.0-beta-3
 	 * @access public
 	 *
-	 * @uses   PodsAddOn::get_base_path()
-	 * @uses   PodsAddOn::get_base_url()
-	 *
 	 * @return array
 	 */
 	public function styles() {
@@ -106,16 +96,13 @@ class Pods_Block_Core extends Pods_Block {
 		return array(
 			array(
 				'handle'  => 'pods_editor_block_core',
-				'src'     => pods_gutenberg()->get_base_url() . '/css/block.css',
+				'src'     => PODS_GUTENBERG_URL . 'css/block.css',
 				'deps'    => array( 'wp-edit-blocks' ),
-				'version' => filemtime( pods_gutenberg()->get_base_path() . '/css/block.css' ),
+				'version' => filemtime( PODS_GUTENBERG_DIR . 'css/block.css' ),
 			),
 		);
 
 	}
-
-
-
 
 	// # BLOCK RENDER -------------------------------------------------------------------------------------------------
 
@@ -148,9 +135,6 @@ class Pods_Block_Core extends Pods_Block {
 
 	}
 
-
-
-
 	// # BLOCK PREVIEW -------------------------------------------------------------------------------------------------
 
 	/**
@@ -166,7 +150,7 @@ class Pods_Block_Core extends Pods_Block {
 	public function preview_block( $attributes = array() ) {
 
 		ob_start();
-		include_once pods_gutenberg()->get_base_path() . '/includes/preview.php';
+		require_once PODS_GUTENBERG_DIR . 'includes/preview.php';
 		$html = ob_get_contents();
 		ob_end_clean();
 
@@ -177,13 +161,9 @@ class Pods_Block_Core extends Pods_Block {
 }
 
 try {
-
 	// Register block.
 	Pods_Blocks::register( Pods_Block_Core::get_instance() );
-
 } catch ( Exception $e ) {
-
 	// Log that block could not be registered.
-	PodsCommon::log_debug( 'Unable to register block; ' . $e->getMessage() );
-
+	pods_error( 'Unable to register block; ' . $e->getMessage() );
 }

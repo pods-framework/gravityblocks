@@ -1,13 +1,13 @@
 <?php
 
-class GF_Block_Core extends GF_Block {
+class Pods_Block_Core extends Pods_Block {
 
 	/**
 	 * Contains an instance of this block, if available.
 	 *
 	 * @since  1.0
 	 * @access private
-	 * @var    GF_Block $_instance If available, contains an instance of this block.
+	 * @var    Pods_Block $_instance If available, contains an instance of this block.
 	 */
 	private static $_instance = null;
 
@@ -16,7 +16,7 @@ class GF_Block_Core extends GF_Block {
 	 *
 	 * @var string
 	 */
-	public $type = 'gravityforms/block';
+	public $type = 'pods/block';
 
 	/**
 	 * Get instance of this class.
@@ -25,7 +25,7 @@ class GF_Block_Core extends GF_Block {
 	 * @access public
 	 * @static
 	 *
-	 * @return GF_Block
+	 * @return Pods_Block
 	 */
 	public static function get_instance() {
 
@@ -49,8 +49,8 @@ class GF_Block_Core extends GF_Block {
 	 * @since  1.0-beta-3
 	 * @access public
 	 *
-	 * @uses   GFAddOn::get_base_path()
-	 * @uses   GFAddOn::get_base_url()
+	 * @uses   PodsAddOn::get_base_path()
+	 * @uses   PodsAddOn::get_base_url()
 	 *
 	 * @return array
 	 */
@@ -58,10 +58,10 @@ class GF_Block_Core extends GF_Block {
 
 		return array(
 			array(
-				'handle'   => 'gform_editor_block_core',
-				'src'      => gf_gutenberg()->get_base_url() . '/js/blocks/core.min.js',
+				'handle'   => 'pods_editor_block_core',
+				'src'      => pods_gutenberg()->get_base_url() . '/js/blocks/core.min.js',
 				'deps'     => array( 'wp-blocks', 'wp-element' ),
-				'version'  => filemtime( gf_gutenberg()->get_base_path() . '/js/blocks/core.min.js' ),
+				'version'  => filemtime( pods_gutenberg()->get_base_path() . '/js/blocks/core.min.js' ),
 				'callback' => array( $this, 'localize_script' ),
 			),
 		);
@@ -80,11 +80,11 @@ class GF_Block_Core extends GF_Block {
 
 		wp_localize_script(
 			$script['handle'],
-			'gform',
+			'pods',
 			array(
-				'forms'              => gf_gutenberg()->get_forms(),
-				'conditionalOptions' => gf_gutenberg()->get_conditional_options(),
-				'icon'               => gf_gutenberg()->get_base_url() . '/images/blocks/core/icon.svg',
+				'forms'              => pods_gutenberg()->get_forms(),
+				'conditionalOptions' => pods_gutenberg()->get_conditional_options(),
+				'icon'               => pods_gutenberg()->get_base_url() . '/images/blocks/core/icon.svg',
 			)
 		);
 
@@ -96,8 +96,8 @@ class GF_Block_Core extends GF_Block {
 	 * @since  1.0-beta-3
 	 * @access public
 	 *
-	 * @uses   GFAddOn::get_base_path()
-	 * @uses   GFAddOn::get_base_url()
+	 * @uses   PodsAddOn::get_base_path()
+	 * @uses   PodsAddOn::get_base_url()
 	 *
 	 * @return array
 	 */
@@ -105,10 +105,10 @@ class GF_Block_Core extends GF_Block {
 
 		return array(
 			array(
-				'handle'  => 'gform_editor_block_core',
-				'src'     => gf_gutenberg()->get_base_url() . '/css/block.css',
+				'handle'  => 'pods_editor_block_core',
+				'src'     => pods_gutenberg()->get_base_url() . '/css/block.css',
 				'deps'    => array( 'wp-edit-blocks' ),
-				'version' => filemtime( gf_gutenberg()->get_base_path() . '/css/block.css' ),
+				'version' => filemtime( pods_gutenberg()->get_base_path() . '/css/block.css' ),
 			),
 		);
 
@@ -140,11 +140,11 @@ class GF_Block_Core extends GF_Block {
 		$logic       = isset( $attributes['conditionalLogic'] ) ? $attributes['conditionalLogic'] : array();
 
 		// If form ID was not provided or form does not exist, return.
-		if ( ! $form_id || ( $form_id && ! GFAPI::get_form( $form_id ) ) || ! $this->can_view_block( $logic ) ) {
+		if ( ! $form_id || ( $form_id && ! PodsAPI::get_form( $form_id ) ) || ! $this->can_view_block( $logic ) ) {
 			return '';
 		}
 
-		return gravity_form( $form_id, $title, $description, false, null, $ajax, $tabindex, false );
+		return pods_form( $form_id, $title, $description, false, null, $ajax, $tabindex, false );
 
 	}
 
@@ -166,7 +166,7 @@ class GF_Block_Core extends GF_Block {
 	public function preview_block( $attributes = array() ) {
 
 		ob_start();
-		include_once gf_gutenberg()->get_base_path() . '/includes/preview.php';
+		include_once pods_gutenberg()->get_base_path() . '/includes/preview.php';
 		$html = ob_get_contents();
 		ob_end_clean();
 
@@ -179,11 +179,11 @@ class GF_Block_Core extends GF_Block {
 try {
 
 	// Register block.
-	GF_Blocks::register( GF_Block_Core::get_instance() );
+	Pods_Blocks::register( Pods_Block_Core::get_instance() );
 
 } catch ( Exception $e ) {
 
 	// Log that block could not be registered.
-	GFCommon::log_debug( 'Unable to register block; ' . $e->getMessage() );
+	PodsCommon::log_debug( 'Unable to register block; ' . $e->getMessage() );
 
 }

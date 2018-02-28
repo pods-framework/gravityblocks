@@ -1,15 +1,15 @@
 <?php
 
-require_once 'class-gf-block-mailinglist.php';
+require_once 'class-pods-block-mailinglist.php';
 
-class GF_Block_MailChimp extends GF_Block_MailingList {
+class Pods_Block_MailChimp extends Pods_Block_MailingList {
 
 	/**
 	 * Contains an instance of this block, if available.
 	 *
 	 * @since  1.0-beta-3
 	 * @access private
-	 * @var    GF_Block $_instance If available, contains an instance of this block.
+	 * @var    Pods_Block $_instance If available, contains an instance of this block.
 	 */
 	private static $_instance = null;
 
@@ -18,7 +18,7 @@ class GF_Block_MailChimp extends GF_Block_MailingList {
 	 *
 	 * @var string
 	 */
-	public $type = 'gravityforms/mailchimp';
+	public $type = 'pods/mailchimp';
 
 	/**
 	 * Get instance of this class.
@@ -27,7 +27,7 @@ class GF_Block_MailChimp extends GF_Block_MailingList {
 	 * @access public
 	 * @static
 	 *
-	 * @return GF_Block
+	 * @return Pods_Block
 	 */
 	public static function get_instance() {
 
@@ -64,8 +64,8 @@ class GF_Block_MailChimp extends GF_Block_MailingList {
 	 * @since  1.0-beta-3
 	 * @access public
 	 *
-	 * @uses   GFAddOn::get_base_path()
-	 * @uses   GFAddOn::get_base_url()
+	 * @uses   PodsAddOn::get_base_path()
+	 * @uses   PodsAddOn::get_base_url()
 	 *
 	 * @return array
 	 */
@@ -73,10 +73,10 @@ class GF_Block_MailChimp extends GF_Block_MailingList {
 
 		return array(
 			array(
-				'handle'   => 'gform_editor_block_mailchimp',
-				'src'      => gf_gutenberg()->get_base_url() . '/js/blocks/mailchimp.min.js',
+				'handle'   => 'pods_editor_block_mailchimp',
+				'src'      => pods_gutenberg()->get_base_url() . '/js/blocks/mailchimp.min.js',
 				'deps'     => array( 'wp-blocks', 'wp-element' ),
-				'version'  => filemtime( gf_gutenberg()->get_base_path() . '/js/blocks/mailchimp.min.js' ),
+				'version'  => filemtime( pods_gutenberg()->get_base_path() . '/js/blocks/mailchimp.min.js' ),
 				'callback' => array( $this, 'localize_script' ),
 			),
 		);
@@ -95,13 +95,13 @@ class GF_Block_MailChimp extends GF_Block_MailingList {
 
 		wp_localize_script(
 			$script['handle'],
-			'gform_mailchimp',
+			'pods_mailchimp',
 			array(
-				'authenticated'   => gf_mailchimp()->initialize_api(),
-				'plugin_settings' => admin_url( 'admin.php?page=gf_settings&subview=' . gf_mailchimp()->get_slug() ),
+				'authenticated'   => pods_mailchimp()->initialize_api(),
+				'plugin_settings' => admin_url( 'admin.php?page=pods_settings&subview=' . pods_mailchimp()->get_slug() ),
 				'lists'           => $this->get_lists(),
-				'icon'            => gf_gutenberg()->get_base_url() . '/images/blocks/mailchimp/icon.svg',
-				'placeholder'     => gf_gutenberg()->get_base_url() . '/images/blocks/mailchimp/placeholder.svg',
+				'icon'            => pods_gutenberg()->get_base_url() . '/images/blocks/mailchimp/icon.svg',
+				'placeholder'     => pods_gutenberg()->get_base_url() . '/images/blocks/mailchimp/placeholder.svg',
 			)
 		);
 
@@ -113,26 +113,26 @@ class GF_Block_MailChimp extends GF_Block_MailingList {
 	 * @since  1.0-beta-3
 	 * @access public
 	 *
-	 * @uses   GFAddOn::get_base_path()
-	 * @uses   GFAddOn::get_base_url()
-	 * @uses   GFCommon::get_base_url()
+	 * @uses   PodsAddOn::get_base_path()
+	 * @uses   PodsAddOn::get_base_url()
+	 * @uses   PodsCommon::get_base_url()
 	 *
 	 * @return array
 	 */
 	public function styles() {
 
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
+		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['pods_debug'] ) ? '' : '.min';
 
 		return array(
 			array(
-				'handle' => 'gforms_formsmain_css',
-				'src'    => GFCommon::get_base_url() . '/css/formsmain' . $min . '.css',
+				'handle' => 'pods_formsmain_css',
+				'src'    => PodsCommon::get_base_url() . '/css/formsmain' . $min . '.css',
 			),
 			array(
-				'handle'  => 'gform_editor_block_mailchimp',
-				'src'     => gf_gutenberg()->get_base_url() . '/css/blocks/mailchimp.min.css',
-				'deps'    => array( 'gforms_formsmain_css' ),
-				'version' => filemtime( gf_gutenberg()->get_base_path() . '/css/blocks/mailchimp.min.css' ),
+				'handle'  => 'pods_editor_block_mailchimp',
+				'src'     => pods_gutenberg()->get_base_url() . '/css/blocks/mailchimp.min.css',
+				'deps'    => array( 'pods_formsmain_css' ),
+				'version' => filemtime( pods_gutenberg()->get_base_path() . '/css/blocks/mailchimp.min.css' ),
 			),
 		);
 
@@ -152,20 +152,20 @@ class GF_Block_MailChimp extends GF_Block_MailingList {
 	 *
 	 * @param array $attributes Block attributes.
 	 *
-	 * @uses   GF_Block_MailChimp::get_form_object()
-	 * @uses   GFCommon::get_base_path()
-	 * @uses   GFCommon::get_browser_class()
-	 * @uses   GFFormDisplay::enqueue_form_scripts()
-	 * @uses   GFFormDisplay::get_field()
-	 * @uses   GFFormDisplay::gform_footer()
-	 * @uses   GFFormsModel::get_field_value()
+	 * @uses   Pods_Block_MailChimp::get_form_object()
+	 * @uses   PodsCommon::get_base_path()
+	 * @uses   PodsCommon::get_browser_class()
+	 * @uses   PodsFormDisplay::enqueue_form_scripts()
+	 * @uses   PodsFormDisplay::get_field()
+	 * @uses   PodsFormDisplay::pods_footer()
+	 * @uses   PodsFormsModel::get_field_value()
 	 *
 	 * @return string|null
 	 */
 	public function render_block( $attributes = array() ) {
 
 		// If no list was selected or API cannot be initialized, return.
-		if ( ! rgar( $attributes, 'list' ) || ! gf_mailchimp()->initialize_api() ) {
+		if ( ! rgar( $attributes, 'list' ) || ! pods_mailchimp()->initialize_api() ) {
 			return null;
 		}
 
@@ -217,7 +217,7 @@ class GF_Block_MailChimp extends GF_Block_MailingList {
 	 */
 	public function process_feed( $feed = array(), $entry = array(), $form = array() ) {
 
-		return gf_mailchimp()->process_feed( $feed, $entry, $form );
+		return pods_mailchimp()->process_feed( $feed, $entry, $form );
 
 	}
 
@@ -233,11 +233,11 @@ class GF_Block_MailChimp extends GF_Block_MailingList {
 	 * @since  1.0-beta-3
 	 * @access public
 	 *
-	 * @uses   GF_Block_MailChimp::authentication_response()
+	 * @uses   Pods_Block_MailChimp::authentication_response()
 	 */
 	public function register_authentication_route() {
 
-		register_rest_route( 'gf/v2', '/block/mailchimp/auth', array(
+		register_rest_route( 'pods/v2', '/block/mailchimp/auth', array(
 			array(
 				'methods'  => WP_REST_Server::READABLE,
 				'callback' => array( $this, 'authentication_response' ),
@@ -261,10 +261,10 @@ class GF_Block_MailChimp extends GF_Block_MailingList {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 *
-	 * @uses   GFAddOn::get_plugin_settings()
-	 * @uses   GFAddOn::update_plugin_settings()
-	 * @uses   GF_Block_MailChimp::get_lists()
-	 * @uses   GFMailChimp::initialize_api()
+	 * @uses   PodsAddOn::get_plugin_settings()
+	 * @uses   PodsAddOn::update_plugin_settings()
+	 * @uses   Pods_Block_MailChimp::get_lists()
+	 * @uses   PodsMailChimp::initialize_api()
 	 * @uses   WP_REST_Request::get_param()
 	 */
 	public function authentication_response( $request ) {
@@ -273,14 +273,14 @@ class GF_Block_MailChimp extends GF_Block_MailingList {
 		$api_key = $request->get_param( 'apiKey' );
 
 		// Get MailChimp plugin settings.
-		$settings = gf_mailchimp()->get_plugin_settings();
+		$settings = pods_mailchimp()->get_plugin_settings();
 
 		// Update API key and save.
 		$settings['apiKey'] = $api_key;
-		gf_mailchimp()->update_plugin_settings( $settings );
+		pods_mailchimp()->update_plugin_settings( $settings );
 
 		// Check if MailChimp was authenticated.
-		$authenticated = gf_mailchimp()->initialize_api();
+		$authenticated = pods_mailchimp()->initialize_api();
 
 		// If MailChimp could not be authenticated, return.
 		if ( ! $authenticated ) {
@@ -311,24 +311,24 @@ class GF_Block_MailChimp extends GF_Block_MailingList {
 	public function get_lists() {
 
 		// If MailChimp is not installed, return.
-		if ( ! function_exists( 'gf_mailchimp' ) ) {
+		if ( ! function_exists( 'pods_mailchimp' ) ) {
 			return array();
 		}
 
 		// If MailChimp API is not initialized, return.
-		if ( ! gf_mailchimp()->initialize_api() ) {
+		if ( ! pods_mailchimp()->initialize_api() ) {
 			return array();
 		}
 
 		try {
 
 			// Get MailChimp lists.
-			$mc_lists = gf_mailchimp()->api->get_lists( array( 'start' => 0, 'limit' => 100 ) );
+			$mc_lists = pods_mailchimp()->api->get_lists( array( 'start' => 0, 'limit' => 100 ) );
 
 		} catch ( Exception $e ) {
 
 			// Log that we could not get MailChimp lists.
-			gf_gutenberg()->log_error( __METHOD__ . '(): Unable to get MailChimp lists; ' . $e->getMessage() );
+			pods_gutenberg()->log_error( __METHOD__ . '(): Unable to get MailChimp lists; ' . $e->getMessage() );
 
 			return array();
 
@@ -357,13 +357,13 @@ class GF_Block_MailChimp extends GF_Block_MailingList {
 try {
 
 	// Register block.
-	if ( function_exists( 'gf_mailchimp' ) && version_compare( gf_mailchimp()->get_version(), '4.2.6', '>=' ) ) {
-		GF_Blocks::register( GF_Block_MailChimp::get_instance() );
+	if ( function_exists( 'pods_mailchimp' ) && version_compare( pods_mailchimp()->get_version(), '4.2.6', '>=' ) ) {
+		Pods_Blocks::register( Pods_Block_MailChimp::get_instance() );
 	}
 
 } catch ( Exception $e ) {
 
 	// Log that block could not be registered.
-	GFCommon::log_debug( 'Unable to register block; ' . $e->getMessage() );
+	PodsCommon::log_debug( 'Unable to register block; ' . $e->getMessage() );
 
 }

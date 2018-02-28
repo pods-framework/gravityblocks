@@ -58,7 +58,7 @@ export default class Ruleset extends Component {
 
 	getOptions() {
 
-		return gform.conditionalOptions;
+		return pods.conditionalOptions;
 
 	}
 
@@ -86,13 +86,13 @@ export default class Ruleset extends Component {
 					<Rule
 						options={options}
 						rule={rule}
-						key={`gform-block__conditional-rule-${index}`}
+						key={`pods-block__conditional-rule-${index}`}
 						index={index}
 						updateRule={this.updateRule}
 						deleteRule={this.deleteRule}
 					/> )
 			),
-			<div className={"gform-block__conditional-rule-add" + (!rules || rules.length == 0 ? " no-rules" : "")} key="gform-block__conditional-rule-add">
+			<div className={"pods-block__conditional-rule-add" + (!rules || rules.length == 0 ? " no-rules" : "")} key="pods-block__conditional-rule-add">
 				<IconButton
 					icon="insert"
 					label={__( 'Add Rule' )}

@@ -1,13 +1,13 @@
 <?php
 
-class GF_Block {
+class Pods_Block {
 
 	/**
 	 * Contains an instance of this block, if available.
 	 *
 	 * @since  1.0-beta-3
 	 * @access private
-	 * @var    GF_Block $_instance If available, contains an instance of this block.
+	 * @var    Pods_Block $_instance If available, contains an instance of this block.
 	 */
 	private static $_instance = null;
 
@@ -25,7 +25,7 @@ class GF_Block {
 	 * @since  1.0-beta-3
 	 * @access public
 	 *
-	 * @uses   GF_Block::register_block_type()
+	 * @uses   Pods_Block::register_block_type()
 	 */
 	public function init() {
 
@@ -82,7 +82,7 @@ class GF_Block {
 	 * @since  1.0-beta-3
 	 * @access public
 	 *
-	 * @uses   GF_Block::scripts()
+	 * @uses   Pods_Block::scripts()
 	 */
 	public function enqueue_scripts() {
 
@@ -135,8 +135,8 @@ class GF_Block {
 	 *            'callback' => array( $this, 'localize_scripts' ),
 	 *            'strings'  => array(
 	 *                // Accessible in JavaScript using the global variable "[script handle]_strings"
-	 *                'stringKey1' => __( 'The string', 'gravityforms' ),
-	 *                'stringKey2' => __( 'Another string.', 'gravityforms' )
+	 *                'stringKey1' => __( 'The string', 'pods-gutenberg-blocks' ),
+	 *                'stringKey2' => __( 'Another string.', 'pods-gutenberg-blocks' )
 	 *            )
 	 *        )
 	 *    );
@@ -167,7 +167,7 @@ class GF_Block {
 	 * @since  1.0-beta-3
 	 * @access public
 	 *
-	 * @uses   GF_Block::styles()
+	 * @uses   Pods_Block::styles()
 	 */
 	public function enqueue_styles() {
 
@@ -267,8 +267,8 @@ class GF_Block {
 	 *
 	 * @param array $logic Conditional logic.
 	 *
-	 * @uses   GFCommon::get_local_timestamp()
-	 * @uses   GFFormsModel::matches_operation()
+	 * @uses   PodsCommon::get_local_timestamp()
+	 * @uses   PodsFormsModel::matches_operation()
 	 *
 	 * @return bool
 	 */
@@ -291,7 +291,7 @@ class GF_Block {
 
 				case 'date':
 
-					if ( ! rgblank( $rule['value'] ) && GFFormsModel::matches_operation( strtotime( $rule['value'] ), GFCommon::get_local_timestamp(), $rule['operator'] ) ) {
+					if ( ! rgblank( $rule['value'] ) && PodsFormsModel::matches_operation( strtotime( $rule['value'] ), PodsCommon::get_local_timestamp(), $rule['operator'] ) ) {
 						$match_count++;
 					}
 

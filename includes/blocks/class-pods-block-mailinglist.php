@@ -1,6 +1,6 @@
 <?php
 
-class GF_Block_MailingList extends GF_Block {
+class Pods_Block_MailingList extends Pods_Block {
 
 	/**
 	 * Indexes for each block ID.
@@ -43,14 +43,14 @@ class GF_Block_MailingList extends GF_Block {
 	 *
 	 * @param array $attributes Block attributes.
 	 *
-	 * @uses   GF_Block::can_view_block()
-	 * @uses   GF_Block_MailingList::get_form_object()
-	 * @uses   GFCommon::get_base_path()
-	 * @uses   GFCommon::get_browser_class()
-	 * @uses   GFFormDisplay::enqueue_form_scripts()
-	 * @uses   GFFormDisplay::get_field()
-	 * @uses   GFFormDisplay::gform_footer()
-	 * @uses   GFFormsModel::get_field_value()
+	 * @uses   Pods_Block::can_view_block()
+	 * @uses   Pods_Block_MailingList::get_form_object()
+	 * @uses   PodsCommon::get_base_path()
+	 * @uses   PodsCommon::get_browser_class()
+	 * @uses   PodsFormDisplay::enqueue_form_scripts()
+	 * @uses   PodsFormDisplay::get_field()
+	 * @uses   PodsFormDisplay::pods_footer()
+	 * @uses   PodsFormsModel::get_field_value()
 	 *
 	 * @return string|null
 	 */
@@ -70,27 +70,27 @@ class GF_Block_MailingList extends GF_Block {
 		}
 
 		// Require form display class.
-		if ( ! class_exists( 'GFFormDisplay' ) ) {
-			require_once GFCommon::get_base_path() . '/form_display.php';
+		if ( ! class_exists( 'PodsFormDisplay' ) ) {
+			require_once PodsCommon::get_base_path() . '/form_display.php';
 		}
 
 		// Get form object.
 		$form = $this->get_form_object( $attributes );
 
 		// Handle form submission.
-		if ( $form['id'] === rgpost( 'gform_submit' ) ) {
+		if ( $form['id'] === rgpost( 'pods_submit' ) ) {
 
 			// Get field values.
-			$field_values = GFForms::post( 'gform_field_values' );
+			$field_values = PodsForms::post( 'pods_field_values' );
 
 			// Validate.
-			$is_valid = GFFormDisplay::validate( $form, $field_values );
+			$is_valid = PodsFormDisplay::validate( $form, $field_values );
 
 			// If form is valid, process feed.
 			if ( $is_valid && ! $this->was_form_processed( $form ) ) {
 
 				// Get entry object.
-				$entry = GFFormsModel::create_lead( $form );
+				$entry = PodsFormsModel::create_lead( $form );
 
 				// Prepare feed object.
 				$feed = $this->get_feed_object( $attributes, $form );
@@ -106,49 +106,49 @@ class GF_Block_MailingList extends GF_Block {
 				$confirmation = $confirmation[0];
 
 				// Display confirmation message.
-				return GFFormDisplay::get_confirmation_message( $confirmation, $form, $entry );
+				return PodsFormDisplay::get_confirmation_message( $confirmation, $form, $entry );
 
 			}
 
 		}
 
 		// Enqueue form scripts.
-		GFFormDisplay::enqueue_form_scripts( $form );
+		PodsFormDisplay::enqueue_form_scripts( $form );
 
 		// Open form wrapper.
-		$html = sprintf( "<div class='%s gform_wrapper %s' id='gform_wrapper_%s'>", GFCommon::get_browser_class(), ( $form['cssClass'] ? $form['cssClass'] . '_wrapper' : '' ), $form['id'] );
-		$html .= sprintf( "<form method='post' id='gform_%s' class='%s'>", $form['id'], $form['cssClass'] );
+		$html = sprintf( "<div class='%s pods_wrapper %s' id='pods_wrapper_%s'>", PodsCommon::get_browser_class(), ( $form['cssClass'] ? $form['cssClass'] . '_wrapper' : '' ), $form['id'] );
+		$html .= sprintf( "<form method='post' id='pods_%s' class='%s'>", $form['id'], $form['cssClass'] );
 
 		// Display form heading.
 		if ( rgar( $attributes, 'formTitle' ) || rgar( $attributes, 'formDescription' ) ) {
 
-			$html .= "<div class='gform_heading'>";
-			$html .= rgar( $attributes, 'formTitle' ) ? sprintf( "<h3 class='gform_title'>%s</h3>", $form['title'] ) : '';
-			$html .= rgar( $attributes, 'formDescription' ) ? sprintf( "<span class='gform_description'>%s</span>", $form['description'] ) : '';
+			$html .= "<div class='pods_heading'>";
+			$html .= rgar( $attributes, 'formTitle' ) ? sprintf( "<h3 class='pods_title'>%s</h3>", $form['title'] ) : '';
+			$html .= rgar( $attributes, 'formDescription' ) ? sprintf( "<span class='pods_description'>%s</span>", $form['description'] ) : '';
 			$html .= '</div>';
 
 		}
 
 		// Begin form body.
-		$html .= "<div class='gform_body'>";
-		$html .= "<ul class='gform_fields top_label form_sublabel_below'>";
+		$html .= "<div class='pods_body'>";
+		$html .= "<ul class='pods_fields top_label form_sublabel_below'>";
 
 		// Display fields.
 		foreach ( $form['fields'] as $field ) {
 
 			// Get field value.
-			$field_value = GFFormsModel::get_field_value( $field );
+			$field_value = PodsFormsModel::get_field_value( $field );
 
-			$html .= GFFormDisplay::get_field( $field, $field_value );
+			$html .= PodsFormDisplay::get_field( $field, $field_value );
 
 		}
 
 		// Display form footer.
 		$html .= '</ul></div>';
-		$html .= GFFormDisplay::gform_footer( $form, 'gform_footer top_label', false, array(), '', false, false, 0 );
-		$html .= sprintf( "<input type='hidden' class='gform_hidden' name='gform_submit' value='%s' />", esc_attr( $form['id'] ) );
-		$html .= sprintf( "<input type='hidden' class='gform_hidden' name='is_submit_%s' value='1' />", esc_attr( $form['id'] ) );
-		$html .= sprintf( "<input type='hidden' class='gform_hidden' name='block_index' value='%d' />", esc_attr( $block_index ) );
+		$html .= PodsFormDisplay::pods_footer( $form, 'pods_footer top_label', false, array(), '', false, false, 0 );
+		$html .= sprintf( "<input type='hidden' class='pods_hidden' name='pods_submit' value='%s' />", esc_attr( $form['id'] ) );
+		$html .= sprintf( "<input type='hidden' class='pods_hidden' name='is_submit_%s' value='1' />", esc_attr( $form['id'] ) );
+		$html .= sprintf( "<input type='hidden' class='pods_hidden' name='block_index' value='%d' />", esc_attr( $block_index ) );
 
 		// Close form wrapper.
 		$html .= '</form></div>';
@@ -165,7 +165,7 @@ class GF_Block_MailingList extends GF_Block {
 	 *
 	 * @param array $attributes Block attributes.
 	 *
-	 * @uses   GFFormsModel::convert_field_objects()
+	 * @uses   PodsFormsModel::convert_field_objects()
 	 *
 	 * @return array
 	 */
@@ -195,13 +195,13 @@ class GF_Block_MailingList extends GF_Block {
 		// Initialize form object.
 		$form = array(
 			'id'            => esc_attr( $attributes['blockID'] ),
-			'title'         => rgar( $attributes, 'formTitle' ) ? esc_html( $attributes['formTitle'] ) : esc_html__( 'Newsletter Signup', 'gravityforms' ),
+			'title'         => rgar( $attributes, 'formTitle' ) ? esc_html( $attributes['formTitle'] ) : esc_html__( 'Newsletter Signup', 'pods-gutenberg-blocks' ),
 			'description'   => wp_kses_post( rgar( $attributes, 'formDescription' ) ),
-			'cssClass'      => 'horizontal' === $orientation ? 'gf_simple_horizontal' : '',
+			'cssClass'      => 'horizontal' === $orientation ? 'pods_simple_horizontal' : '',
 			'fields'        => array(),
 			'button'        => array(
 				'type' => 'text',
-				'text' => rgar( $attributes, 'submitText' ) ? esc_html( $attributes['submitText'] ) : esc_html__( 'Submit', 'gravityforms' ),
+				'text' => rgar( $attributes, 'submitText' ) ? esc_html( $attributes['submitText'] ) : esc_html__( 'Submit', 'pods-gutenberg-blocks' ),
 			),
 			'confirmations' => array(
 				$confirmation_id => array(
@@ -209,7 +209,7 @@ class GF_Block_MailingList extends GF_Block {
 					'name'      => 'Default Confirmation',
 					'isDefault' => true,
 					'type'      => 'message',
-					'message'   => rgar( $attributes, 'confirmationText' ) ? wp_kses_post( $attributes['confirmationText'] ) : esc_html__( 'Thank you for subscribing to our newsletter!', 'gravityforms' ),
+					'message'   => rgar( $attributes, 'confirmationText' ) ? wp_kses_post( $attributes['confirmationText'] ) : esc_html__( 'Thank you for subscribing to our newsletter!', 'pods-gutenberg-blocks' ),
 				),
 			),
 		);
@@ -218,7 +218,7 @@ class GF_Block_MailingList extends GF_Block {
 		$form['fields'][] = array(
 			'id'           => 1,
 			'type'         => 'name',
-			'label'        => esc_html__( 'Name', 'gravityforms' ),
+			'label'        => esc_html__( 'Name', 'pods-gutenberg-blocks' ),
 			'isRequired'   => false,
 			'nameFormat'   => 'advanced',
 			'formId'       => esc_html( $attributes['blockID'] ),
@@ -229,7 +229,7 @@ class GF_Block_MailingList extends GF_Block {
 			'inputs'       => array(
 				array(
 					'id'       => '1.2',
-					'label'    => esc_html__( 'Prefix', 'gravityforms' ),
+					'label'    => esc_html__( 'Prefix', 'pods-gutenberg-blocks' ),
 					'name'     => '',
 					'isHidden' => true,
 					'choices'  => array(
@@ -279,25 +279,25 @@ class GF_Block_MailingList extends GF_Block {
 				),
 				array(
 					'id'          => '1.3',
-					'label'       => esc_html__( 'First', 'gravityforms' ),
+					'label'       => esc_html__( 'First', 'pods-gutenberg-blocks' ),
 					'name'        => '',
-					'placeholder' => 'horizontal' === $orientation ? esc_html__( 'First Name', 'gravityforms' ) : '',
+					'placeholder' => 'horizontal' === $orientation ? esc_html__( 'First Name', 'pods-gutenberg-blocks' ) : '',
 				),
 				array(
 					'id'       => '1.4',
-					'label'    => esc_html__( 'Middle', 'gravityforms' ),
+					'label'    => esc_html__( 'Middle', 'pods-gutenberg-blocks' ),
 					'name'     => '',
 					'isHidden' => true,
 				),
 				array(
 					'id'          => '1.6',
-					'label'       => esc_html__( 'Last', 'gravityforms' ),
+					'label'       => esc_html__( 'Last', 'pods-gutenberg-blocks' ),
 					'name'        => '',
-					'placeholder' => 'horizontal' === $orientation ? esc_html__( 'Last Name', 'gravityforms' ) : '',
+					'placeholder' => 'horizontal' === $orientation ? esc_html__( 'Last Name', 'pods-gutenberg-blocks' ) : '',
 				),
 				array(
 					'id'       => '1.8',
-					'label'    => esc_html__( 'Suffix', 'gravityforms' ),
+					'label'    => esc_html__( 'Suffix', 'pods-gutenberg-blocks' ),
 					'name'     => '',
 					'isHidden' => true,
 				),
@@ -308,8 +308,8 @@ class GF_Block_MailingList extends GF_Block {
 		$form['fields'][] = array(
 			'id'                  => 2,
 			'type'                => 'email',
-			'label'               => esc_html__( 'Email', 'gravityforms' ),
-			'placeholder'         => 'horizontal' === $orientation ? esc_html__( 'Email Address', 'gravityforms' ) : '',
+			'label'               => esc_html__( 'Email', 'pods-gutenberg-blocks' ),
+			'placeholder'         => 'horizontal' === $orientation ? esc_html__( 'Email Address', 'pods-gutenberg-blocks' ) : '',
 			'isRequired'          => true,
 			'noDuplicates'        => false,
 			'formId'              => esc_html( $attributes['blockID'] ),
@@ -320,7 +320,7 @@ class GF_Block_MailingList extends GF_Block {
 		);
 
 		// Convert field objects.
-		$form = GFFormsModel::convert_field_objects( $form );
+		$form = PodsFormsModel::convert_field_objects( $form );
 
 		// Save form object to class.
 		$this->form_objects[ $attributes['blockID'] ] = $form;

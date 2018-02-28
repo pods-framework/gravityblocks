@@ -23,11 +23,11 @@ export default class LogicControl extends Component {
 
 		return [
 			{
-				label: __( 'Show', 'gravityforms' ),
+				label: __( 'Show', 'pods-gutenberg-blocks' ),
 				value: 'show',
 			},
 			{
-				label: __( 'Hide', 'gravityforms' ),
+				label: __( 'Hide', 'pods-gutenberg-blocks' ),
 				value: 'hide',
 			}
 		];
@@ -49,11 +49,11 @@ export default class LogicControl extends Component {
 	getLogicTypes() {
 		return [
 			{
-				label: __( 'all', 'gravityforms' ),
+				label: __( 'all', 'pods-gutenberg-blocks' ),
 				value: 'all'
 			},
 			{
-				label: __( 'any', 'gravityforms' ),
+				label: __( 'any', 'pods-gutenberg-blocks' ),
 				value: 'any'
 			}
 		];
@@ -87,12 +87,12 @@ export default class LogicControl extends Component {
 		const changeRules = ( rules ) => { this.props.onChange( { rules: rules } ); }
 
 		return (<div>
-			<div className="gform-block__conditional-type">
+			<div className="pods-block__conditional-type">
 
 				<Button className="button-link" onClick={toggleActionType}>
 					<div>{this.getActionTypeLabel( actionType )}</div>
 					{ this.state.visible.actionType && <Popover onClose={toggleActionType} position="bottom"
-							 className="gform-block__conditional-popover">
+							 className="pods-block__conditional-popover">
 						<RadioControl options={actionTypes} onChange={changeActionType} selected={actionType}/>
 					</Popover> }
 				</Button>
@@ -102,7 +102,7 @@ export default class LogicControl extends Component {
 				<Button className="button-link" onClick={toggleLogicType}>
 					<div>{this.getLogicTypeLabel( logicType )}</div>
 					{ this.state.visible.logicType && <Popover onClose={toggleLogicType} position="bottom"
-							 className="gform-block__conditional-popover">
+							 className="pods-block__conditional-popover">
 						<RadioControl options={logicTypes} onChange={changeLogicType} selected={logicType}/>
 					</Popover> }
 				</Button>
@@ -110,7 +110,7 @@ export default class LogicControl extends Component {
 				&nbsp;rules match
 			</div>
 
-			<Ruleset key="gform-block__conditional-ruleset" rules={rules} onChange={changeRules} />
+			<Ruleset key="pods-block__conditional-ruleset" rules={rules} onChange={changeRules} />
 		</div>);
 
 	}

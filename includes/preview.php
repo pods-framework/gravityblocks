@@ -1,7 +1,7 @@
 <?php
 
 // Load form display class.
-require_once( GFCommon::get_base_path() . '/form_display.php' );
+require_once( PodsCommon::get_base_path() . '/form_display.php' );
 
 // Prepare variables.
 $form_id     = rgar( $attributes, 'formId' ) ? $attributes['formId'] : false;
@@ -9,10 +9,10 @@ $title       = isset( $attributes['title'] ) ? $attributes['title'] : true;
 $description = isset( $attributes['description'] ) ? $attributes['description'] : true;
 
 // Get form object.
-$form = GFFormsModel::get_form_meta( $form_id );
+$form = PodsFormsModel::get_form_meta( $form_id );
 
 // Determine if we're loading minified scripts.
-$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
+$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['pods_debug'] ) ? '' : '.min';
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -21,18 +21,18 @@ $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] 
         <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
         <meta http-equiv="Imagetoolbar" content="No"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title><?php esc_html_e( 'Form Preview', 'gravityforms' ) ?></title>
-        <link rel="stylesheet" href="<?php echo gf_gutenberg()->get_base_url(); ?>/css/preview.css" />
+        <title><?php esc_html_e( 'Form Preview', 'pods-gutenberg-blocks' ) ?></title>
+        <link rel="stylesheet" href="<?php echo pods_gutenberg()->get_base_url(); ?>/css/preview.css" />
         <?php
 
             // If form exists, enqueue its scripts.
             if ( ! empty( $form ) ) {
-                GFFormDisplay::enqueue_form_scripts( $form );
+                PodsFormDisplay::enqueue_form_scripts( $form );
             }
 
             wp_print_head_scripts();
 
-            $styles = apply_filters( 'gform_preview_styles', array(), $form );
+            $styles = apply_filters( 'pods_preview_styles', array(), $form );
             if ( ! empty( $styles ) ) {
                 wp_print_styles( $styles );
             }
@@ -41,13 +41,13 @@ $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] 
     <body data-resizable-iframe-connected="data-resizable-iframe-connected">
         <?php
 
-            echo GFForms::get_form( $form_id, $title, $description, true );
+            echo PodsForms::get_form( $form_id, $title, $description, true );
             wp_print_footer_scripts();
-            do_action( 'gform_preview_footer', $form_id );
+            do_action( 'pods_preview_footer', $form_id );
 
             if ( is_rtl() ) {
         ?>
-        <link rel='stylesheet' href='<?php echo GFCommon::get_base_url() ?>/css/rtl<?php echo $min; ?>.css' type='text/css' />
+        <link rel='stylesheet' href='<?php echo PodsCommon::get_base_url() ?>/css/rtl<?php echo $min; ?>.css' type='text/css' />
         <?php } ?>
 
         <script type="text/javascript">

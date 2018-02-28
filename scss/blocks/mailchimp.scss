@@ -1,10 +1,10 @@
-.gform-block__mailchimp-api-response .fa-times {
+.pods-block__mailchimp-api-response .fa-times {
 
 	color: #9E0B0F
 
 }
 
-.gform-block__mailchimp-placeholder form {
+.pods-block__mailchimp-placeholder form {
 
 	min-width: 320px;
 
@@ -18,7 +18,7 @@
 
 }
 
-.gform-block__mailchimp-placeholder-auth p {
+.pods-block__mailchimp-placeholder-auth p {
 
 	font-family: inherit;
 	font-size: 14px;
@@ -27,7 +27,7 @@
 
 }
 
-.gform_heading textarea.gform_title {
+.pods_heading textarea.pods_title {
 
 	font-size: 1.25em;
 	font-weight: 700;
@@ -36,22 +36,22 @@
 
 }
 
-.gform_heading textarea.gform_description {
+.pods_heading textarea.pods_description {
 
 	margin: 0 0 -8px 0;
 
 }
 
-.gform_wrapper {
+.pods_wrapper {
 
-	.gf_simple_horizontal {
+	.pods_simple_horizontal {
 
 		width: 100%;
 
 		div {
 
-			&.gform_body,
-			&.gform_footer.top_label {
+			&.pods_body,
+			&.pods_footer.top_label {
 
 				display: table-cell;
 				vertical-align: middle;
@@ -61,7 +61,7 @@
 
 			}
 
-			&.gform_body {
+			&.pods_body {
 
 				width: auto;
 				max-width: 75%;
@@ -74,16 +74,16 @@
 
 			}
 
-			&.gform_body ul.top_label {
+			&.pods_body ul.top_label {
 
-				&.form_sublabel_below li.gfield,
-				&.form_sublabel_above li.gfield {
+				&.form_sublabel_below li.podsield,
+				&.form_sublabel_above li.podsield {
 
 					vertical-align: middle;
 
 				}
 
-				li.gfield input {
+				li.podsield input {
 
 					&.small, &.medium, &.large {
 
@@ -95,7 +95,7 @@
 			}
 		}
 
-		&.gform_footer.top_label input {
+		&.pods_footer.top_label input {
 
 			&[type="submit"],
 			&[type="button"],
@@ -107,13 +107,13 @@
 
 		}
 
-		ul li.gfield {
+		ul li.podsield {
 
 			margin-top: 0 !important;
 
 		}
 
-		div.gform_footer.top_label {
+		div.pods_footer.top_label {
 
 			width: auto;
 			max-width: 25%;
@@ -122,12 +122,12 @@
 
 		}
 
-		div.gform_body ul.top_label {
+		div.pods_body ul.top_label {
 
 			display: table;
 			width: 100%;
 
-			li.gfield {
+			li.podsield {
 
 				display: table-cell;
 				padding-right: 1em;
@@ -137,7 +137,7 @@
 
 		}
 
-		label.gfield_label,
+		label.podsield_label,
 		.ginput_complex label {
 
 			display: block;
@@ -154,8 +154,8 @@
 
 }
 
-.gform_body,
-.gform_footer {
+.pods_body,
+.pods_footer {
 
 	pointer-events: none;
 

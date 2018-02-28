@@ -1,26 +1,21 @@
 <?php
 
-// If Gravity Forms cannot be found, exit.
-if ( ! class_exists( 'GFForms' ) ) {
+// If Pods cannot be found, exit.
+if ( ! defined( 'PODS_VERSION' ) ) {
 	die();
 }
 
-// Load Add-On Framework.
-GFForms::include_addon_framework();
-
 /**
- * Gutenberg integration using the Add-On Framework.
- *
- * @see GFAddOn
+ * Gutenberg integration.
  */
-class GF_Gutenberg extends GFAddOn {
+class Pods_Gutenberg {
 
 	/**
 	 * Contains an instance of this class, if available.
 	 *
 	 * @since  1.0
 	 * @access private
-	 * @var    GF_Gutenberg $_instance If available, contains an instance of this class.
+	 * @var    Pods_Gutenberg $_instance If available, contains an instance of this class.
 	 */
 	private static $_instance = null;
 
@@ -31,16 +26,16 @@ class GF_Gutenberg extends GFAddOn {
 	 * @access protected
 	 * @var    string $_version Contains the version, defined in gutenberg.php
 	 */
-	protected $_version = GF_GUTENBERG_VERSION;
+	protected $_version = PODS_GUTENBERG_VERSION;
 
 	/**
-	 * Defines the minimum Gravity Forms version required.
+	 * Defines the minimum Pods version required.
 	 *
 	 * @since  1.0
 	 * @access protected
-	 * @var    string $_min_gravityforms_version The minimum version required.
+	 * @var    string $_min_pods_version The minimum version required.
 	 */
-	protected $_min_gravityforms_version = '2.2';
+	protected $_min_pods_version = '2.7';
 
 	/**
 	 * Defines the plugin slug.
@@ -49,7 +44,7 @@ class GF_Gutenberg extends GFAddOn {
 	 * @access protected
 	 * @var    string $_slug The slug used for this plugin.
 	 */
-	protected $_slug = 'gravityformsgutenberg';
+	protected $_slug = 'pods-gutenberg-blocks';
 
 	/**
 	 * Defines the main plugin file.
@@ -58,7 +53,7 @@ class GF_Gutenberg extends GFAddOn {
 	 * @access protected
 	 * @var    string $_path The path to the main plugin file, relative to the plugins folder.
 	 */
-	protected $_path = 'gravityformsgutenberg/gutenberg.php';
+	protected $_path = 'pods-gutenberg-blocks/pods-gutenberg-blocks.php';
 
 	/**
 	 * Defines the full path to this class file.
@@ -76,7 +71,7 @@ class GF_Gutenberg extends GFAddOn {
 	 * @access protected
 	 * @var    string The URL of the Add-On.
 	 */
-	protected $_url = 'http://www.gravityforms.com';
+	protected $_url = 'https://pods.io';
 
 	/**
 	 * Defines the title of this Add-On.
@@ -85,7 +80,7 @@ class GF_Gutenberg extends GFAddOn {
 	 * @access protected
 	 * @var    string $_title The title of the Add-On.
 	 */
-	protected $_title = 'Gravity Forms Gutenberg Add-On';
+	protected $_title = 'Pods Gutenberg Add-On';
 
 	/**
 	 * Defines the short title of the Add-On.
@@ -97,22 +92,13 @@ class GF_Gutenberg extends GFAddOn {
 	protected $_short_title = 'Gutenberg';
 
 	/**
-	 * Defines if Add-On should use Gravity Forms servers for update data.
-	 *
-	 * @since  1.0
-	 * @access protected
-	 * @var    bool
-	 */
-	protected $_enable_rg_autoupgrade = true;
-
-	/**
 	 * Get instance of this class.
 	 *
 	 * @since  1.0
 	 * @access public
 	 * @static
 	 *
-	 * @return GF_Gutenberg
+	 * @return Pods_Gutenberg
 	 */
 	public static function get_instance() {
 
@@ -124,18 +110,15 @@ class GF_Gutenberg extends GFAddOn {
 
 	}
 
-
-
-
 	// # HELPER METHODS ------------------------------------------------------------------------------------------------
 
 	/**
 	 * Get forms for block control.
 	 *
-	 * @since  1.0-dev-1
+	 * @since  1.0
 	 * @access public
 	 *
-	 * @uses   GFAPI::get_forms()
+	 * @uses   PodsAPI::get_forms()
 	 *
 	 * @return array
 	 */
@@ -144,13 +127,13 @@ class GF_Gutenberg extends GFAddOn {
 		// Initialize options array.
 		$options = array(
 			array(
-				'label' => esc_html__( 'Select a Form', 'gravityforms' ),
+				'label' => esc_html__( 'Select a Form', 'pods-gutenberg-blocks' ),
 				'value' => '',
 			),
 		);
 
 		// Get forms.
-		$forms = GFAPI::get_forms();
+		$forms = PodsAPI::get_forms();
 
 		// Loop through forms.
 		foreach ( $forms as $form ) {
@@ -170,10 +153,10 @@ class GF_Gutenberg extends GFAddOn {
 	/**
 	 * Get options for the conditional logic drop downs.
 	 *
-	 * @since  1.0-dev-3
+	 * @since  1.0
 	 * @access public
 	 *
-	 * @uses   GF_Gutenberg::get_roles()
+	 * @uses   Pods_Gutenberg::get_roles()
 	 *
 	 * @return array
 	 */
@@ -182,7 +165,7 @@ class GF_Gutenberg extends GFAddOn {
 		return array(
 			array(
 				'key'       => array(
-					'label' => esc_html__( 'User', 'gravityforms' ),
+					'label' => esc_html__( 'User', 'pods-gutenberg-blocks' ),
 					'value' => 'user',
 				),
 				'operators' => array(
@@ -199,15 +182,15 @@ class GF_Gutenberg extends GFAddOn {
 					'type'    => 'select',
 					'choices' => array(
 						array(
-							'label' => esc_html__( 'Logged In', 'gravityforms' ),
+							'label' => esc_html__( 'Logged In', 'pods-gutenberg-blocks' ),
 							'value' => 'logged-in',
 						),
 						array(
-							'label' => esc_html__( 'Logged Out', 'gravityforms' ),
+							'label' => esc_html__( 'Logged Out', 'pods-gutenberg-blocks' ),
 							'value' => 'logged-out',
 						),
 						array(
-							'label'   => esc_html__( 'Roles', 'gravityforms' ),
+							'label'   => esc_html__( 'Roles', 'pods-gutenberg-blocks' ),
 							'choices' => $this->get_roles(),
 						),
 					),
@@ -215,7 +198,7 @@ class GF_Gutenberg extends GFAddOn {
 			),
 			array(
 				'key'       => array(
-					'label' => esc_html__( 'Date', 'gravityforms' ),
+					'label' => esc_html__( 'Date', 'pods-gutenberg-blocks' ),
 					'value' => 'date',
 				),
 				'operators' => array(
@@ -239,7 +222,7 @@ class GF_Gutenberg extends GFAddOn {
 	/**
 	 * Get available roles for block control.
 	 *
-	 * @since  1.0-dev-3
+	 * @since  1.0
 	 * @access public
 	 *
 	 * @return array

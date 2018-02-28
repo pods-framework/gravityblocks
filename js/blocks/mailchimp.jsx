@@ -9,10 +9,10 @@ import LogicControl from '../components/conditional-logic/'
 
 import '../../scss/blocks/mailchimp.scss';
 
-registerBlockType( 'gravityforms/mailchimp', {
+registerBlockType( 'pods/mailchimp', {
 
 	title:       'MailChimp',
-	description: __( 'Embed a MailChimp signup form on your page.', 'gravityforms' ),
+	description: __( 'Embed a MailChimp signup form on your page.', 'pods-gutenberg-blocks' ),
 	category:    'embed',
 	supports:    {
 		customClassName: false,
@@ -51,7 +51,7 @@ registerBlockType( 'gravityforms/mailchimp', {
 		},
 		confirmationText: {
 			type:    'string',
-			default: __( 'Thank you for subscribing to our newsletter!', 'gravityforms' )
+			default: __( 'Thank you for subscribing to our newsletter!', 'pods-gutenberg-blocks' )
 		},
 		conditionalLogic: {
 			type:    'object',
@@ -66,7 +66,7 @@ registerBlockType( 'gravityforms/mailchimp', {
 	icon:        () => {
 		return <svg viewBox='0 0 3052.8 3194.9' width='19px' height='20px'
 					focusable='false' aria-hidden='true'
-					className='dashicon dashicon-gravityforms-mailchimp'>
+					className='dashicon dashicon-pods-mailchimp'>
 			<g>
 				<path d="M3042,2080.4c-22-47-63.9-79.4-116.6-91.8c-17.6-80.4-41.9-119.8-44.2-125.7c9.3-10.6,18.3-21.2,20.3-23.7
 		c74.3-92.2,25.8-227.2-101.2-259.1c-71.5-68.8-136.1-101.1-189.2-127.6c-50.9-25.4-30.6-15.5-78.4-37
@@ -184,7 +184,7 @@ registerBlockType( 'gravityforms/mailchimp', {
 			}
 
 			// Prepare request URL.
-			const apiURL = addQueryArgs( wpApiSettings.root + 'gf/v2/block/mailchimp/auth', { apiKey } );
+			const apiURL = addQueryArgs( wpApiSettings.root + 'pods/v2/block/mailchimp/auth', { apiKey } );
 
 			// Run API request.
 			fetch( apiURL ).then(
@@ -196,8 +196,8 @@ registerBlockType( 'gravityforms/mailchimp', {
 						if ( obj.success ) {
 
 							// Set authenticated flag and lists.
-							gform_mailchimp.authenticated = true;
-							gform_mailchimp.lists = obj.data.lists;
+							pods_mailchimp.authenticated = true;
+							pods_mailchimp.lists = obj.data.lists;
 
 							// Update lists prop.
 							this.setLists();
@@ -229,10 +229,10 @@ registerBlockType( 'gravityforms/mailchimp', {
 
 			this.lists = [
 				{
-					label: __( 'Select a List', 'gravityforms' ),
+					label: __( 'Select a List', 'pods-gutenberg-blocks' ),
 					value: '',
 				},
-				...gform_mailchimp.lists
+				...pods_mailchimp.lists
 			];
 
 		}
@@ -250,32 +250,32 @@ registerBlockType( 'gravityforms/mailchimp', {
 
 			return <div className={ className }>
 				<p>
-					<strong>{ __( 'You must authenticate with MailChimp before using the MailChimp block.', 'gravityforms' ) }</strong>
+					<strong>{ __( 'You must authenticate with MailChimp before using the MailChimp block.', 'pods-gutenberg-blocks' ) }</strong>
 				</p>
 				{
 					showLabel &&
-						<label className="blocks-base-control__label" htmlFor="gform-block__mailchimp-api">{ __( 'MailChimp API Key', 'gravityforms' ) }</label>
+						<label className="blocks-base-control__label" htmlFor="pods-block__mailchimp-api">{ __( 'MailChimp API Key', 'pods-gutenberg-blocks' ) }</label>
 				}
 				<form onSubmit={ onSubmit }>
 					<input
 						className="blocks-text-control__input"
 						type="text"
-						id="gform-block__mailchimp-api"
+						id="pods-block__mailchimp-api"
 						ref="apiKey"
 						disabled={ authProcessing ? 'disabled' : '' }
 					/>
 					{
 						showButton &&
-							<input type="submit" className="button" value={ __( 'Authenticate', 'gravityforms' ) } />
+							<input type="submit" className="button" value={ __( 'Authenticate', 'pods-gutenberg-blocks' ) } />
 					}
-					<div className="gform-block__mailchimp-api-response">
+					<div className="pods-block__mailchimp-api-response">
 						{
 							authProcessing &&
-								<span><i className="fa fa-spinner fa-pulse fa-fw"/> { __( 'Authenticating...', 'gravityforms' ) }</span>
+								<span><i className="fa fa-spinner fa-pulse fa-fw"/> { __( 'Authenticating...', 'pods-gutenberg-blocks' ) }</span>
 						}
 						{
 							false === authResponse &&
-								<span><i className="fa fa-times"/> { __( 'Invalid API key.', 'gravityforms' ) }</span>
+								<span><i className="fa fa-times"/> { __( 'Invalid API key.', 'pods-gutenberg-blocks' ) }</span>
 						}
 					</div>
 				</form>
@@ -295,15 +295,15 @@ registerBlockType( 'gravityforms/mailchimp', {
 
 			if ( isSelected ) {
 				return ( <PlainText
-					className="gform_title"
+					className="pods_title"
 					value={ formTitle }
 					onChange={ ( formTitle ) => setAttributes( { formTitle } ) }
-					placeholder={ __( 'Form Title', 'gravityforms' ) }
+					placeholder={ __( 'Form Title', 'pods-gutenberg-blocks' ) }
 				/> );
 			}
 
 			if ( ! isSelected && formTitle ) {
-				return <h3 className="gform_title">{ formTitle }</h3>
+				return <h3 className="pods_title">{ formTitle }</h3>
 			}
 
 		}
@@ -320,15 +320,15 @@ registerBlockType( 'gravityforms/mailchimp', {
 
 			if ( isSelected ) {
 				return ( <PlainText
-					className="gform_description"
+					className="pods_description"
 					value={ formDescription }
 					onChange={ ( formDescription ) => setAttributes( { formDescription } ) }
-					placeholder={ __( 'Form Description', 'gravityforms' ) }
+					placeholder={ __( 'Form Description', 'pods-gutenberg-blocks' ) }
 				/> );
 			}
 
 			if ( ! isSelected && formDescription ) {
-				return <span className="gform_description">{ formDescription }</span>
+				return <span className="pods_description">{ formDescription }</span>
 			}
 
 			return null;
@@ -346,42 +346,42 @@ registerBlockType( 'gravityforms/mailchimp', {
 			const isHorizontal = 'horizontal' === orientation;
 
 			return (
-				<div key="form-preview" className={ classnames( 'gform_wrapper', { 'gf_simple_horizontal_wrapper': isHorizontal } ) }>
-					<div className={ classnames( { 'gf_simple_horizontal': isHorizontal } ) }>
-						<div className="gform_heading">
+				<div key="form-preview" className={ classnames( 'pods_wrapper', { 'pods_simple_horizontal_wrapper': isHorizontal } ) }>
+					<div className={ classnames( { 'pods_simple_horizontal': isHorizontal } ) }>
+						<div className="pods_heading">
 							{ this.formTitleInput() }
 							{ this.formDescriptionInput() }
 						</div>
-						<div className="gform_body">
-							<ul className="gform_fields top_label form_sublabel_below">
+						<div className="pods_body">
+							<ul className="pods_fields top_label form_sublabel_below">
 								{
 									!! nameField &&
-									<li className="gfield field_sublabel_below field_description_below gfield_visibility_visible">
-										<label className="gfield_label gfield_label_before_complex">Name</label>
-										<div className="ginput_complex ginput_container no_prefix has_first_name no_middle_name has_last_name no_suffix gf_name_has_2 ginput_container_name">
+									<li className="podsield field_sublabel_below field_description_below podsield_visibility_visible">
+										<label className="podsield_label podsield_label_before_complex">Name</label>
+										<div className="ginput_complex ginput_container no_prefix has_first_name no_middle_name has_last_name no_suffix pods_name_has_2 ginput_container_name">
 												<span className="name_first">
 													<input type="text" aria-label="First name"
-														   placeholder={ isHorizontal ? __( 'First Name', 'gravityforms' ) : '' }/>
+														   placeholder={ isHorizontal ? __( 'First Name', 'pods-gutenberg-blocks' ) : '' }/>
 													<label>First</label>
 												</span>
 												<span className="name_last">
 													<input type="text" aria-label="Last name"
-														   placeholder={ isHorizontal ? __( 'Last Name', 'gravityforms' ) : '' }/>
+														   placeholder={ isHorizontal ? __( 'Last Name', 'pods-gutenberg-blocks' ) : '' }/>
 													<label>Last</label>
 												</span>
 										</div>
 									</li>
 								}
-								<li className="gfield field_sublabel_below field_description_below gfield_visibility_visible">
-									<label className="gfield_label">Email</label>
+								<li className="podsield field_sublabel_below field_description_below podsield_visibility_visible">
+									<label className="podsield_label">Email</label>
 									<div className="ginput_container ginput_container_email">
-										<input type="text" className="medium" aria-invalid="false" placeholder={ isHorizontal ? __( 'Email Address', 'gravityforms' ) : '' }/>
+										<input type="text" className="medium" aria-invalid="false" placeholder={ isHorizontal ? __( 'Email Address', 'pods-gutenberg-blocks' ) : '' }/>
 									</div>
 								</li>
 							</ul>
 						</div>
-						<div className="gform_footer top_label">
-							<input type="submit" className="gform_button button" value={ submitText }/>
+						<div className="pods_footer top_label">
+							<input type="submit" className="pods_button button" value={ submitText }/>
 						</div>
 					</div>
 				</div>
@@ -409,37 +409,37 @@ registerBlockType( 'gravityforms/mailchimp', {
 				isSelected && (
 					<InspectorControls key="inspector">
 						<SelectControl
-							label={ __( 'List', 'gravityforms' ) }
+							label={ __( 'List', 'pods-gutenberg-blocks' ) }
 							value={ list }
 							options={ this.lists }
 							onChange={ setList }
 						/>
 						<ToggleControl
-							label={ __( 'Name Field', 'gravityforms' ) }
+							label={ __( 'Name Field', 'pods-gutenberg-blocks' ) }
 							checked={ nameField }
 							onChange={ () => setAttributes( { nameField: ! nameField } ) }
 						/>
 						<ToggleControl
-							label={ __( 'Double Opt-In', 'gravityforms' ) }
+							label={ __( 'Double Opt-In', 'pods-gutenberg-blocks' ) }
 							checked={ doubleOptIn }
 							onChange={ () => setAttributes( { doubleOptIn: ! doubleOptIn } ) }
 						/>
 						<PanelBody
-							title={ __( 'Appearance', 'gravityforms' ) }
-							className="gform-block__panel"
+							title={ __( 'Appearance', 'pods-gutenberg-blocks' ) }
+							className="pods-block__panel"
 							initialOpen={ false }
 						>
 							<RadioControl
-								label={ __( 'Form Orientation', 'gravityforms' ) }
+								label={ __( 'Form Orientation', 'pods-gutenberg-blocks' ) }
 								selected={ orientation }
 								options={
 									[
 										{
-											label: __( 'Horizontal', 'gravityforms' ),
+											label: __( 'Horizontal', 'pods-gutenberg-blocks' ),
 											value: 'horizontal'
 										},
 										{
-											label: __( 'Vertical', 'gravityforms' ),
+											label: __( 'Vertical', 'pods-gutenberg-blocks' ),
 											value: 'vertical'
 										}
 									]
@@ -447,30 +447,30 @@ registerBlockType( 'gravityforms/mailchimp', {
 								onChange={ ( orientation ) => setAttributes( { orientation } ) }
 							/>
 							<TextControl
-								label={ __( 'Submit Button Text', 'gravityforms' ) }
+								label={ __( 'Submit Button Text', 'pods-gutenberg-blocks' ) }
 								value={ submitText }
 								onChange={ ( submitText ) => setAttributes( { submitText } ) }
 							/>
 							<TextareaControl
-								label={ __( 'Confirmation Message', 'gravityforms' ) }
+								label={ __( 'Confirmation Message', 'pods-gutenberg-blocks' ) }
 								value={ confirmationText }
 								onChange={ ( confirmationText ) => setAttributes( { confirmationText } ) }
 							/>
 						</PanelBody>
 						<PanelBody
-							title={ __( 'Conditional Logic', 'gravityforms' ) }
-							className="gform-block__panel"
+							title={ __( 'Conditional Logic', 'pods-gutenberg-blocks' ) }
+							className="pods-block__panel"
 							initialOpen={ false }
 						>
 							<ToggleControl
-								label={ __( 'Conditional Logic', 'gravityforms' ) }
+								label={ __( 'Conditional Logic', 'pods-gutenberg-blocks' ) }
 								checked={ conditionalLogic.enabled }
 								onChange={ toggleConditionalLogic }
 							/>
 							{
 								conditionalLogic.enabled &&
 								<LogicControl
-									key="gform-block__conditional"
+									key="pods-block__conditional"
 									logic={ conditionalLogic }
 									onChange={ updateConditionalLogic }
 								/>
@@ -489,13 +489,13 @@ registerBlockType( 'gravityforms/mailchimp', {
 								[
 									{
 										icon:     'image-flip-horizontal',
-										title:    __( 'Horizontal Orientation', 'gravityforms' ),
+										title:    __( 'Horizontal Orientation', 'pods-gutenberg-blocks' ),
 										isActive: isHorizontal,
 										onClick:  () => setAttributes( { orientation: 'horizontal' } )
 									},
 									{
 										icon:     'image-flip-vertical',
-										title:    __( 'Vertical Orientation', 'gravityforms' ),
+										title:    __( 'Vertical Orientation', 'pods-gutenberg-blocks' ),
 										isActive: ! isHorizontal,
 										onClick:  () => setAttributes( { orientation: 'vertical' } )
 									}
@@ -506,15 +506,15 @@ registerBlockType( 'gravityforms/mailchimp', {
 				)
 			];
 
-			if ( ! gform_mailchimp.authenticated ) {
+			if ( ! pods_mailchimp.authenticated ) {
 
 				return [
-					<Placeholder key="placeholder" className="wp-block-embed gform-block__placeholder gform-block__mailchimp-placeholder">
-						<div className="gform-block__placeholder-brand">
-							<img src={ gform_mailchimp.placeholder } width="248"/>
+					<Placeholder key="placeholder" className="wp-block-embed pods-block__placeholder pods-block__mailchimp-placeholder">
+						<div className="pods-block__placeholder-brand">
+							<img src={ pods_mailchimp.placeholder } width="248"/>
 							<p><strong>MailChimp</strong></p>
 						</div>
-						{ this.apiKeyInput( { showButton: true, className: 'gform-block__mailchimp-placeholder-auth' } ) }
+						{ this.apiKeyInput( { showButton: true, className: 'pods-block__mailchimp-placeholder-auth' } ) }
 					</Placeholder>,
 				]
 
@@ -524,9 +524,9 @@ registerBlockType( 'gravityforms/mailchimp', {
 
 				return [
 					controls,
-					<Placeholder key="placeholder" className="wp-block-embed gform-block__placeholder">
-						<div className="gform-block__placeholder-brand">
-							<img src={ gform_mailchimp.placeholder } width="248"/>
+					<Placeholder key="placeholder" className="wp-block-embed pods-block__placeholder">
+						<div className="pods-block__placeholder-brand">
+							<img src={ pods_mailchimp.placeholder } width="248"/>
 							<p><strong>MailChimp</strong></p>
 						</div>
 						<form>

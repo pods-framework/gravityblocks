@@ -54,7 +54,7 @@ export default class Rule extends Component {
 	getOperators() {
 
 		let { key } = this.props.rule,
-			options = gform.conditionalOptions;
+			options = pods.conditionalOptions;
 
 		for ( let i = 0; i < options.length; i++ ) {
 
@@ -73,7 +73,7 @@ export default class Rule extends Component {
 	getValue() {
 
 		let { key } = this.props.rule,
-			options = gform.conditionalOptions;
+			options = pods.conditionalOptions;
 
 		for ( let i = 0; i < options.length; i++ ) {
 
@@ -111,10 +111,10 @@ export default class Rule extends Component {
 
 				return (
 					<Dropdown
-						key={`gform-block__conditional-rule-${index}-value`}
+						key={`pods-block__conditional-rule-${index}-value`}
 						position="bottom left"
-						contentClassName="gform-block__conditional-rule-value-popover"
-						className="gform-block__conditional-rule-value"
+						contentClassName="pods-block__conditional-rule-value-popover"
+						className="pods-block__conditional-rule-value"
 						renderToggle={( { onToggle, isOpen } ) => (
 							<button
 								type="button"
@@ -122,7 +122,7 @@ export default class Rule extends Component {
 								onClick={onToggle}
 								aria-expanded={isOpen}
 							>
-								{value ? dateI18n( settings.formats.datetime, value ) : __( 'Select a Date', 'gravityforms' )}
+								{value ? dateI18n( settings.formats.datetime, value ) : __( 'Select a Date', 'pods-gutenberg-blocks' )}
 							</button>
 						)}
 						renderContent={() => [
@@ -140,8 +140,8 @@ export default class Rule extends Component {
 
 			case 'select':
 				return (<select
-					key={`gform-block__conditional-rule-${index}-value`}
-					className="gform-block__conditional-rule-value"
+					key={`pods-block__conditional-rule-${index}-value`}
+					className="pods-block__conditional-rule-value"
 					value={value}
 					onChange={updateValue}>
 					{
@@ -171,8 +171,8 @@ export default class Rule extends Component {
 
 				return (
 					<input
-						key={`gform-block__conditional-rule-${index}-value`}
-						className="gform-block__conditional-rule-value"
+						key={`pods-block__conditional-rule-${index}-value`}
+						className="pods-block__conditional-rule-value"
 						value={value}
 						onChange={updateValue}
 					/>
@@ -194,8 +194,8 @@ export default class Rule extends Component {
 		const updateOperator = ( e ) => this.updateOperator( e.target.value );
 
 		const keySelect = <select
-			key={`gform-block__conditional-rule-${index}-key`}
-			className="gform-block__conditional-rule-key"
+			key={`pods-block__conditional-rule-${index}-key`}
+			className="pods-block__conditional-rule-key"
 			value={key}
 			onChange={updateKey}>
 			{
@@ -206,8 +206,8 @@ export default class Rule extends Component {
 		</select>
 
 		const operatorSelect = <select
-			key={`gform-block__conditional-rule-${index}-operator`}
-			className="gform-block__conditional-rule-operator"
+			key={`pods-block__conditional-rule-${index}-operator`}
+			className="pods-block__conditional-rule-operator"
 			value={operator}
 			onChange={updateOperator}>
 			{
@@ -217,16 +217,16 @@ export default class Rule extends Component {
 			}
 		</select>
 
-		return (<div className="gform-block__conditional-rule">
-			<div className="gform-block__conditional-rule-inputs">
+		return (<div className="pods-block__conditional-rule">
+			<div className="pods-block__conditional-rule-inputs">
 				{keySelect}
 				{operatorSelect}
 				{this.getValueInput()}
 			</div>
-			<div className="gform-block__conditional-rule-controls">
-				<span className="gform-block__conditional-rule-delete" onClick={deleteRule}>
+			<div className="pods-block__conditional-rule-controls">
+				<span className="pods-block__conditional-rule-delete" onClick={deleteRule}>
 					<Dashicon
-						key={`gform-block__conditional-rule-delete-${index}`}
+						key={`pods-block__conditional-rule-delete-${index}`}
 						icon="trash"
 					/>
 				</span>

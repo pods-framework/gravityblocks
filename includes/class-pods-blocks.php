@@ -1,11 +1,11 @@
 <?php
 
-require_once( plugin_dir_path( __FILE__ ) . 'blocks/class-gf-block.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'blocks/class-pods-block.php' );
 
-class GF_Blocks {
+class Pods_Blocks {
 
 	/**
-	 * @var GF_Block[]
+	 * @var Pods_Block[]
 	 */
 	private static $_blocks = array();
 
@@ -27,16 +27,16 @@ class GF_Blocks {
 	 * @since  1.0-beta-3
 	 * @access public
 	 *
-	 * @param GF_Block $block Block class.
+	 * @param Pods_Block $block Block class.
 	 *
-	 * @uses   GF_Block::get_type()
+	 * @uses   Pods_Block::get_type()
 	 *
 	 * @throws Exception
 	 */
 	public static function register( $block ) {
 
-		if ( ! is_subclass_of( $block, 'GF_Block' ) ) {
-			throw new Exception( 'Must be a subclass of GF_Block' );
+		if ( ! is_subclass_of( $block, 'Pods_Block' ) ) {
+			throw new Exception( 'Must be a subclass of Pods_Block' );
 		}
 
 		// Get block type.
@@ -66,7 +66,7 @@ class GF_Blocks {
 	 *
 	 * @param string $block_type Block type.
 	 *
-	 * @return GF_Block|bool
+	 * @return Pods_Block|bool
 	 */
 	public static function get( $block_type ) {
 
@@ -86,11 +86,11 @@ class GF_Blocks {
 	 * @since  1.0-beta-3
 	 * @access public
 	 *
-	 * @uses   GF_Blocks::get_block_preview()
+	 * @uses   Pods_Blocks::get_block_preview()
 	 */
 	public function register_preview_route() {
 
-		register_rest_route( 'gf/v2', '/block/preview', array(
+		register_rest_route( 'pods/v2', '/block/preview', array(
 			array(
 				'methods'  => WP_REST_Server::READABLE,
 				'callback' => array( $this, 'get_block_preview' ),
@@ -129,7 +129,7 @@ class GF_Blocks {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 *
-	 * @uses   GFAPI::get_form()
+	 * @uses   PodsAPI::get_form()
 	 * @uses   WP_REST_Request::get_params()
 	 */
 	public function get_block_preview( $request ) {
@@ -141,7 +141,7 @@ class GF_Blocks {
 		$form_id = rgar( $attributes, 'formId' ) ? $attributes['formId'] : false;
 
 		// If form ID was not provided or form does not exist, return.
-		if ( ! $form_id || ( $form_id && ! GFAPI::get_form( $form_id ) ) ) {
+		if ( ! $form_id || ( $form_id && ! PodsAPI::get_form( $form_id ) ) ) {
 			wp_send_json_error();
 		}
 
@@ -159,9 +159,9 @@ class GF_Blocks {
 
 }
 
-new GF_Blocks();
+new Pods_Blocks();
 
 // Load all the block files automatically.
-foreach ( glob( plugin_dir_path( __FILE__ ) . 'blocks/class-gf-block-*.php' ) as $filename ) {
+foreach ( glob( plugin_dir_path( __FILE__ ) . 'blocks/class-pods-block-*.php' ) as $filename ) {
 	require_once( $filename );
 }

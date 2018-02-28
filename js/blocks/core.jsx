@@ -7,10 +7,10 @@ import { addQueryArgs } from '@wordpress/url';
 import SandBox from '../components/sandbox/';
 import LogicControl from '../components/conditional-logic/'
 
-registerBlockType( 'gravityforms/block', {
+registerBlockType( 'pods/block', {
 
-	title:       'Gravity Forms',
-	description: __( 'Select a form below to add it to your page.', 'gravityforms' ),
+	title:       'Pods',
+	description: __( 'Select a form below to add it to your page.', 'pods-gutenberg-blocks' ),
 	category:    'embed',
 	supports:    {
 		customClassName: false,
@@ -53,7 +53,7 @@ registerBlockType( 'gravityforms/block', {
 	icon:        () => {
 		return <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 508.3 559.5' width='20px' height='20px'
 					focusable='false' aria-hidden='true'
-					className='dashicon dashicon-gravityforms'>
+					className='dashicon dashicon-pods'>
 			<g>
 				<path className='st0'
 					  d='M468,109.8L294.4,9.6c-22.1-12.8-58.4-12.8-80.5,0L40.3,109.8C18.2,122.6,0,154,0,179.5V380	c0,25.6,18.1,56.9,40.3,69.7l173.6,100.2c22.1,12.8,58.4,12.8,80.5,0L468,449.8c22.2-12.8,40.3-44.2,40.3-69.7V179.6	C508.3,154,490.2,122.6,468,109.8z M399.3,244.4l-195.1,0c-11,0-19.2,3.2-25.6,10c-14.2,15.1-18.2,44.4-19.3,60.7H348v-26.4h49.9	v76.3H111.3l-1.8-23c-0.3-3.3-5.9-80.7,32.8-121.9c16.1-17.1,37.1-25.8,62.4-25.8h194.7V244.4z'
@@ -66,7 +66,7 @@ registerBlockType( 'gravityforms/block', {
 		from: [
 			{
 				type:       'shortcode',
-				tag:        [ 'gravityform', 'gravityforms' ],
+				tag:        [ 'pods' ],
 				attributes: {
 					formId:      {
 						type:      'string',
@@ -129,8 +129,8 @@ registerBlockType( 'gravityforms/block', {
 				return;
 			}
 
-			for ( let i = 0; i < gform.forms.length; i ++ ) {
-				if ( gform.forms[ i ].value == formId ) {
+			for ( let i = 0; i < pods.forms.length; i ++ ) {
+				if ( pods.forms[ i ].value == formId ) {
 					formFound = true;
 				}
 			}
@@ -185,11 +185,11 @@ registerBlockType( 'gravityforms/block', {
 
 			const { formId, title, description } = atts;
 
-			const apiURL = addQueryArgs( wpApiSettings.root + 'gf/v2/block/preview', {
+			const apiURL = addQueryArgs( wpApiSettings.root + 'pods/v2/block/preview', {
 				formId:      formId,
 				title:       title ? title : false,
 				description: description ? description : false,
-				type:        'gravityforms/block'
+				type:        'pods/block'
 			} );
 
 			this.setState( { fetching: true } );
@@ -252,56 +252,56 @@ registerBlockType( 'gravityforms/block', {
 				isSelected && (
 					<InspectorControls key="inspector">
 						<SelectControl
-							label={ __( 'Form', 'gravityforms' ) }
+							label={ __( 'Form', 'pods-gutenberg-blocks' ) }
 							value={ formId }
-							options={ gform.forms }
+							options={ pods.forms }
 							onChange={ this.setFormId }
 						/>
 						<ToggleControl
-							label={ __( 'Form Title', 'gravityforms' ) }
+							label={ __( 'Form Title', 'pods-gutenberg-blocks' ) }
 							checked={ title }
 							onChange={ toggleTitle }
 						/>
 						<ToggleControl
-							label={ __( 'Form Description', 'gravityforms' ) }
+							label={ __( 'Form Description', 'pods-gutenberg-blocks' ) }
 							checked={ description }
 							onChange={ toggleDescription }
 						/>
 						<PanelBody
-							title={ __( 'Conditional Logic', 'gravityforms' ) }
-							className="gform-block__panel"
+							title={ __( 'Conditional Logic', 'pods-gutenberg-blocks' ) }
+							className="pods-block__panel"
 						>
 							<ToggleControl
-								label={ __( 'Conditional Logic', 'gravityforms' ) }
+								label={ __( 'Conditional Logic', 'pods-gutenberg-blocks' ) }
 								checked={ conditionalLogic.enabled }
 								onChange={ toggleConditionalLogic }
 							/>
 							{
 								conditionalLogic.enabled &&
 								<LogicControl
-									key="gform-block__conditional"
+									key="pods-block__conditional"
 									logic={ conditionalLogic }
 									onChange={ updateConditionalLogic }
 								/>
 							}
 						</PanelBody>
 						<PanelBody
-							title={ __( 'Advanced', 'gravityforms' ) }
+							title={ __( 'Advanced', 'pods-gutenberg-blocks' ) }
 							initialOpen={ false }
-							className="gform-block__panel"
+							className="pods-block__panel"
 						>
 							<ToggleControl
-								label={ __( 'Preview', 'gravityforms' ) }
+								label={ __( 'Preview', 'pods-gutenberg-blocks' ) }
 								checked={ formPreview }
 								onChange={ toggleFormPreview }
 							/>
 							<ToggleControl
-								label={ __( 'AJAX', 'gravityforms' ) }
+								label={ __( 'AJAX', 'pods-gutenberg-blocks' ) }
 								checked={ ajax }
 								onChange={ toggleAjax }
 							/>
 							<TextControl
-								label={ __( 'Tabindex', 'gravityforms' ) }
+								label={ __( 'Tabindex', 'pods-gutenberg-blocks' ) }
 								value={ tabindex }
 								onChange={ updateTabindex }
 								placeholder="-1"
@@ -316,7 +316,7 @@ registerBlockType( 'gravityforms/block', {
 					controls,
 					<div key="loading" className="wp-block-embed is-loading">
 						<Spinner/>
-						<p>{ __( 'Loading form preview...', 'gravityforms' ) }</p>
+						<p>{ __( 'Loading form preview...', 'pods-gutenberg-blocks' ) }</p>
 					</div>,
 				];
 			}
@@ -326,7 +326,7 @@ registerBlockType( 'gravityforms/block', {
 					controls,
 					<div key="loading" className="wp-block-embed is-loading">
 						<Dashicon icon="dismiss"/>
-						<p>{ __( 'Could not load form preview.', 'gravityforms' ) }</p>
+						<p>{ __( 'Could not load form preview.', 'pods-gutenberg-blocks' ) }</p>
 					</div>,
 				];
 			}
@@ -335,14 +335,14 @@ registerBlockType( 'gravityforms/block', {
 
 				return [
 					controls,
-					<Placeholder key="placeholder" className="wp-block-embed gform-block__placeholder">
-						<div className="gform-block__placeholder-brand">
-							<img src={ gform.icon } width="110"/>
-							<p><strong>Gravity Forms</strong></p>
+					<Placeholder key="placeholder" className="wp-block-embed pods-block__placeholder">
+						<div className="pods-block__placeholder-brand">
+							<img src={ pods.icon } width="110"/>
+							<p><strong>Pods</strong></p>
 						</div>
 						<form>
 							<select value={ formId } onChange={ setFormIdFromPlaceholder }>
-								{ gform.forms.map( form =>
+								{ pods.forms.map( form =>
 									<option key={ form.value } value={ form.value }>{ form.label }</option>,
 								) }
 							</select>
@@ -366,7 +366,7 @@ registerBlockType( 'gravityforms/block', {
 	save: function ( props ) {
 
 		let { formId, title, description, ajax, tabindex } = props.attributes;
-		let shortcode = `[gravityform id="${formId}" title="${ title ? 'true' : 'false' }" description="${ description ? 'true' : 'false' }" ajax="${ ajax ? 'true' : 'false' }" tabindex="${ tabindex ? tabindex : 0 }"]`;
+		let shortcode = `[pods id="${formId}" title="${ title ? 'true' : 'false' }" description="${ description ? 'true' : 'false' }" ajax="${ ajax ? 'true' : 'false' }" tabindex="${ tabindex ? tabindex : 0 }"]`;
 
 		return formId ? <RawHTML>{ shortcode }</RawHTML> : null;
 

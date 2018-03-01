@@ -7,7 +7,7 @@ import createFragment from 'react-addons-create-fragment';
 import { addQueryArgs } from '@wordpress/url';
 import SandBox from '../components/sandbox/';
 import LogicControl from '../components/conditional-logic/'
-import buildBlockObject from '../functions/block-builder/'
+import buildBlockObject from '../functions/block-builder/buildBlockObject'
 
 let block;
 let block_object;

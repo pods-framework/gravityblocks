@@ -9,8 +9,7 @@ const extractSass = new ExtractTextPlugin( {
 
 module.exports = {
 	entry:     {
-		'js/blocks/core':      './js/blocks/core.jsx',
-		'js/blocks/mailchimp': './js/blocks/mailchimp.jsx',
+		'js/blocks/core': './js/blocks/core.jsx',
 	},
 	output:    {
 		path:     __dirname + '/',

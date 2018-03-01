@@ -30,7 +30,7 @@ class Pods_Block {
 	public static function get_instance() {
 
 		if ( null === static::$_instance ) {
-			$class = static::class;
+			$class = get_called_class();
 
 			static::$_instance = new $class;
 		}
@@ -52,9 +52,6 @@ class Pods_Block {
 
 		$this->register_block_type();
 
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_scripts' ) );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_styles' ) );
-
 	}
 
 	// # BLOCK REGISTRATION --------------------------------------------------------------------------------------------
@@ -74,6 +71,22 @@ class Pods_Block {
 	}
 
 	/**
+	 * Get REST API preview URL.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return string
+	 */
+	public function get_rest_preview_url() {
+
+		$type_path = str_replace( 'pods/', '', $this->type );
+
+		return sprintf( 'pods/v2/block/%s/preview', $type_path );
+
+	}
+
+	/**
 	 * Register block with WordPress.
 	 *
 	 * @since  1.0
@@ -84,50 +97,6 @@ class Pods_Block {
 		register_block_type( $this->get_type(), array(
 			'render_callback' => array( $this, 'render_block' ),
 		) );
-
-	}
-
-	// # SCRIPT ENQUEUEING ---------------------------------------------------------------------------------------------
-
-	/**
-	 * Enqueue block scripts.
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @uses   Pods_Block::scripts()
-	 */
-	public function enqueue_scripts() {
-
-		// Get registered scripts.
-		$scripts = $this->scripts();
-
-		// If no scripts are registered, return.
-		if ( empty( $scripts ) ) {
-			return;
-		}
-
-		// Loop through scripts.
-		foreach ( $scripts as $script ) {
-			// Prepare parameters.
-			$src       = isset( $script['src'] ) ? $script['src'] : false;
-			$deps      = isset( $script['deps'] ) ? $script['deps'] : array();
-			$version   = isset( $script['version'] ) ? $script['version'] : false;
-			$in_footer = isset( $script['in_footer'] ) ? $script['in_footer'] : false;
-
-			// Enqueue script.
-			wp_enqueue_script( $script['handle'], $src, $deps, $version, $in_footer );
-
-			// Localize script.
-			if ( ! empty( $script['strings'] ) ) {
-				wp_localize_script( $script['handle'], $script['handle'] . '_strings', $script['strings'] );
-			}
-
-			// Run script callback.
-			if ( ! empty( $script['callback'] ) && is_callable( $script['callback'] ) ) {
-				call_user_func( $script['callback'], $script );
-			}
-		}
 
 	}
 
@@ -162,69 +131,7 @@ class Pods_Block {
 	 */
 	public function scripts() {
 
-		return array(
-			array(
-				'handle'   => 'pods_editor_block_core',
-				'src'      => PODS_GUTENBERG_URL . 'js/blocks/core.min.js',
-				'deps'     => array( 'wp-blocks', 'wp-element' ),
-				'version'  => filemtime( PODS_GUTENBERG_DIR . 'js/blocks/core.min.js' ),
-				'callback' => array( $this, 'localize_script' ),
-			),
-		);
-
-	}
-
-	/**
-	 * Localize core block script.
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @param array $script Script arguments.
-	 */
-	public function localize_script( $script = array() ) {
-
-		wp_localize_script( $script['handle'], 'pods_gutenberg', array(
-			'pods'               => pods_gutenberg()->get_pods(),
-			'conditionalOptions' => pods_gutenberg()->get_conditional_options(),
-			'icon'               => PODS_GUTENBERG_URL . 'images/blocks/core/icon.svg',
-		) );
-
-	}
-
-	// # STYLE ENQUEUEING ----------------------------------------------------------------------------------------------
-
-	/**
-	 * Enqueue block styles.
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @uses   Pods_Block::styles()
-	 */
-	public function enqueue_styles() {
-
-		// Get registered styles.
-		$styles = $this->styles();
-
-		// If no styles are registered, return.
-		if ( empty( $styles ) ) {
-			return;
-		}
-
-		// Loop through styles.
-		foreach ( $styles as $style ) {
-
-			// Prepare parameters.
-			$src     = isset( $style['src'] ) ? $style['src'] : false;
-			$deps    = isset( $style['deps'] ) ? $style['deps'] : array();
-			$version = isset( $style['version'] ) ? $style['version'] : false;
-			$media   = isset( $style['media'] ) ? $style['media'] : 'all';
-
-			// Enqueue style.
-			wp_enqueue_style( $style['handle'], $src, $deps, $version, $media );
-
-		}
+		return array();
 
 	}
 
@@ -238,14 +145,7 @@ class Pods_Block {
 	 */
 	public function styles() {
 
-		return array(
-			array(
-				'handle'  => 'pods_editor_block_core',
-				'src'     => PODS_GUTENBERG_URL . 'css/block.css',
-				'deps'    => array( 'wp-edit-blocks' ),
-				'version' => filemtime( PODS_GUTENBERG_DIR . 'css/block.css' ),
-			),
-		);
+		return array();
 
 	}
 
@@ -357,6 +257,97 @@ class Pods_Block {
 		$result = ( 'all' === $logic['logicType'] && count( $logic['rules'] ) === $match_count ) || ( 'any' === $logic['logicType'] && 0 < $match_count );
 
 		return 'hide' === $logic['actionType'] ? ! $result : $result;
+
+	}
+
+	/**
+	 * Get REST API parameters for preview.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return array
+	 */
+	public function get_rest_api_params() {
+
+		return array();
+
+	}
+
+	/**
+	 * Get Gutenberg Block JS config.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return array
+	 */
+	public function get_block_config() {
+
+		return array(
+			'type'             => $this->get_type(),
+			'rest_preview_url' => $this->get_rest_preview_url(),
+			'title'            => '',
+			'description'      => '',
+			'category'         => 'embed',
+			'supports'         => array(
+				'customClassName' => false,
+				'className'       => false,
+				'html'            => false,
+			),
+			'attributes'       => $this->get_block_config_attributes(),
+		);
+
+	}
+
+	/**
+	 * Get Gutenberg Block JS config attributes.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return array
+	 */
+	public function get_block_config_attributes() {
+
+		$acceptable_args = array(
+			'type',
+			'default',
+		);
+
+		$rest_api_params = $this->get_rest_api_params();
+
+		$attributes = array();
+
+		foreach ( $rest_api_params as $param => $args ) {
+			$attribute      = $param;
+			$attribute_args = array();
+
+			foreach ( $acceptable_args as $acceptable_arg ) {
+				if ( isset( $args[ $acceptable_arg ] ) ) {
+					$attribute_args[ $acceptable_arg ] = $args[ $acceptable_arg ];
+				}
+			}
+
+			$attributes[ $attribute ] = $attribute_args;
+		}
+
+		$attributes['conditional_logic'] = array(
+			'type'    => 'object',
+			'default' => array(
+				'enabled'    => false,
+				'actionType' => 'show',
+				'logicType'  => 'all',
+				'rules'      => array(),
+			),
+		);
+
+		$attributes['show_preview'] = array(
+			'type'    => 'bool',
+			'default' => true,
+		);
+
+		return $attributes;
 
 	}
 

@@ -18,6 +18,52 @@ class Pods_Block_Field extends Pods_Block {
 	 */
 	public $type = 'pods/field';
 
+	/**
+	 * Get REST API parameters for preview.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return array
+	 */
+	public function get_rest_api_params() {
+
+		return array(
+			'pod'   => array(
+				'description' => __( 'The pod name.', 'pods-gutenberg-blocks' ),
+				'required'    => true,
+			),
+			'slug'  => array(
+				'description' => __( 'The item slug or ID.', 'pods-gutenberg-blocks' ),
+				'required'    => true,
+			),
+			'field' => array(
+				'description' => __( 'The pod field name.', 'pods-gutenberg-blocks' ),
+				'required'    => true,
+			),
+		);
+
+	}
+
+	/**
+	 * Get Gutenberg Block JS config.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return array
+	 */
+	public function get_block_config() {
+
+		$config = parent::get_block_config();
+
+		$config['title']       = esc_html__( 'Pods - Single Item Field', 'pods-gutenberg-blocks' );
+		$config['description'] = esc_html__( 'Display a field from a single Pod item', 'pods-gutenberg-blocks' );
+
+		return $config;
+
+	}
+
 }
 
 try {

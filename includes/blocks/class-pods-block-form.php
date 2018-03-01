@@ -36,6 +36,56 @@ class Pods_Block_Form extends Pods_Block {
 
 	}
 
+	/**
+	 * Get REST API parameters for preview.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return array
+	 */
+	public function get_rest_api_params() {
+
+		return array(
+			'pod'       => array(
+				'description' => __( 'The pod name.', 'pods-gutenberg-blocks' ),
+				'required'    => true,
+			),
+			'slug'      => array(
+				'description' => __( 'The item slug or ID.', 'pods-gutenberg-blocks' ),
+			),
+			'fields'    => array(
+				'description' => __( 'The pod fields.', 'pods-gutenberg-blocks' ),
+			),
+			'label'     => array(
+				'description' => __( 'The form label.', 'pods-gutenberg-blocks' ),
+			),
+			'thank_you' => array(
+				'description' => __( 'The form thank you URL.', 'pods-gutenberg-blocks' ),
+			),
+		);
+
+	}
+
+	/**
+	 * Get Gutenberg Block JS config.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @return array
+	 */
+	public function get_block_config() {
+
+		$config = parent::get_block_config();
+
+		$config['title']       = esc_html__( 'Pods - Form', 'pods-gutenberg-blocks' );
+		$config['description'] = esc_html__( 'Display a form for creating and editing Pod items', 'pods-gutenberg-blocks' );
+
+		return $config;
+
+	}
+
 }
 
 try {

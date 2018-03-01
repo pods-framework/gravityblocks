@@ -3,6 +3,7 @@ const { InspectorControls, registerBlockType } = wp.blocks;
 const { Dashicon, PanelBody, Placeholder, SelectControl, Spinner, TextControl, ToggleControl } = wp.components;
 const { Component, RawHTML } = wp.element;
 
+import createFragment from 'react-addons-create-fragment';
 import { addQueryArgs } from '@wordpress/url';
 import SandBox from '../components/sandbox/';
 import LogicControl from '../components/conditional-logic/'
@@ -226,47 +227,71 @@ for ( block in pods_gutenberg.block_configs ) {
 
 				const setFormIdFromPlaceholder = ( e ) => this.setFormId( e.target.value );
 
-				const controls = [
-					isSelected && (
-						<InspectorControls key="inspector">
-							<SelectControl
-								label={ __( 'Pod', 'pods-gutenberg-blocks' ) }
-								value={ formId }
-								options={ pods_gutenberg.pods }
-								onChange={ this.setFormId }
-							/>
-							<PanelBody
-								title={ __( 'Conditional Logic', 'pods-gutenberg-blocks' ) }
-								className="pods-block__panel"
-							>
-								<ToggleControl
-									label={ __( 'Conditional Logic', 'pods-gutenberg-blocks' ) }
-									checked={ conditional_logic.enabled }
-									onChange={ toggleConditionalLogic }
+				let controls = [];
+
+				if ( isSelected ) {
+					let controls = [];
+
+					controls.push(
+						(
+							<InspectorControls key="inspector">
+								<SelectControl
+									label={ __( 'Pod', 'pods-gutenberg-blocks' ) }
+									value={ formId }
+									options={ pods_gutenberg.pods }
+									onChange={ this.setFormId }
 								/>
-								{
-									conditional_logic.enabled &&
-									<LogicControl
-										key="pods-block__conditional"
-										logic={ conditional_logic }
-										onChange={ updateConditionalLogic }
+							</InspectorControls>
+						)
+					);
+
+					controls.push(
+						(
+							<InspectorControls key="inspector">
+								<PanelBody
+									title={ __( 'Conditional Logic', 'pods-gutenberg-blocks' ) }
+									className="pods-block__panel"
+								>
+									<ToggleControl
+										label={ __( 'Conditional Logic', 'pods-gutenberg-blocks' ) }
+										checked={ conditional_logic.enabled }
+										onChange={ toggleConditionalLogic }
 									/>
-								}
-							</PanelBody>
-							<PanelBody
-								title={ __( 'Advanced', 'pods-gutenberg-blocks' ) }
-								initialOpen={ false }
-								className="pods-block__panel"
-							>
-								<ToggleControl
-									label={ __( 'Preview', 'pods-gutenberg-blocks' ) }
-									checked={ show_preview }
-									onChange={ toggleshowPreview }
-								/>
-							</PanelBody>
-						</InspectorControls>
-					),
-				];
+									{
+										conditional_logic.enabled &&
+										<LogicControl
+											key="pods-block__conditional"
+											logic={ conditional_logic }
+											onChange={ updateConditionalLogic }
+										/>
+									}
+								</PanelBody>
+							</InspectorControls>
+						)
+					);
+
+					controls.push(
+						(
+							<InspectorControls key="inspector">
+								<PanelBody
+									title={ __( 'Advanced', 'pods-gutenberg-blocks' ) }
+									initialOpen={ false }
+									className="pods-block__panel"
+								>
+									<ToggleControl
+										label={ __( 'Preview', 'pods-gutenberg-blocks' ) }
+										checked={ show_preview }
+										onChange={ toggleshowPreview }
+									/>
+								</PanelBody>
+							</InspectorControls>
+						)
+					);
+
+					controls = [
+						createFragment( controls ),
+					];
+				}
 
 				if ( fetching ) {
 					return [
@@ -295,7 +320,7 @@ for ( block in pods_gutenberg.block_configs ) {
 						<Placeholder key="placeholder" className="wp-block-embed pods-block__placeholder">
 							<div className="pods-block__placeholder-brand">
 								<img src={ pods_gutenberg.icon } width="110"/>
-								<p><strong>Pods</strong></p>
+								<p><strong>{ block_object.title }</strong></p>
 							</div>
 							<form>
 								<select value={ formId } onChange={ setFormIdFromPlaceholder }>

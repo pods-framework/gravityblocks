@@ -15,6 +15,7 @@
     "lodash": "^4.17.5",
     "node-sass": "^4.7.2",
     "react": "^16.2.0",
+    "react-addons-create-fragment": "^15.6.2",
     "react-click-outside": "^3.0.0",
     "react-dom": "^16.2.0",
     "sass-loader": "^6.0.6",
